@@ -1,0 +1,14 @@
+<?php
+
+global $conf;
+
+$conf['database'] = [
+  'name' => 'conversations',
+  'user' => 'root',
+  'pass' => 'password',
+  'host' => 'localhost',
+];
+
+$conf['google'] = [
+  'client_id' => 'YOUR_CLIENT_ID.apps.googleusercontent.com',
+];

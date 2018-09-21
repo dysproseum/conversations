@@ -1,0 +1,115 @@
+<?php
+require_once('config.php');
+global $conf;
+$db = $conf['database'];
+global $link;
+$link = mysqli_connect($db['host'], $db['user'], $db['pass'], $db['name']);
+
+if (!$link) {
+  echo "Error: Unable to connect to MySQL." . PHP_EOL;
+  echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+  echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+  exit;
+}
+
+//echo "Success: A proper connection to MySQL was made! The database is great." . PHP_EOL;
+//echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
+
+$query = "SELECT id FROM users";
+$test = mysqli_query($link, $query);
+
+if(empty($test)) {
+  $query = "CREATE TABLE users (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  sub varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  name varchar(255) NOT NULL,
+  picture varchar(255) NOT NULL,
+  given_name varchar(255),
+  family_name varchar(255),
+  locale varchar(255) NOT NULL,
+  primary key(id)
+  )";
+  mysqli_query($link, $query);
+}
+
+$query = "SELECT id FROM posts";
+$test = mysqli_query($link, $query);
+
+if (empty($test)) {
+  $query = "CREATE TABLE posts (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  parent_id int(11),
+  uid int(11) NOT NULL,
+  created int(11) NOT NULL,
+  link text,
+  body text,
+  primary key(id)
+  )";
+  mysqli_query($link, $query);
+}
+
+
+//mysqli_close($link);
+
+function getUserInfo($sub) {
+  global $link;
+  $query = "SELECT * FROM users WHERE sub LIKE '" . $sub . "' LIMIT 1";
+  $result = mysqli_query($link, $query);
+  if($result){
+     // Cycle through results
+    while ($row = $result->fetch_object()){
+      return $row;
+    }
+  }
+  return FALSE;
+}
+
+function newUser($result) {
+  global $link;
+  $query = "INSERT INTO users (email, sub, name, picture, given_name, family_name, locale) VALUES (
+    '" . $result->email . "',
+    '" . $result->sub . "',
+    '" . $result->name . "',
+    '" . $result->picture . "',
+    '" . $result->given_name . "',
+    '" . $result->family_name . "',
+    '" . $result->locale . "')";
+print $query;
+  $result = mysqli_query($link, $query);
+
+}
+
+function getMyPosts($user) {
+  global $link;
+  $query = "SELECT id FROM posts WHERE uid = " . $user->id . " AND parent_id IS NULL ORDER BY created DESC";
+  $result = mysqli_query($link, $query);
+  $posts = [];
+  foreach ($result as $row) {
+    $posts[] = $row;
+  }
+  return $posts;
+}
+
+function getPost($id) {
+  global $link;
+  $query = "SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.id = $id AND u.id = p.uid AND p.parent_id IS NULL";
+  $result = mysqli_query($link, $query);
+  if (!$result) {
+    return NULL;
+  }
+  foreach ($result as $row) {
+    return $row;
+  }
+}
+
+function getPostComments($id) {
+  global $link;
+  $query = "SELECT * FROM posts p, users u WHERE p.parent_id = " . $id . " AND u.id = p.uid ORDER BY created ASC";
+  $result = mysqli_query($link, $query);
+  $posts = [];
+  foreach ($result as $row) {
+    $posts[] = $row;
+  }
+  return $posts;
+}
