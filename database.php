@@ -127,4 +127,14 @@ function getPostComments($id) {
   return $posts;
 }
 
+function getLastComment($id) {
+  global $link;
+  $query = "SELECT * FROM posts p, users u WHERE p.parent_id = " . $id . " AND u.id = p.uid ORDER BY created DESC LIMIT 1";
+  $result = mysqli_query($link, $query);
+  foreach ($result as $row) {
+    $post = $row;
+  }
+  return $post;
+}
+
 //mysqli_close($link);

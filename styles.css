@@ -23,7 +23,7 @@ body.home #content {
   display: block;
   float: left;
   width: 100%;
-  background: #99ccff;
+  background: #0095ff;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -54,15 +54,30 @@ body.home #content {
   display: inherit;
   float: left;
   width: 180px;
-  margin-left: 20px;
-  padding-top: 20px;
+  border-right: 1px solid gray;
+}
+
+#sidebar ul {
+  list-style-type: none;
+  margin-top: 0px;
+  padding-left: 0px;
+  margin-bottom: 0px;
+}
+
+#sidebar li {
+  border-bottom: 1px solid gray;
+}
+
+#sidebar a {
+  text-decoration: none;
+  display: block;
+  padding: 20px;
 }
 
 #content {
   display: block;
   float: left;
   margin: 0px;
-  border-left: 1px solid gray;
   padding-left: 20px;
   padding-top: 20px;
 }  
@@ -89,6 +104,16 @@ body.post input[type=text] {
   margin-bottom: 10px;
 }
 
+body.post .post-body {
+  display: block;
+  float: left;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #cccccc;
+  border-radius: 6px;
+  width: 600px;
+}
+
 .comment-wrapper {
   display: block;
   float: left;
@@ -101,6 +126,7 @@ body.post input[type=text] {
   margin-bottom: 10px;
   padding: 10px;
   width: 50%;
+  border-radius: 6px;
 }
 
 .comment p {
@@ -112,12 +138,22 @@ body.post input[type=text] {
   float: right;
 }
 
+#submit-comment {
+  padding: 20px;
+  width: 200px;
+  border-radius: 6px;
+  background: #0095ff;
+  color: white;
+  font-size: 16px;
+}
+
 .avatar-small {
   height: 16px;
   float: right;
 }
 
 .avatar-small-left {
-  height: 16px;
+  height: 36px;
   float: left;
+  margin-right: 10px;
 }
