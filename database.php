@@ -1,4 +1,6 @@
 <?php
+
+// Connect to the database.
 require_once('config.php');
 global $conf;
 $db = $conf['database'];
@@ -12,9 +14,7 @@ if (!$link) {
   exit;
 }
 
-//echo "Success: A proper connection to MySQL was made! The database is great." . PHP_EOL;
-//echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
-
+// Create users table.
 $query = "SELECT id FROM users";
 $test = mysqli_query($link, $query);
 
@@ -33,6 +33,7 @@ if(empty($test)) {
   mysqli_query($link, $query);
 }
 
+// Create posts table.
 $query = "SELECT id FROM posts";
 $test = mysqli_query($link, $query);
 
@@ -49,15 +50,24 @@ if (empty($test)) {
   mysqli_query($link, $query);
 }
 
+// Create access table.
+$query = "SELECT id FROM access";
+$test = mysqli_query($link, $query);
 
-//mysqli_close($link);
+if (empty($test)) {
+  $query = "CREATE TABLE access (
+  id int(11),
+  uid int(11)
+  )";
+  mysqli_query($link, $query);
+}
 
+// Helper function to get user info.
 function getUserInfo($sub) {
   global $link;
   $query = "SELECT * FROM users WHERE sub LIKE '" . $sub . "' LIMIT 1";
   $result = mysqli_query($link, $query);
-  if($result){
-     // Cycle through results
+  if ($result) {
     while ($row = $result->fetch_object()){
       return $row;
     }
@@ -65,6 +75,7 @@ function getUserInfo($sub) {
   return FALSE;
 }
 
+// Helper function to create a new user in the database.
 function newUser($result) {
   global $link;
   $query = "INSERT INTO users (email, sub, name, picture, given_name, family_name, locale) VALUES (
@@ -75,14 +86,14 @@ function newUser($result) {
     '" . $result->given_name . "',
     '" . $result->family_name . "',
     '" . $result->locale . "')";
-print $query;
+  print $query;
   $result = mysqli_query($link, $query);
-
 }
 
+// Helper function to return posts created and shared with me.
 function getMyPosts($user) {
   global $link;
-  $query = "SELECT id FROM posts WHERE uid = " . $user->id . " AND parent_id IS NULL ORDER BY created DESC";
+  $query = "SELECT p.* FROM posts p, access a WHERE a.uid = " . $user->id . " AND p.id = a.id ORDER BY created DESC";
   $result = mysqli_query($link, $query);
   $posts = [];
   foreach ($result as $row) {
@@ -91,6 +102,7 @@ function getMyPosts($user) {
   return $posts;
 }
 
+// Helper function to get a post from its id.
 function getPost($id) {
   global $link;
   $query = "SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.id = $id AND u.id = p.uid AND p.parent_id IS NULL";
@@ -103,6 +115,7 @@ function getPost($id) {
   }
 }
 
+// Helper function to get a post's comments.
 function getPostComments($id) {
   global $link;
   $query = "SELECT * FROM posts p, users u WHERE p.parent_id = " . $id . " AND u.id = p.uid ORDER BY created ASC";
@@ -113,3 +126,5 @@ function getPostComments($id) {
   }
   return $posts;
 }
+
+//mysqli_close($link);

@@ -2,6 +2,7 @@
 
 global $conf;
 
+// MySQL database connection.
 $conf['database'] = [
   'name' => 'conversations',
   'user' => 'root',
@@ -9,6 +10,7 @@ $conf['database'] = [
   'host' => 'localhost',
 ];
 
+// Google API keys.
 $conf['google'] = [
   'client_id' => 'YOUR_CLIENT_ID.apps.googleusercontent.com',
 ];

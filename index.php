@@ -1,4 +1,5 @@
 <?php
+  // Redirect to dashboard if logged in.
   session_start();
   if (isset($_SESSION['sub'])) {
     header('Location: /conversations/dashboard.php');

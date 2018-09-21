@@ -1,5 +1,6 @@
 <?php
 
+// Ensure Google client key exists.
 require_once('config.php');
 if (isset($conf['google']) && isset($conf['google']['client_id'])) {
   define('CLIENT_ID', $conf['google']['client_id']);
@@ -25,8 +26,8 @@ if ($payload) {
   exit('Invalid ID token');
 }
 
+// Endpoint to verify token claim.
 $url = 'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' . $id_token;
-
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $response = curl_exec($ch);
@@ -41,21 +42,23 @@ if ($result->sub !== $userid) {
   var_dump($user);
   exit;
 }
-else {
-  session_start();
-  $_SESSION['sub'] = $userid;
 
-  require_once('database.php');
+// Set up session variables and
+// create a user in the database if necessary.
+session_start();
+$_SESSION['sub'] = $userid;
+
+require_once('database.php');
+$user = getUserInfo($userid);
+if (!$user) {
+  $info['message'] = "Creating new user";
+  newUser($result);
   $user = getUserInfo($userid);
-  if (!$user) {
-    $info['message'] = "Creating new user";
-    $newUser($result);
-    $user = getUserInfo($userid);
-  }
-  else {
-    $info['message'] = "User already exists";
-  }
-  $info['user'] = $user;
-
-  print json_encode($info);
 }
+else {
+  $info['message'] = "User already exists";
+}
+$info['user'] = $user;
+
+print json_encode($info);
+

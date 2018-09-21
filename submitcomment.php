@@ -1,4 +1,5 @@
 <?php
+  // Ensure user logged in.
   session_start();
   if (!isset($_SESSION['sub'])) {
     header('Location: /conversations/login.php');
@@ -16,6 +17,7 @@
 
   $post = $_POST;
 
+  // Insert new comment in the database.
   // @todo sanitize this insert query
   $parent_id = $post['parent_id'];
   $query = "INSERT INTO posts (parent_id, uid, created, link, body) VALUES (
@@ -32,7 +34,12 @@
     print "database error";
     exit;
   }
-  else {
-    header('Location: /conversations/post.php?id=' . $parent_id);
-  }
+
+  // @todo Notifications
+  // Browser notification for user that does exist
+
+  // Redirect to post page.
+  // @todo convert to ajax
+  header('Location: /conversations/post.php?id=' . $parent_id);
+  exit;
 

@@ -2,6 +2,7 @@
  * Javascript used for Google signin and backend integration.
  */
 
+// Callback function for Google account signin.
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -40,6 +41,7 @@ function onSignIn(googleUser) {
   $picture.hidden = false;
 }
 
+// Callback function for Google account signout.
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {

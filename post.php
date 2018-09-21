@@ -1,5 +1,5 @@
 <?php
-
+  // Ensure valid post id.
   $id = (int) $_GET['id'];
   if (!$id) {
     header('HTTP/1.1 404 Not Found');
@@ -10,6 +10,7 @@
   global $link;
   global $user;
 
+  // Ensure logged in user.
   session_start();
   if (!isset($_SESSION['sub'])) {
     header('Location: /conversations/login.php');
@@ -23,8 +24,13 @@
       exit;
     }
     else {
-      // @todo: Check access.
-      $access = TRUE;
+      // Check access.
+      $access = FALSE;
+      $query = "SELECT uid FROM access WHERE id = " . $id;
+      $result = mysqli_query($link, $query);
+      foreach ($result as $row) {
+        $access = TRUE;
+      }
 
       require_once('template.php');
       $post = []; 
@@ -38,6 +44,7 @@
       }
       else {
         header('HTTP/1.1 403 Forbidden');
+        exit;
       }
 
       $header = getHeader($user);

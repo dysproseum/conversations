@@ -1,5 +1,6 @@
 <?php
 
+// Theme header html.
 function getHeader($user) {
   ob_start(); ?>
   <h1><a href="/conversations">conversations</a></h1>
@@ -16,6 +17,7 @@ function getHeader($user) {
   return $html;
 }
 
+// Theme sidebar html.
 function getSidebar($user) {
   ob_start(); ?>
   <?php if ($user): ?>
@@ -31,6 +33,7 @@ function getSidebar($user) {
   return $html;
 }
 
+// Theme dashboard html.
 function getDashboard($user) {
   if ($user) {
     $posts = getMyPosts($user);
@@ -51,13 +54,16 @@ function getDashboard($user) {
   return $html;
 }
 
+// Theme new post form html.
 function getNewPostForm($user) {
   ob_start(); ?>
   <h1>New Post</h1>
   <form action="submitpost.php" method="POST">
+    <input type="text" name="recipient" placeholder="Recipient" />
+    <br>
     <textarea name="body"></textarea>
     <br>
-    <input type="text" name="link" />
+    <input type="text" name="link" placeholder="Link" />
     <br>
     <input type="submit" />
   </form>
@@ -67,6 +73,7 @@ function getNewPostForm($user) {
   return $html;
 }
 
+// Theme new comment form.
 function getPostCommentForm($user, $post) {
   ob_start(); ?>
   <form action="submitcomment.php" method="POST" id="comment-form">
@@ -83,6 +90,7 @@ function getPostCommentForm($user, $post) {
   return $html;
 }
 
+// Theme post html.
 function viewPost($post) {
   ob_start(); ?>
   <h1>View Post</h1>

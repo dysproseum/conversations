@@ -1,4 +1,5 @@
 <?php
+  // Ensure Google client id exists.
   require_once('config.php');
   if (isset($conf['google']) && isset($conf['google']['client_id'])) {
     define('CLIENT_ID', $conf['google']['client_id']);

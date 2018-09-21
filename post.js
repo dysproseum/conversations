@@ -1,3 +1,7 @@
+/**
+ * Javascript for post page.
+ */
+
 window.onload=function () {
   // Scroll to bottom of chat window on load.
   var objDiv = document.getElementById("chat");
@@ -7,7 +11,6 @@ window.onload=function () {
   var form = document.getElementById('comment-form');
   document.getElementById('comment-body').onkeydown = function(e){
     if(e.keyCode == 13){
-     // submit
      form.submit();
     }
   };
