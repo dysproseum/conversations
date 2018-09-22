@@ -6,8 +6,8 @@
     exit;
   }
   else {
-    global $link;
     require_once('database.php');
+    global $mysqli;
     $user = getUserInfo($_SESSION['sub']);
     if (!$user) {
       header('Location: /conversations/login.php');
@@ -18,22 +18,17 @@
   $post = $_POST;
 
   // Insert new comment in the database.
-  // @todo sanitize this insert query
   $parent_id = $post['parent_id'];
-  $query = "INSERT INTO posts (parent_id, uid, created, link, body) VALUES (
-  '" . $parent_id . "',
-  '" . $user->id . "',
-  '" . time() . "',
-  '" . $post['link'] . "',
-  '" . $post['body'] . "'
-  )";
-  $result = mysqli_query($link, $query);
-
-  if (!$result) {
-    print $query;
-    print "database error";
-    exit;
-  }
+  $stmt = $mysqli->prepare("INSERT INTO posts (parent_id, uid, created, link, body) VALUES (?, ?, ?, ?, ?)");
+  $stmt->bind_param('iiiss',
+    $parent_id,
+    $user->id,
+    time(),
+    $post['link'],
+    $post['body']
+  );
+  $stmt->execute();
+  $stmt->close();
 
   // @todo Notifications
   // Browser notification for user that does exist

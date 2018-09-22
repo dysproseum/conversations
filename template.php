@@ -32,7 +32,7 @@ function getSidebar($user) {
     <?php $comment = getLastComment($post_id['id']); ?>
     <li>
       <a href="/conversations/post.php?id=<?php print $post['id']; ?>">Post <?php print $post['id']; ?>
-      <img class="avatar-small-left" src="<?php print $comment['picture']; ?>" alt="user avatar" />
+      <img class="avatar-small-left" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
       <!-- @todo read/unread status -->
       <!-- @todo time ago -->
       <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>

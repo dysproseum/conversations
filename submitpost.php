@@ -6,8 +6,8 @@
     exit;
   }
   else {
-    global $link;
     require_once('database.php');
+    global $mysqli;
     $user = getUserInfo($_SESSION['sub']);
     if (!$user) {
       header('Location: /conversations/login.php');
@@ -16,30 +16,29 @@
   }
 
   // Create new post in database.
-  // @todo sanitize this insert query
   $post = $_POST;
-  $query = "INSERT INTO posts (uid, created, link, body) VALUES (
-  '" . $user->id . "',
-  '" . time() . "',
-  '" . $post['link'] . "',
-  '" . $post['body'] . "'
-  )";
-  $result = mysqli_query($link, $query);
-  if (!$result) {
-    print $query;
-    print "database error";
-    exit;
-  }
-  $id = mysqli_insert_id($link);
+  $time = time();
+  $stmt = $mysqli->prepare("INSERT INTO posts (uid, created, link, body) VALUES (?, ?, ?, ?)");
+  $stmt->bind_param('iiss',
+    $user->id,
+    $time,
+    $post['link'],
+    $post['body']
+  );
+  $stmt->execute();
+  $stmt->close();
+  $id = $mysqli->insert_id;
 
-  // Set user id for recipient.
-  // @todo sanitize this query
+  // Get user id for recipient.
   $recipient = $post['recipient'];
-  $query = "SELECT id FROM users WHERE email like '" . $recipient . "' LIMIT 1";
-  $result = mysqli_query($link, $query);
+  $stmt = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1");
+  $stmt->bind_param('s', $recipient);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
   if (!$result) {
     print $query;
-    print "database error";
+    print "database error 2";
     exit;
   }
   foreach ($result as $row) {
@@ -47,19 +46,10 @@
   }
 
   // Set up access for OP and recipient.
-  $query = "INSERT INTO access (id, uid) VALUES (
-  '" . $id . "',
-  '" . $user->id . "'
-  ), (
-  '" . $id . "',
-  '" . $uid . "'
-  )";
-  $result = mysqli_query($link, $query);
-  if (!$result) {
-    print $query;
-    print "database error";
-    exit;
-  }
+  $stmt = $mysqli->prepare("INSERT INTO access (id, uid) VALUES (?, ?), (?, ?)");
+  $stmt->bind_param('iiii', $id, $uid, $id, $user->id);
+  $stmt->execute();
+  $stmt->close();
 
   // @todo Notifications
   // Email user an invite if they don't exist

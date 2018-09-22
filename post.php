@@ -7,9 +7,6 @@
     exit;
   }
 
-  global $link;
-  global $user;
-
   // Ensure logged in user.
   session_start();
   if (!isset($_SESSION['sub'])) {
@@ -18,7 +15,10 @@
   }
   else {
     require_once('database.php');
+    global $mysqli;
+ 
     $user = getUserInfo($_SESSION['sub']);
+    global $user;
     if (!$user) {
       header('Location: /conversations/login.php');
       exit;
@@ -26,8 +26,11 @@
     else {
       // Check access.
       $access = FALSE;
-      $query = "SELECT uid FROM access WHERE id = " . $id;
-      $result = mysqli_query($link, $query);
+      $stmt = $mysqli->prepare("SELECT uid FROM access WHERE id = ?");
+      $stmt->bind_param('i', $id);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $stmt->close();
       foreach ($result as $row) {
         $access = TRUE;
       }
