@@ -9,9 +9,14 @@
     print "Google client id not found";
     exit;
   }
+  session_start();
+  require_once('database.php');
+  $user = getUserInfo($_SESSION['sub']);
+
+  // @todo Update user picture on login
   require_once('template.php');
-  $header = getHeader();
-  $sidebar = getSidebar();
+  $header = getHeader($user);
+  $sidebar = getSidebar($user);
 ?>
 
 <html>
@@ -28,7 +33,9 @@
   <div id="content">
     <h1>Login</h1>
     <p><span id="user-message" /></p>
-    
+
+    <?php /* https://developers.google.com/identity/sign-in/web/sign-in */ ?>
+
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <p><a href="#" onclick="signOut();">Sign out</a></p>
     
@@ -39,4 +46,16 @@
 
   </div>
 </body>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4383228-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-4383228-1');
+</script>
+
+
 </html>

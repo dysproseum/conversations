@@ -28,15 +28,16 @@ function onSignIn(googleUser) {
     else {
       // Login success.
       $name.textContent = info.user.name;
-      $picture.src = info.user.picture;
+      //$picture.src = info.user.picture;
+      $picture.src = profile.getImageUrl();
       $continue.hidden = false;
       $message.textContent = '';
 
-      console.log(info.message);
+      console.log("info.message: " + info.message);
       console.log('Signed in as: ' + info.user.email);
     } 
   };
-  xhr.send('idtoken=' + id_token);
+  xhr.send('idtoken=' + id_token + "&picture=" + profile.getImageUrl());
   $picture.src = "loading.gif";
   $picture.hidden = false;
 }
@@ -52,6 +53,8 @@ function signOut() {
   var $name = document.getElementById('user-name');
   var $picture = document.getElementById('user-picture');
   var $continue = document.getElementById('user-continue');
+
+  window.location.href="/conversations";
 
   // Logout from the backend.
   var xhr = new XMLHttpRequest();

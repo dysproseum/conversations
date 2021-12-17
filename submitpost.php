@@ -30,6 +30,7 @@
   $id = $mysqli->insert_id;
 
   // Get user id for recipient.
+  // @todo Handle case where recipient user id does not exist yet
   $recipient = $post['recipient'];
   $stmt = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1");
   $stmt->bind_param('s', $recipient);

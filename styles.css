@@ -2,13 +2,13 @@ html,body {
   display: block;
   float: left;
   width: 100%;
-  font-family: Sans-Serif;
+  font-family: Helvetica, Sans-Serif;
   margin: 0;
+  background: #eeeeee;
 }
 
 body.home {
   background-color: #99ccff;
-  color: white;
   height: 100%;
 }
 
@@ -55,6 +55,7 @@ body.home #content {
   float: left;
   width: 180px;
   border-right: 1px solid gray;
+  background: white;
 }
 
 #sidebar ul {
@@ -74,12 +75,28 @@ body.home #content {
   padding: 20px;
 }
 
+#sidebar .active {
+  background: navy;
+  color: white;
+}
+
+#sidebar .active a {
+  color: white;
+}
+
 #content {
   display: block;
   float: left;
   margin: 0px;
-  padding-left: 20px;
-  padding-top: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  max-width: 800px;
+  min-width: 630px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 6px;
 }  
 
 #content h1 {
@@ -89,8 +106,10 @@ body.home #content {
 #chat {
   display: block;
   float: left;
-  height: 50%;
-  overflow-y: scroll;
+  min-height: 50%;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 body.post textarea {
@@ -107,11 +126,7 @@ body.post input[type=text] {
 body.post .post-body {
   display: block;
   float: left;
-  padding: 20px;
-  margin-bottom: 20px;
-  background: #cccccc;
-  border-radius: 6px;
-  width: 600px;
+  width: 100%;
 }
 
 .comment-wrapper {
@@ -138,13 +153,28 @@ body.post .post-body {
   float: right;
 }
 
-#submit-comment {
+form textarea {
+  border-radius: 6px;
+  border: 1px solid black;
+  resize: vertical;
   padding: 20px;
+}
+
+form input[type=text] {
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#submit-comment {
+  padding: 10px;
   width: 200px;
   border-radius: 6px;
   background: #0095ff;
+  border: 1px solid black;
   color: white;
   font-size: 16px;
+  float: right;
 }
 
 .avatar-small {

@@ -16,22 +16,25 @@
   }
 
   $post = $_POST;
-
-  // Insert new comment in the database.
   $parent_id = $post['parent_id'];
-  $stmt = $mysqli->prepare("INSERT INTO posts (parent_id, uid, created, link, body) VALUES (?, ?, ?, ?, ?)");
-  $stmt->bind_param('iiiss',
-    $parent_id,
-    $user->id,
-    time(),
-    $post['link'],
-    $post['body']
-  );
-  $stmt->execute();
-  $stmt->close();
 
-  // @todo Notifications
-  // Browser notification for user that does exist
+  if (!empty($post['link']) || !empty($post['body'])) {
+
+    // Insert new comment in the database.
+    $stmt = $mysqli->prepare("INSERT INTO posts (parent_id, uid, created, link, body) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param('iiiss',
+      $parent_id,
+      $user->id,
+      time(),
+      $post['link'],
+      $post['body']
+    );
+    $stmt->execute();
+    $stmt->close();
+
+    // @todo Notifications
+    // Browser notification for user that does exist
+  }
 
   // Redirect to post page.
   // @todo convert to ajax

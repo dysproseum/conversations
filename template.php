@@ -5,7 +5,7 @@ require_once('utils.php');
 // Theme header html.
 function getHeader($user) {
   ob_start(); ?>
-  <h1><a href="/conversations">conversations</a></h1>
+  <h1><a href="/conversations/dashboard.php">conversations</a></h1>
   <div class="profile-block">
     <img id="user-picture" src="<?php print $user->picture; ?>" />
   </div>
@@ -20,27 +20,29 @@ function getHeader($user) {
 }
 
 // Theme sidebar html.
-function getSidebar($user) {
+function getSidebar($user, $this_post = '') {
   ob_start(); ?>
   <ul>
   <?php if ($user): ?>
-    <li>
-      <a href="/conversations/new.php">New post</a>
-    </li>
   <?php foreach (getMyPosts($user) as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
-    <li>
-      <a href="/conversations/post.php?id=<?php print $post['id']; ?>">Post <?php print $post['id']; ?>
+    <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
+      <a href="/conversations/post.php?id=<?php print $post['id']; ?>"><?php print substr($comment['body'], 0, 18); ?>
       <img class="avatar-small-left" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
       <!-- @todo read/unread status -->
       <!-- @todo time ago -->
+      <span class="time-ago">
       <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
+      </span>
       </a>
     </li>
   <?php endforeach; ?>
+    <li>
+      <a href="/conversations/new.php">New post</a>
+    </li>
   <?php endif; ?>
-    <li><a href="#">Search</a></li>
+    <li><a href="/conversations/search.php">Search</a></li>
     <li><a href="#">Reports</a></li>
   </ul>
 
@@ -59,7 +61,7 @@ function getDashboard($user) {
   <?php if ($user): ?>
     <?php foreach ($posts as $post): ?>
       <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
-        Post <?php print $post['id']; ?>
+        <?php print substr($post['body'], 0, 128); ?>
       </a>
       <br>
     <?php endforeach; ?>
@@ -96,9 +98,9 @@ function getPostCommentForm($user, $post) {
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <textarea name="body" id="comment-body"></textarea>
     <br>
-    <input type="text" name="link" id="comment-link"/> 
+    <input type="text" name="link" id="comment-link" placeholder="Link"/>
     <br>
-    <input type="submit" id="submit-comment" value="Enter" />
+    <input type="submit" id="submit-comment" value="Send" />
   </form>
 
   <?php $html = ob_get_contents();
@@ -110,15 +112,33 @@ function getPostCommentForm($user, $post) {
 function viewPost($post) {
   ob_start(); ?>
   <p>
-    <img class="avatar-small-left" src="<?php print $post['picture']; ?> alt="user avatar" />
+    <img class="avatar-small-left" src="<?php print $post['picture']; ?>" alt="user avatar" />
     <strong><?php print $post['name']; ?></strong>
     <br>
     <?php print time_ago($post['created']); ?>
   </p>
   <div class="post-body">
-    <?php print $post['body']; ?>
+    <p>
+    <?php print nl2br($post['body']); ?>
+    </p>
   </div>
   <p><a href="<?php print $post['link']; ?>"><?php print $post['link']; ?></a></p>
+
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
+
+// Theme search html.
+function getSearchForm() {
+
+  ob_start(); ?>
+
+  <h1>Search</h1>
+  <form action="/conversations/search.php" method="get">
+    <input type="text" name="q" placeholder="Search" />
+    <input type="submit" value="Search" />
+  </form>
 
   <?php $html = ob_get_contents();
   ob_end_clean();

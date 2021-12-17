@@ -91,6 +91,18 @@ function newUser($result) {
   $stmt->close();
 }
 
+// Update picture.
+function updatePicture($userid, $picture) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("UPDATE users SET picture = ? WHERE sub=?");
+  $stmt->bind_param('ss',
+    $picture,
+    $userid,
+  );
+  $stmt->execute();
+  $stmt->close();
+}
+
 // Helper function to return posts created and shared with me.
 function getMyPosts($user) {
   global $mysqli;

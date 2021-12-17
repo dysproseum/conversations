@@ -51,7 +51,7 @@
       }
 
       $header = getHeader($user);
-      $sidebar = getSidebar($user);
+      $sidebar = getSidebar($user, $id);
       $content = viewPost($post);
       $form = getPostCommentForm($user, $post);
       $comments = getPostComments($id);

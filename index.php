@@ -16,5 +16,18 @@
     <h1>Hello</h1>
     Welcome to Conversations! <a href="login.php">Login with Google</a>
   </div>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4383228-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-4383228-1');
+</script>
+
+
 </body>
 </html>
