@@ -7,11 +7,23 @@ window.onload=function () {
   var objDiv = document.getElementById("chat");
   objDiv.scrollTop = objDiv.scrollHeight;
 
-  // Submit with enter key.
+  // Submit with shift+enter key combo.
   var form = document.getElementById('comment-form');
-  document.getElementById('comment-body').onkeydown = function(e){
-    if(e.keyCode == 13){
-     form.submit();
+  var shift = false;
+  window.onkeydown = function(e){
+    if (shift == true) {
+      if(e.keyCode == 13){
+        e.preventDefault();
+        form.submit();
+      }
+    }
+    else if (e.keyCode == 16) {
+      shift = true;
+    }
+  };
+  window.onkeyup = function(e){
+    if (e.keyCode == 16) {
+      shift = false;
     }
   };
 }

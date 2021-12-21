@@ -50,7 +50,7 @@ body.home #content {
   margin-right: 10px;
 }
 
-#sidebar {
+.sidebar {
   display: inherit;
   float: left;
   width: 180px;
@@ -58,29 +58,40 @@ body.home #content {
   background: white;
 }
 
-#sidebar ul {
+.sidebar a:visited {
+  color: black;
+}
+
+#sidebar2 {
+  display: inherit;
+  float: right;
+  right: 0;
+  border-left: 1px solid gray;
+}
+
+.sidebar ul {
   list-style-type: none;
   margin-top: 0px;
   padding-left: 0px;
   margin-bottom: 0px;
 }
 
-#sidebar li {
+.sidebar li {
   border-bottom: 1px solid gray;
 }
 
-#sidebar a {
+.sidebar a {
   text-decoration: none;
   display: block;
   padding: 20px;
 }
 
-#sidebar .active {
+.sidebar .active {
   background: navy;
   color: white;
 }
 
-#sidebar .active a {
+.sidebar .active a {
   color: white;
 }
 
@@ -110,6 +121,7 @@ body.home #content {
   overflow-y: auto;
   margin-bottom: 10px;
   width: 100%;
+  max-height: 50%;
 }
 
 body.post textarea {
@@ -186,4 +198,12 @@ form input[type=text] {
   height: 36px;
   float: left;
   margin-right: 10px;
+}
+
+.time-ago {
+  font-size: 12px;
+}
+
+.preview {
+  font-size: 12px;
 }

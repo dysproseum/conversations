@@ -29,7 +29,7 @@
 
 <body class="login">
   <div id="header"><?php print $header; ?></div>
-  <div id="sidebar"><?php print $sidebar; ?></div>
+  <div class="sidebar"><?php print $sidebar; ?></div>
   <div id="content">
     <h1>Login</h1>
     <p><span id="user-message" /></p>

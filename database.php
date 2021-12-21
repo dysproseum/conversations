@@ -162,4 +162,106 @@ function getLastComment($id) {
   return $post;
 }
 
-//mysqli_close($link);
+function checkAccess($post, $person = '') {
+  global $mysqli;
+
+  if ($person == '') {
+    global $user;
+    $person = $user;
+  }
+
+  $post_id = $post['parent_id'] ? $post['parent_id'] : $post['id'];
+  $user_id = $person->id;
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) AS cnt FROM access a WHERE a.id = ? AND a.uid = ?");
+  $stmt->bind_param('ii',
+    $post_id,
+    $user_id,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+
+  foreach ($result as $row) {
+    $count = $row['cnt'];
+  }
+  if ($count > 0) {
+    return true;
+  }
+
+  return false;
+
+}
+
+// Search function.
+function searchPosts($q) {
+
+  $q = strtolower(trim($q));
+  if (empty($q)) {
+    return [];
+  }
+  else {
+    $q = "%$q%";
+  }
+
+  global $user;
+  global $mysqli;
+  //$stmt = $mysqli->prepare("SELECT p.*, p1.body AS title, p1.created AS creation FROM posts p, posts p1 WHERE p1.id = p.parent_id AND p.body LIKE LOWER(?) ORDER BY p.created DESC");
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p WHERE p.body LIKE LOWER(?) ORDER BY p.created DESC");
+  $stmt->bind_param('s',
+    $q,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $row) {
+    if (checkAccess($row)) {
+      if ($row['parent_id'] != NULL) {
+        $parent = getPost($row['parent_id']);
+        $row['title'] = $parent['body'];
+        $row['creation'] = $parent['created'];
+      }
+      $posts[] = $row;
+
+    }
+  }
+  return $posts;
+}
+
+function printReport() {
+
+  global $user;
+  global $mysqli;
+
+  $report = array(
+    'num_posts' => 0,
+    'num_comments' => 0,
+    'num_users' => 0,
+  );
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM posts p WHERE p.parent_id IS NULL");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $report['num_posts'] = $r['cnt'];
+  }
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM posts p WHERE p.parent_id IS NOT NULL");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $report['num_comments'] = $r['cnt'];
+  }
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM users u");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $report['num_users'] = $r['cnt'];
+  }
+
+  return $report;
+}

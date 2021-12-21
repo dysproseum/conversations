@@ -66,7 +66,7 @@
 </head>
 <body class="post">
   <div id="header"><?php print $header; ?></div>
-  <div id="sidebar"><?php print $sidebar; ?></div>
+  <div class="sidebar"><?php print $sidebar; ?></div>
   <div id="content">
     <?php print $content; ?>
 
@@ -77,7 +77,7 @@
             <img class="avatar-small" src="<?php print $comment['picture']; ?>" alt="user avatar"
               title="<?php print $comment['name']; ?> <?php print date('Y-m-d h:ia', $comment['created']); ?>" />
             <?php if ($comment['body']): ?>
-              <p><?php print $comment['body']; ?></p>
+              <p><?php print nl2br($comment['body']); ?></p>
             <?php endif; ?>
             <?php if ($comment['link']): ?>
               <p><a href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>

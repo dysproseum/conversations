@@ -24,6 +24,43 @@ function getSidebar($user, $this_post = '') {
   ob_start(); ?>
   <ul>
   <?php if ($user): ?>
+  <li><a href="/conversations/search.php">Search</a></li>
+  <?php foreach (getMyPosts($user) as $post_id): ?>
+    <?php $post = getPost($post_id['id']); ?>
+    <?php $comment = getLastComment($post_id['id']); ?>
+    <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
+      <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
+        <!-- @todo read/unread status -->
+        <?php print substr($post['body'], 0, 18); ?>
+        <br />
+        <span class="preview">
+          > <?php print substr($comment['body'], 0, 18); ?>
+        </span>
+        <br />
+        <span class="time-ago">
+          <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
+        </span>
+        <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
+      </a>
+    </li>
+  <?php endforeach; ?>
+    <li>
+      <a href="/conversations/new.php">New post</a>
+    </li>
+  <?php endif; ?>
+    <li><a href="/conversations/reports.php">Reports</a></li>
+  </ul>
+
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
+
+// Theme sidebar html.
+function getSidebar2($user, $this_post = '') {
+  ob_start(); ?>
+  <ul>
+  <?php if ($user): ?>
   <?php foreach (getMyPosts($user) as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
@@ -38,14 +75,7 @@ function getSidebar($user, $this_post = '') {
       </a>
     </li>
   <?php endforeach; ?>
-    <li>
-      <a href="/conversations/new.php">New post</a>
-    </li>
   <?php endif; ?>
-    <li><a href="/conversations/search.php">Search</a></li>
-    <li><a href="#">Reports</a></li>
-  </ul>
-
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
@@ -115,7 +145,9 @@ function viewPost($post) {
     <img class="avatar-small-left" src="<?php print $post['picture']; ?>" alt="user avatar" />
     <strong><?php print $post['name']; ?></strong>
     <br>
-    <?php print time_ago($post['created']); ?>
+    <span class="time-ago">
+      <?php print time_ago($post['created']); ?>
+    </span>
   </p>
   <div class="post-body">
     <p>
@@ -130,13 +162,13 @@ function viewPost($post) {
 }
 
 // Theme search html.
-function getSearchForm() {
+function getSearchForm($q = '') {
 
   ob_start(); ?>
 
   <h1>Search</h1>
   <form action="/conversations/search.php" method="get">
-    <input type="text" name="q" placeholder="Search" />
+    <input type="text" name="q" placeholder="Search" value="<?php print $q; ?>" />
     <input type="submit" value="Search" />
   </form>
 
