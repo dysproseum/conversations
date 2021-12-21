@@ -218,8 +218,22 @@ function searchPosts($q) {
     if (checkAccess($row)) {
       if ($row['parent_id'] != NULL) {
         $parent = getPost($row['parent_id']);
+
         $row['title'] = $parent['body'];
-        $row['creation'] = $parent['created'];
+        $row['created'] = $parent['created'];
+        $last = getLastComment($row['parent_id']);
+        $row['updated'] = $last['created'];
+      }
+      else {
+        $row['title'] = $row['body'];
+        $row['body'] = '';
+        $last = getLastComment($row['id']);
+        if (!$last) {
+          $row['updated'] = $row['created'];
+        }
+        else {
+          $row['updated'] = $last['created'];
+        }
       }
       $posts[] = $row;
 

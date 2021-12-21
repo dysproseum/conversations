@@ -2,10 +2,12 @@
 
 require_once('utils.php');
 
+define('SITE_NAME', 'chat du jour ฅ^•ﻌ•^ฅ');
+
 // Theme header html.
 function getHeader($user) {
   ob_start(); ?>
-  <h1><a href="/conversations/dashboard.php">conversations</a></h1>
+  <h1><a href="/conversations/search.php">conversations</a></h1>
   <div class="profile-block">
     <img id="user-picture" src="<?php print $user->picture; ?>" />
   </div>
@@ -24,7 +26,9 @@ function getSidebar($user, $this_post = '') {
   ob_start(); ?>
   <ul>
   <?php if ($user): ?>
-  <li><a href="/conversations/search.php">Search</a></li>
+  <li class="<?php if ($this_post == "search") print "active"; ?>">
+    <a href="/conversations/search.php"><strong><?php print SITE_NAME; ?></strong></a>
+  </li>
   <?php foreach (getMyPosts($user) as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
@@ -44,11 +48,13 @@ function getSidebar($user, $this_post = '') {
       </a>
     </li>
   <?php endforeach; ?>
-    <li>
+    <li class="<?php if ($this_post == "new") print "active"; ?>">
       <a href="/conversations/new.php">New post</a>
     </li>
   <?php endif; ?>
-    <li><a href="/conversations/reports.php">Reports</a></li>
+    <li class="<?php if ($this_post == "reports") print "active"; ?>">
+      <a href="/conversations/reports.php">Reports</a>
+    </li>
   </ul>
 
   <?php $html = ob_get_contents();
@@ -87,7 +93,6 @@ function getDashboard($user) {
     $posts = getMyPosts($user);
   }
   ob_start(); ?>
-  <h1>Dashboard</h1>
   <?php if ($user): ?>
     <?php foreach ($posts as $post): ?>
       <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
@@ -113,7 +118,7 @@ function getNewPostForm($user) {
     <br>
     <input type="text" name="link" placeholder="Link" />
     <br>
-    <input type="submit" />
+    <input type="submit" id="submit-button" />
   </form>
 
   <?php $html = ob_get_contents();
@@ -130,7 +135,7 @@ function getPostCommentForm($user, $post) {
     <br>
     <input type="text" name="link" id="comment-link" placeholder="Link"/>
     <br>
-    <input type="submit" id="submit-comment" value="Send" />
+    <input type="submit" id="submit-button" value="Send" />
   </form>
 
   <?php $html = ob_get_contents();
@@ -166,10 +171,9 @@ function getSearchForm($q = '') {
 
   ob_start(); ?>
 
-  <h1>Search</h1>
-  <form action="/conversations/search.php" method="get">
-    <input type="text" name="q" placeholder="Search" value="<?php print $q; ?>" />
-    <input type="submit" value="Search" />
+  <form id="search-form" action="/conversations/search.php" method="get">
+    <input type="text" name="q" placeholder="Search" value="<?php print $q; ?>" id="q" />
+    <input type="submit" value="Go" class="submit-button" />
   </form>
 
   <?php $html = ob_get_contents();

@@ -15,7 +15,7 @@
     else {
       require_once('template.php');
       $header = getHeader($user);
-      $sidebar = getSidebar($user);
+      $sidebar = getSidebar($user, "new");
       $content = getNewPostForm($user);
     }
   }
