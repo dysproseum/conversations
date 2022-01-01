@@ -103,10 +103,10 @@ function updatePicture($userid, $picture) {
   $stmt->close();
 }
 
-// Helper function to return posts created and shared with me.
+// Helper function to return posts created and shared with a user.
 function getMyPosts($user) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id AND p.parent_id IS NULL ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -278,4 +278,22 @@ function printReport() {
   }
 
   return $report;
+}
+
+// Ping function to get updates.
+function getPing($user) {
+
+  // @todo get unread posts.
+  // @todo implement unread status.
+
+  $response = [
+    'user' => $user->id,
+    'unread' => '87,89',
+    'delay' => 5,
+  ];
+
+  // @todo implement caching bucket.
+  // @todo expire cache upon post creation, for each user that has access.
+
+  return $response;
 }

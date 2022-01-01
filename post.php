@@ -62,6 +62,7 @@
 <html>
 <head>
 <script type="text/javascript" src="post.js"></script>
+<script type="text/javascript" src="ping.js"></script>
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body class="post">
@@ -75,12 +76,12 @@
         <div class="comment-wrapper">
           <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
             <img class="avatar-small" src="<?php print $comment['picture']; ?>" alt="user avatar"
-              title="<?php print $comment['name']; ?> <?php print date('Y-m-d h:ia', $comment['created']); ?>" />
+              title="<?php print $comment['name']; ?> <?php print date('Y-m-d H:i', $comment['created']) . " UTC"; ?>" />
             <?php if ($comment['body']): ?>
               <p><?php print nl2br($comment['body']); ?></p>
             <?php endif; ?>
             <?php if ($comment['link']): ?>
-              <p><a href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
+              <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
             <?php endif; ?>
           </div>
         </div>

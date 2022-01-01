@@ -49,8 +49,7 @@
       <?php foreach ($content as $post): ?>
         <li>
           <a href="/conversations/post.php?id=<?php print $post['parent_id'] ? $post['parent_id'] : $post['id']; ?>">
-            <?php print $post['title']; ?>
-          </a>
+            <?php print $post['title']; ?></a>
           <span class="time-ago">
             created <?php print time_ago($post['created']); ?>
             updated <?php print time_ago($post['updated']); ?>

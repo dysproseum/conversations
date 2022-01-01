@@ -2,12 +2,15 @@
 
 require_once('utils.php');
 
-define('SITE_NAME', 'chat du jour ฅ^•ﻌ•^ฅ');
+define('SITE_NAME', 'Search ฅ^•ﻌ•^ฅ');
 
 // Theme header html.
 function getHeader($user) {
   ob_start(); ?>
   <h1><a href="/conversations/search.php">conversations</a></h1>
+  <a href="new.php">
+    <img src="newfileicon.png" alt="new post" width="36" />
+  </a>
   <div class="profile-block">
     <img id="user-picture" src="<?php print $user->picture; ?>" />
   </div>
@@ -31,8 +34,8 @@ function getSidebar($user, $this_post = '') {
   </li>
   <?php foreach (getMyPosts($user) as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
-    <?php $comment = getLastComment($post_id['id']); ?>
-    <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
+    <?php $comment = getLastComment($post['id']); ?>
+    <li class="post <?php if($post['id'] == $this_post) print "active"; ?>">
       <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
         <!-- @todo read/unread status -->
         <?php print substr($post['body'], 0, 18); ?>
@@ -148,10 +151,12 @@ function viewPost($post) {
   ob_start(); ?>
   <p>
     <img class="avatar-small-left" src="<?php print $post['picture']; ?>" alt="user avatar" />
-    <strong><?php print $post['name']; ?></strong>
+    <strong>
+    <?php print nl2br($post['body']); ?>
+      </strong>
     <br>
     <span class="time-ago">
-      <?php print time_ago($post['created']); ?>
+      <?php print $post['name']; ?> <?php print time_ago($post['created']); ?>
     </span>
   </p>
   <div class="post-body">
@@ -159,7 +164,7 @@ function viewPost($post) {
     <?php print nl2br($post['body']); ?>
     </p>
   </div>
-  <p><a href="<?php print $post['link']; ?>"><?php print $post['link']; ?></a></p>
+  <p><a target="_blank" href="<?php print $post['link']; ?>"><?php print $post['link']; ?></a></p>
 
   <?php $html = ob_get_contents();
   ob_end_clean();

@@ -41,7 +41,7 @@
     
     <p id="user-continue" hidden >
       Logged in from the backend:
-      <a href="/conversations/dashboard.php">Continue to Dashboard</a>
+      <a href="/conversations/search.php">Continue to Dashboard</a>
     </p>
 
   </div>
