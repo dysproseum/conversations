@@ -34,32 +34,35 @@
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body class="search">
-  <div id="header"><?php print $header; ?></div>
-  <div class="sidebar"><?php print $sidebar; ?></div>
-  <div id="content">
-    <?php print $form; ?>
+  <?php print $header; ?>
+  <div class="wrapper">
+    <?php print $sidebar; ?>
+    <div id="content">
 
-    <?php if (sizeof($content) == 0): ?>
-      <?php if (!empty($q)) print "No results"; ?>
-      <h1>Dashboard</h1>
-      <?php print getDashboard($user); ?>
-    <?php else: ?>
-      <?php print sizeof($content); ?> results:
-      <ul id="search-results">
-      <?php foreach ($content as $post): ?>
-        <li>
-          <a href="/conversations/post.php?id=<?php print $post['parent_id'] ? $post['parent_id'] : $post['id']; ?>">
-            <?php print $post['title']; ?></a>
-          <span class="time-ago">
-            created <?php print time_ago($post['created']); ?>
-            updated <?php print time_ago($post['updated']); ?>
-          </span>
-          <br />
-          <?php print $post['body']; ?>
-        </li>
-      <?php endforeach; ?>
-      </ul>
-    <?php endif; ?>
+      <?php print $form; ?>
+
+      <?php if (sizeof($content) == 0): ?>
+        <?php if (!empty($q)) print "No results"; ?>
+        <h1>Dashboard</h1>
+        <?php print getDashboard($user); ?>
+      <?php else: ?>
+        <?php print sizeof($content); ?> results:
+        <ul id="search-results">
+        <?php foreach ($content as $post): ?>
+          <li>
+            <a href="/conversations/post.php?id=<?php print $post['parent_id'] ? $post['parent_id'] : $post['id']; ?>">
+              <?php print $post['title']; ?></a>
+            <span class="time-ago">
+              created <?php print time_ago($post['created']); ?>
+              updated <?php print time_ago($post['updated']); ?>
+            </span>
+            <br />
+            <?php print $post['body']; ?>
+          </li>
+        <?php endforeach; ?>
+        </ul>
+      <?php endif; ?>
+    </div>
   </div>
 </body>
 </html>

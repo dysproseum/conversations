@@ -17,9 +17,12 @@ function loadDoc(url) {
 var timeout;
 var timeOut;
 var delay = 15000;
+//var postId = 0;
+//var commentId = 0;
+var url = "/conversations/ping.php?id=" + postId;
 
 timeOut = function() {
-  if (loadDoc('ping.php')) {
+  if (loadDoc(url + "&comment=" + commentId)) {
     delay = 5000;
     setTimeout(timeOut,
       delay);

@@ -106,7 +106,7 @@ function updatePicture($userid, $picture) {
 // Helper function to return posts created and shared with a user.
 function getMyPosts($user) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id AND p.parent_id IS NULL ORDER BY created DESC");
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -151,7 +151,7 @@ function getPostComments($id) {
 
 function getLastComment($id) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT * FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
+  $stmt = $mysqli->prepare("SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();

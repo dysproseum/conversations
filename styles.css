@@ -14,8 +14,8 @@ body.home {
 
 body.home #content {
   width: inherit;
-  margin: 0 auto;
-  text-align: center;
+  margin: 60px auto;
+  float: none;
 }
 
 #header {

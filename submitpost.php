@@ -18,6 +18,11 @@
   // Create new post in database.
   $post = $_POST;
   $time = time();
+  if (empty($post['link']) && empty($post['body'])) {
+    header('Location: /conversations/new.php');
+    exit;
+  }
+
   $stmt = $mysqli->prepare("INSERT INTO posts (uid, created, link, body) VALUES (?, ?, ?, ?)");
   $stmt->bind_param('iiss',
     $user->id,

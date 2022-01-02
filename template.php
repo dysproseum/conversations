@@ -7,16 +7,18 @@ define('SITE_NAME', 'Search ฅ^•ﻌ•^ฅ');
 // Theme header html.
 function getHeader($user) {
   ob_start(); ?>
-  <h1><a href="/conversations/search.php">conversations</a></h1>
-  <a href="new.php">
-    <img src="newfileicon.png" alt="new post" width="36" />
-  </a>
-  <div class="profile-block">
-    <img id="user-picture" src="<?php print $user->picture; ?>" />
-  </div>
-  <div class="profile-block">
-    <span id="user-name">Hello <?php print $user->name; ?></span><br>
-    <a href="/conversations/login.php">User Account</a>
+  <div id="header">
+    <a href="new.php">
+      <img src="newfileicon.png" alt="new post" width="36" />
+    </a>
+    <h1><a href="/conversations/search.php">conversations</a></h1>
+    <div class="profile-block">
+      <img id="user-picture" src="<?php print $user->picture; ?>" />
+    </div>
+    <div class="profile-block">
+      <span id="user-name">Hello <?php print $user->name; ?></span><br>
+      <a href="/conversations/login.php">User Account</a>
+    </div>
   </div>
 
   <?php $html = ob_get_contents();
@@ -26,39 +28,52 @@ function getHeader($user) {
 
 // Theme sidebar html.
 function getSidebar($user, $this_post = '') {
+
+  $posts = getMyPosts($user);
+  $sorted = [];
+  // Re-sort posts.
+  foreach ($posts as $post) {
+    $comment = getLastComment($post['id']);
+    $sorted[$comment['created']] = $post;
+  }
+  print "<br>\n";
+  krsort($sorted);
+
   ob_start(); ?>
-  <ul>
-  <?php if ($user): ?>
-  <li class="<?php if ($this_post == "search") print "active"; ?>">
-    <a href="/conversations/search.php"><strong><?php print SITE_NAME; ?></strong></a>
-  </li>
-  <?php foreach (getMyPosts($user) as $post_id): ?>
-    <?php $post = getPost($post_id['id']); ?>
-    <?php $comment = getLastComment($post['id']); ?>
-    <li class="post <?php if($post['id'] == $this_post) print "active"; ?>">
-      <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
-        <!-- @todo read/unread status -->
-        <?php print substr($post['body'], 0, 18); ?>
-        <br />
-        <span class="preview">
-          > <?php print substr($comment['body'], 0, 18); ?>
-        </span>
-        <br />
-        <span class="time-ago">
-          <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
-        </span>
-        <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
-      </a>
+  <div class="sidebar">
+    <ul>
+    <?php if ($user): ?>
+    <li class="<?php if ($this_post == "search") print "active"; ?>">
+      <a href="/conversations/search.php"><strong><?php print SITE_NAME; ?></strong></a>
     </li>
-  <?php endforeach; ?>
-    <li class="<?php if ($this_post == "new") print "active"; ?>">
-      <a href="/conversations/new.php">New post</a>
-    </li>
-  <?php endif; ?>
-    <li class="<?php if ($this_post == "reports") print "active"; ?>">
-      <a href="/conversations/reports.php">Reports</a>
-    </li>
-  </ul>
+    <?php foreach ($sorted as $post_id): ?>
+      <?php $post = getPost($post_id['id']); ?>
+      <?php $comment = getLastComment($post['id']); ?>
+      <li class="post <?php if($post['id'] == $this_post) print "active"; ?>">
+        <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
+          <!-- @todo read/unread status -->
+          <?php print substr($post['body'], 0, 18); ?>
+          <br />
+          <span class="preview">
+            > <?php print substr($comment['body'], 0, 18); ?>
+          </span>
+          <br />
+          <span class="time-ago">
+            <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
+          </span>
+          <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
+        </a>
+      </li>
+    <?php endforeach; ?>
+      <li class="<?php if ($this_post == "new") print "active"; ?>">
+        <a href="/conversations/new.php">New post</a>
+      </li>
+    <?php endif; ?>
+      <li class="<?php if ($this_post == "reports") print "active"; ?>">
+        <a href="/conversations/reports.php">Reports</a>
+      </li>
+    </ul>
+  </div>
 
   <?php $html = ob_get_contents();
   ob_end_clean();
@@ -148,23 +163,40 @@ function getPostCommentForm($user, $post) {
 
 // Theme post html.
 function viewPost($post) {
+
+  $title = nl2br($post['body']);
+  if (empty($post['link']) && empty($post['body'])) {
+    $body = '(untitled)';
+  }
+  else if (!empty($post['link']) && !empty($post['body'])) {
+    $body = '<a target="_blank" href="' . $post['link'] . '">' . $title . '</a>';
+  }
+  else if (empty($post['link'])) {
+    $body = $title;
+  }
+  else {
+    $body = '<a target="_blank" href="' . $post['link'] . '">' . $post['link'] . '</a>';
+  }
+
   ob_start(); ?>
   <p>
     <img class="avatar-small-left" src="<?php print $post['picture']; ?>" alt="user avatar" />
-    <strong>
-    <?php print nl2br($post['body']); ?>
-      </strong>
+    <strong><?php print $body; ?></strong>
     <br>
     <span class="time-ago">
       <?php print $post['name']; ?> <?php print time_ago($post['created']); ?>
     </span>
   </p>
   <div class="post-body">
+    <!--
     <p>
-    <?php print nl2br($post['body']); ?>
+      <?php print $post['body']; ?>
     </p>
+    <p>
+      <a target="_blank" href="<?php print $post['link']; ?>"><?php print $post['link']; ?></a>
+    </p>
+    -->
   </div>
-  <p><a target="_blank" href="<?php print $post['link']; ?>"><?php print $post['link']; ?></a></p>
 
   <?php $html = ob_get_contents();
   ob_end_clean();

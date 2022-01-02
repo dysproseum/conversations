@@ -27,9 +27,12 @@
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <div id="header"><?php print $header; ?></div>
-  <div class="sidebar"><?php print $sidebar; ?></div>
-  <div id="content"><?php print $content; ?></div>
-  <div class="sidebar" id="sidebar2"><?php print $sidebar2; ?></div>
+  <?php print $header; ?>
+  <div class="wrapper">
+    <?php print $sidebar; ?>
+    <div id="content">
+      <?php print $content; ?>
+    </div>
+  </div>
 </body>
 </html>

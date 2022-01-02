@@ -27,13 +27,16 @@
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body class="post">
-  <div id="header"><?php print $header; ?></div>
-  <div class="sidebar"><?php print $sidebar; ?></div>
-  <div id="content">
-    <h1>System Reports</h1>
-    Total Posts: <?php print $content['num_posts']; ?><br>
-    Total Comments: <?php print $content['num_comments']; ?><br>
-    Total Users: <?php print $content['num_users']; ?><br>
+  <?php print $header; ?>
+  <div class="wrapper">
+    <?php print $sidebar; ?>
+    <div id="content">
+
+      <h1>System Reports</h1>
+      Total Posts: <?php print $content['num_posts']; ?><br>
+      Total Comments: <?php print $content['num_comments']; ?><br>
+      Total Users: <?php print $content['num_users']; ?><br>
+    </div>
   </div>
 </body>
 </html>

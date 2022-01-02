@@ -28,22 +28,28 @@
 </head>
 
 <body class="login">
-  <div id="header"><?php print $header; ?></div>
-  <div class="sidebar"><?php print $sidebar; ?></div>
-  <div id="content">
-    <h1>Login</h1>
-    <p><span id="user-message" /></p>
+  <?php print $header; ?>
+  <div class="wrapper">
+    <?php print $sidebar; ?>
+    <div id="content">
 
-    <?php /* https://developers.google.com/identity/sign-in/web/sign-in */ ?>
+      <h1>Login</h1>
+      <p><span id="user-message" /></p>
 
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <p><a href="#" onclick="signOut();">Sign out</a></p>
-    
-    <p id="user-continue" hidden >
-      Logged in from the backend:
-      <a href="/conversations/search.php">Continue to Dashboard</a>
-    </p>
+      <?php /* https://developers.google.com/identity/sign-in/web/sign-in */ ?>
 
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+      <p id="user-continue" hidden >
+        <img class="avatar-small-left" src="<?php print $user->picture; ?>" alt="user avatar" />
+        Logged in as <?php print $user->name; ?>
+        <br>
+        <a href="#" onclick="signOut();">Sign out</a>
+	<br>
+
+        <a id="submit-button" href="/conversations/search.php">Continue to Dashboard</a>
+      </p>
+    </div>
   </div>
 </body>
 
@@ -56,6 +62,5 @@
 
   gtag('config', 'UA-4383228-1');
 </script>
-
 
 </html>
