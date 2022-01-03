@@ -219,7 +219,7 @@ function searchPosts($q) {
       if ($row['parent_id'] != NULL) {
         $parent = getPost($row['parent_id']);
 
-        $row['title'] = $parent['body'];
+        $row['title'] = $parent['body'] ? $parent['body'] : '(untitled)';
         $row['created'] = $parent['created'];
         $last = getLastComment($row['parent_id']);
         $row['updated'] = $last['created'];

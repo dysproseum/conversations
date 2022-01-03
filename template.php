@@ -6,6 +6,8 @@ define('SITE_NAME', 'Search ฅ^•ﻌ•^ฅ');
 
 // Theme header html.
 function getHeader($user) {
+  $name = $user ? $user->name : '';
+  $img = $user ? $user->picture: 'transparent.gif';
   ob_start(); ?>
   <div id="header">
     <a href="new.php">
@@ -13,11 +15,11 @@ function getHeader($user) {
     </a>
     <h1><a href="/conversations/search.php">conversations</a></h1>
     <div class="profile-block">
-      <img id="user-picture" src="<?php print $user->picture; ?>" />
+      <img id="user-picture" src="<?php print $img; ?>" />
     </div>
     <div class="profile-block">
-      <span id="user-name">Hello <?php print $user->name; ?></span><br>
-      <a href="/conversations/login.php">User Account</a>
+        <span id="user-name">Hello <?php print $name; ?></span><br>
+        <a href="/conversations/login.php">User Account</a>
     </div>
   </div>
 
@@ -51,8 +53,16 @@ function getSidebar($user, $this_post = '') {
       <?php $comment = getLastComment($post['id']); ?>
       <li class="post <?php if($post['id'] == $this_post) print "active"; ?>">
         <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
+
           <!-- @todo read/unread status -->
-          <?php print substr($post['body'], 0, 18); ?>
+
+          <?php if (!empty($post['body'])): ?>
+            <?php print substr($post['body'], 0, 18); ?>
+          <?php elseif (!empty($post['link'])): ?>
+            <?php print substr($post['link'], 0, 18); ?>
+          <?php else: ?>
+            (untitled)
+          <?php endif; ?>
           <br />
           <span class="preview">
             > <?php print substr($comment['body'], 0, 18); ?>
@@ -114,7 +124,11 @@ function getDashboard($user) {
   <?php if ($user): ?>
     <?php foreach ($posts as $post): ?>
       <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
-        <?php print substr($post['body'], 0, 128); ?>
+        <?php if (empty($post['body'])): ?>
+          (untitled)
+        <?php else: ?>
+          <?php print substr($post['body'], 0, 128); ?>
+        <?php endif; ?>
       </a>
       <br>
     <?php endforeach; ?>
@@ -127,16 +141,21 @@ function getDashboard($user) {
 
 // Theme new post form html.
 function getNewPostForm($user) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+
   ob_start(); ?>
   <h1>New Post</h1>
+
   <form action="submitpost.php" method="POST">
-    <input type="text" name="recipient" placeholder="Recipient" />
+    <input type="text" name="recipient" placeholder="Recipient email address" />
     <br>
-    <textarea name="body"></textarea>
+    <input type="text" name="body" placeholder="Post topic (title or short message)" />
     <br>
-    <input type="text" name="link" placeholder="Link" />
+    <input type="text" name="link" placeholder="Link URL (optional)" />
     <br>
-    <input type="submit" id="submit-button" />
+    <span id="user-message" /><?php print $message; ?></span>
+    <input type="submit" id="submit-button" value="Create Post" />
   </form>
 
   <?php $html = ob_get_contents();
@@ -146,13 +165,19 @@ function getNewPostForm($user) {
 
 // Theme new comment form.
 function getPostCommentForm($user, $post) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+
   ob_start(); ?>
+
+
   <form action="submitcomment.php" method="POST" id="comment-form">
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <textarea name="body" id="comment-body"></textarea>
     <br>
     <input type="text" name="link" id="comment-link" placeholder="Link"/>
     <br>
+    <span id="user-message" /><?php print $message; ?></span>
     <input type="submit" id="submit-button" value="Send" />
   </form>
 

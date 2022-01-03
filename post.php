@@ -67,8 +67,8 @@
   postId = <?php print $id; ?>;
   commentId = <?php print $last_id; ?>;
 </script>
-<script type="text/javascript" src="post.js"></script>
 <script type="text/javascript" src="ping.js"></script>
+<script type="text/javascript" src="post.js"></script>
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body class="post">

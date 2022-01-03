@@ -188,6 +188,11 @@ body.post .post-body {
   font-size: 16px;
   float: right;
   cursor: pointer;
+  text-decoration: none;
+}
+
+#submit-button:disabled {
+  background: gray;
 }
 
 .avatar-small {

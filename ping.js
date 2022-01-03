@@ -28,11 +28,3 @@ timeOut = function() {
       delay);
   }
 }
-
-window.onload=function () {
-
-  timeout = setTimeout(function() {
-    timeOut();
-  }, delay);
-
-}
