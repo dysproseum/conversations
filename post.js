@@ -17,28 +17,37 @@ window.onload=function () {
   // and to prevent double posts.
   var form = document.getElementById('comment-form');
   form.onsubmit = function() {
+    document.getElementById('submit-button').classList.remove('active');
     document.getElementById('comment-body').disabled = true;
     document.getElementById('comment-link').disabled = true;
     document.getElementById('submit-button').disabled = true;
   };
 
-  // Submit with shift+enter key combo.
-  var shift = false;
-  window.onkeydown = function(e){
-    if (shift == true) {
-      if(e.keyCode == 13){
-        e.preventDefault();
-        form.submit();
-        form.onsubmit();
-      }
+  // Submit with ctrl+enter key combo.
+  var modifier = false;
+  var ctrl = 17;
+  var enter = 13;
+  form.onkeydown = function(e){
+      if(e.keyCode == enter){
+console.log('enter');
+        if (modifier == true) {
+          e.preventDefault();
+          form.submit();
+          form.onsubmit();
+        }
+        else {
+          document.getElementById('comment-body').rows = "5";
+        }
     }
-    else if (e.keyCode == 16) {
-      shift = true;
+    else if (e.keyCode == ctrl) {
+      document.getElementById('submit-button').classList.add('active');
+      modifier = true;
     }
   };
-  window.onkeyup = function(e){
-    if (e.keyCode == 16) {
-      shift = false;
+  form.onkeyup = function(e){
+    if (e.keyCode == ctrl) {
+      modifier = false;
+      document.getElementById('submit-button').classList.remove('active');
     }
   };
 

@@ -173,7 +173,7 @@ function getPostCommentForm($user, $post) {
 
   <form action="submitcomment.php" method="POST" id="comment-form">
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
-    <textarea name="body" id="comment-body"></textarea>
+    <textarea name="body" id="comment-body" rows="1"></textarea>
     <br>
     <input type="text" name="link" id="comment-link" placeholder="Link"/>
     <br>
