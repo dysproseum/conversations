@@ -80,7 +80,7 @@
 
       <div id="chat">
         <?php foreach ($comments as $comment): ?>
-          <div class="comment-wrapper">
+          <div class="comment-wrapper <?php if ($comment['uid'] == $user->id) print "me"; ?>">
             <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
               <img class="avatar-small" src="<?php print $comment['picture']; ?>" alt="user avatar"
                 title="<?php print $comment['name']; ?> <?php print date('Y-m-d H:i', $comment['created']) . " UTC"; ?>" />

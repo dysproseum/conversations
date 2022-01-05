@@ -8,11 +8,9 @@ define('SITE_NAME', 'Search ฅ^•ﻌ•^ฅ');
 function getHeader($user) {
   $name = $user ? $user->name : '';
   $img = $user ? $user->picture: 'transparent.gif';
+
   ob_start(); ?>
   <div id="header">
-    <a href="new.php">
-      <img src="newfileicon.png" alt="new post" width="36" />
-    </a>
     <h1><a href="/conversations/search.php">conversations</a></h1>
     <div class="profile-block">
       <img id="user-picture" src="<?php print $img; ?>" />
@@ -45,9 +43,12 @@ function getSidebar($user, $this_post = '') {
   <div class="sidebar">
     <ul>
     <?php if ($user): ?>
-    <li class="<?php if ($this_post == "search") print "active"; ?>">
-      <a href="/conversations/search.php"><strong><?php print SITE_NAME; ?></strong></a>
+    <li class="post search <?php if ($this_post == "search") print "active"; ?>">
+      <a href="/conversations/search.php">Search ></a>
     </li>
+      <li class="<?php if ($this_post == "new") print "active"; ?>">
+        <a href="/conversations/new.php">New Topic +</a>
+      </li>
     <?php foreach ($sorted as $post_id): ?>
       <?php $post = getPost($post_id['id']); ?>
       <?php $comment = getLastComment($post['id']); ?>
@@ -76,6 +77,7 @@ function getSidebar($user, $this_post = '') {
       </li>
     <?php endforeach; ?>
       <li class="<?php if ($this_post == "new") print "active"; ?>">
+      <img src="newfileicon.png" alt="new post" width="36" />
         <a href="/conversations/new.php">New post</a>
       </li>
     <?php endif; ?>
@@ -92,9 +94,27 @@ function getSidebar($user, $this_post = '') {
 
 // Theme sidebar html.
 function getSidebar2($user, $this_post = '') {
+  global $user;
+
   ob_start(); ?>
+  <div class="sidebar" id="sidebar2">
   <ul>
-  <?php if ($user): ?>
+  <li class="post">
+    <div class="profile-block">
+        <img id="user-picture" src="<?php print $user->picture; ?>" />
+    </div>
+    <div class="profile-block">
+        <span id="user-name"><?php print $user->name; ?></span><br>
+    </div>
+        <a href="/conversations/login.php">My Account</a>
+  </li>
+  <li class="post">
+    <div class="profile-block">
+      Buddy List
+    </div>
+      <a href="#">Add buddy/friend/user/recipient</a>
+  </li>
+
   <?php foreach (getMyPosts($user) as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
@@ -109,7 +129,9 @@ function getSidebar2($user, $this_post = '') {
       </a>
     </li>
   <?php endforeach; ?>
-  <?php endif; ?>
+  </ul>
+  </div>
+
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
@@ -120,17 +142,25 @@ function getDashboard($user) {
   if ($user) {
     $posts = getMyPosts($user);
   }
+  else {
+    print "Invalid user dashboard";
+    exit;
+  }
+
   ob_start(); ?>
   <?php if ($user): ?>
     <?php foreach ($posts as $post): ?>
-      <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
-        <?php if (empty($post['body'])): ?>
-          (untitled)
-        <?php else: ?>
-          <?php print substr($post['body'], 0, 128); ?>
-        <?php endif; ?>
-      </a>
-      <br>
+      <p>
+        <?php print getUser($post['uid'])->name; ?>
+        posted
+        <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
+          <?php if (empty($post['body'])): ?>
+            (untitled)
+          <?php else: ?>
+            <?php print substr($post['body'], 0, 128); ?>
+          <?php endif; ?>
+        </a>
+      </p>
     <?php endforeach; ?>
   <?php endif; ?>
 
@@ -145,17 +175,17 @@ function getNewPostForm($user) {
   unset($_SESSION['message']);
 
   ob_start(); ?>
-  <h1>New Post</h1>
+  <h1>Start a New Topic</h1>
 
   <form action="submitpost.php" method="POST">
-    <input type="text" name="recipient" placeholder="Recipient email address" />
-    <br>
     <input type="text" name="body" placeholder="Post topic (title or short message)" />
+    <br>
+    <input type="text" name="recipient" placeholder="Recipient email address" />
     <br>
     <input type="text" name="link" placeholder="Link URL (optional)" />
     <br>
     <span id="user-message" /><?php print $message; ?></span>
-    <input type="submit" id="submit-button" value="Create Post" />
+    <input type="submit" id="submit-button" value="Post Topic" />
   </form>
 
   <?php $html = ob_get_contents();
@@ -175,7 +205,7 @@ function getPostCommentForm($user, $post) {
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <textarea name="body" id="comment-body" rows="1"></textarea>
     <br>
-    <input type="text" name="link" id="comment-link" placeholder="Link"/>
+    <input type="text" name="link" id="comment-link" placeholder="Link (optional)"/>
     <br>
     <span id="user-message" /><?php print $message; ?></span>
     <input type="submit" id="submit-button" value="Send" />
@@ -188,6 +218,7 @@ function getPostCommentForm($user, $post) {
 
 // Theme post html.
 function viewPost($post) {
+  global $user;
 
   $title = nl2br($post['body']);
   if (empty($post['link']) && empty($post['body'])) {
@@ -203,25 +234,44 @@ function viewPost($post) {
     $body = '<a target="_blank" href="' . $post['link'] . '">' . $post['link'] . '</a>';
   }
 
+  // Listing users with access to this post.
+  $users = [];
+  $uids = getPostAccess($post['id']);
+  foreach ($uids as $uid) {
+    if ($uid !== $user->id) {
+      $users[] = getUser($uid);
+    }
+  }
+
   ob_start(); ?>
-  <p>
-    <img class="avatar-small-left" src="<?php print $post['picture']; ?>" alt="user avatar" />
-    <strong><?php print $body; ?></strong>
-    <br>
-    <span class="time-ago">
-      <?php print $post['name']; ?> <?php print time_ago($post['created']); ?>
+  <h1><?php print $body; ?></h1>
+  <span class="time-ago">
+    posted <?php print time_ago($post['created']); ?> by
+    <span class="user-access">
+      <img src="<?php print $post['picture']; ?>" alt="user avatar" />
+      <?php print $post['name']; ?>
     </span>
-  </p>
-  <div class="post-body">
-    <!--
-    <p>
-      <?php print $post['body']; ?>
-    </p>
-    <p>
-      <a target="_blank" href="<?php print $post['link']; ?>"><?php print $post['link']; ?></a>
-    </p>
-    -->
-  </div>
+    <?php if ($users[0]->id && $users[0]->id !== $post['uid']): ?>
+      and shared with
+      <?php foreach ($users as $u): ?>
+        <?php if ($u->id == $post['uid']): ?>
+          me
+        <?php else: ?>
+         <span class="user-access">
+          <img src="<?php print $u->picture; ?>" alt="user avatar" />
+          <?php print $u->name; ?>
+          </span>
+        <?php endif; ?>
+      <?php endforeach; ?>
+    <?php endif; ?>
+    <span class="user-access-right">
+      <a href="#">Delete this post</a>
+    </span>
+    <span class="user-access-right">
+      <a href="#">Invite more</a>
+    </span>
+  </span>
+  <div class="post-body"></div>
 
   <?php $html = ob_get_contents();
   ob_end_clean();

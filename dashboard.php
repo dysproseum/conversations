@@ -33,6 +33,7 @@
     <div id="content">
       <?php print $content; ?>
     </div>
+    <?php print $sidebar2; ?>
   </div>
 </body>
 </html>

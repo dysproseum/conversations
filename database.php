@@ -58,6 +58,22 @@ try {
   $mysqli->query($query);
 }
 
+// Get a user object by ID.
+function getUser($id) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT * FROM users WHERE id LIKE ? LIMIT 1");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  if ($result) {
+    while ($row = $result->fetch_object()){
+      return $row;
+    }
+  }
+  return FALSE;
+}
+
 // Helper function to get user info.
 function getUserInfo($sub) {
   global $mysqli;
@@ -118,6 +134,35 @@ function getMyPosts($user) {
   return $posts;
 }
 
+// Helper function to return posts for the dashboard.
+function getAllPosts($user) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
+  $stmt->bind_param('i', $user->id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    $posts[] = $row;
+  }
+  return $posts;
+}
+
+function getPostAccess($id) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT uid FROM access a WHERE a.id = ?");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $uids = [];
+  foreach ($result as $index => $row) {
+    $uids[] = $row['uid'];
+  }
+  return $uids;
+}
+
 // Helper function to get a post from its id.
 function getPost($id) {
   global $mysqli;
@@ -149,6 +194,7 @@ function getPostComments($id) {
   return $posts;
 }
 
+// Return the most recent comment for a given post.
 function getLastComment($id) {
   global $mysqli;
   $stmt = $mysqli->prepare("SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");

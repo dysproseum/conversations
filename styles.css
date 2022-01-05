@@ -18,6 +18,17 @@ body.home #content {
   float: none;
 }
 
+body.post #content {
+  width: min-content;
+  min-width: 400px;
+}
+
+body.post h1 {
+  overflow: hidden;
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
 #header {
   color: white;
   display: block;
@@ -31,6 +42,7 @@ body.home #content {
 #header h1 {
   display: inline;
   padding-left: 10px;
+  font-size: 28px;
 }
 
 #header h1 a {
@@ -69,6 +81,16 @@ body.home #content {
   border-left: 1px solid gray;
 }
 
+#sidebar2 .profile-block {
+  margin: 10px;
+}
+
+#sidebar2 .profile-block img {
+  width: 36px;
+  float: right;
+  margin: 10px 10px 0 0;
+}
+
 .sidebar ul {
   list-style-type: none;
   margin-top: 0px;
@@ -104,7 +126,6 @@ body.home #content {
   margin-bottom: 20px;
   padding: 20px;
   max-width: 800px;
-  min-width: 630px;
   background: white;
   border: 1px solid black;
   border-radius: 6px;
@@ -117,11 +138,17 @@ body.home #content {
 #chat {
   display: block;
   float: left;
+  font-size: 14px;
   min-height: 50%;
   overflow-y: auto;
+  margin-top: 10px;
   margin-bottom: 10px;
   width: 100%;
   max-height: 50%;
+  min-width: 480px;
+  border-radius: 6px;
+  border-top: 1px solid gray;
+  padding-top: 10px;
 }
 
 body.post textarea {
@@ -140,6 +167,27 @@ body.post .post-body {
   width: 100%;
 }
 
+#chat .me {
+  float: right;
+  text-align: right;
+}
+
+#chat img {
+  float: left;
+  margin-right: 8px;
+  margin-top: 8px;
+  height: 20px;
+}
+
+#chat .me img {
+  float: right;
+  margin-left: 8px;
+}
+
+#chat .me p {
+  float: right;
+}
+
 .comment-wrapper {
   display: block;
   float: left;
@@ -147,17 +195,19 @@ body.post .post-body {
 }
 
 .comment {
-  background-color: #eeeeee;
-  border: 1px solid gray;
   margin-bottom: 10px;
-  padding: 10px;
-  width: 50%;
-  border-radius: 6px;
+  float: left;
 }
 
 .comment p {
+  padding: 10px;
   margin-top: 0px;
   margin-bottom: 0px;
+  width: inherit;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background-color: #eeeeee;
+  float: left;
 }
 
 .post .me {
@@ -168,7 +218,7 @@ body.post .post-body {
   border-radius: 6px;
   border: 1px solid black;
   resize: vertical;
-  padding: 20px;
+  padding: 10px;
 }
 
 .post form input[type=text] {
@@ -238,3 +288,18 @@ input#submit-button.active {
   display: none;
 }
 
+.user-access-right {
+  float: right;
+  margin-left: 10px;
+}
+
+.user-access img {
+  width: 20px;
+  vertical-align: middle;
+}
+
+.wrapper {
+  display: block;
+  float: left;
+  width: 100%;
+}

@@ -57,7 +57,7 @@
     header('Location: /conversations/new.php');
     exit;
   }
-  else if (sizeof($result == 0)) {
+  else if (sizeof($result) == 0) {
     // @todo Handle case where recipient user id does not exist yet
     // Invite user?
     $_SESSION['message'] = "No recipient account was found at that address.";
