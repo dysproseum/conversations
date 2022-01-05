@@ -22,6 +22,7 @@
   require_once('template.php');
   $header = getHeader($user);
   $sidebar = getSidebar($user);
+  $sidebar2 = getSidebar2($user);
 ?>
 
 <html>
@@ -57,6 +58,7 @@
         <a id="submit-button" href="/conversations/search.php">Continue to Dashboard</a>
       </p>
     </div>
+    <?php print $sidebar2; ?>
   </div>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4383228-1"></script>

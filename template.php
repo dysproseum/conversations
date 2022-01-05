@@ -2,7 +2,7 @@
 
 require_once('utils.php');
 
-define('SITE_NAME', 'Search ฅ^•ﻌ•^ฅ');
+define('SITE_NAME', 'DoubleQuote ฅ^•ﻌ•^ฅ');
 
 // Theme header html.
 function getHeader($user) {
@@ -11,13 +11,17 @@ function getHeader($user) {
 
   ob_start(); ?>
   <div id="header">
-    <h1><a href="/conversations/search.php">conversations</a></h1>
+      <a href="/conversations/search.php" title="Home">Conversations</a>
     <div class="profile-block">
-      <img id="user-picture" src="<?php print $img; ?>" />
-    </div>
-    <div class="profile-block">
-        <span id="user-name">Hello <?php print $name; ?></span><br>
-        <a href="/conversations/login.php">User Account</a>
+        <a href="/conversations/minimize.html" id="minimize">
+          <img src="min-button.png" alt="Minimize" title="Hide" />
+        </a>
+        <a href="#" onclick="toggleFullscreen(this)" id="maximize">
+          <img src="max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
+        </a>
+        <a href="/conversations/login.php" id="exit">
+          <img src="x-icon.png" alt="Exit" title="Logout" />
+        </a>
     </div>
   </div>
 
@@ -36,7 +40,6 @@ function getSidebar($user, $this_post = '') {
     $comment = getLastComment($post['id']);
     $sorted[$comment['created']] = $post;
   }
-  print "<br>\n";
   krsort($sorted);
 
   ob_start(); ?>
@@ -99,7 +102,7 @@ function getSidebar2($user, $this_post = '') {
   ob_start(); ?>
   <div class="sidebar" id="sidebar2">
   <ul>
-  <li class="post">
+  <li class="post account">
     <div class="profile-block">
         <img id="user-picture" src="<?php print $user->picture; ?>" />
     </div>
@@ -199,7 +202,6 @@ function getPostCommentForm($user, $post) {
   unset($_SESSION['message']);
 
   ob_start(); ?>
-
 
   <form action="submitcomment.php" method="POST" id="comment-form">
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />

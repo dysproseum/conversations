@@ -26,7 +26,6 @@
       $content = searchPosts($q);
   }
 ?>
-
 <html>
 <head>
 <title>Search | <?php print SITE_NAME; ?></title>

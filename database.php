@@ -90,6 +90,11 @@ function getUserInfo($sub) {
   return FALSE;
 }
 
+// Function to get corresponding users.
+function getBuddies($user) {
+  // SELECT * FROM access a WHERE 
+}
+
 // Helper function to create a new user in the database.
 function newUser($result) {
   global $mysqli;

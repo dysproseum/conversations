@@ -18,9 +18,10 @@ window.onload=function () {
   var form = document.getElementById('comment-form');
   form.onsubmit = function() {
     document.getElementById('submit-button').classList.remove('active');
-    document.getElementById('comment-body').disabled = true;
-    document.getElementById('comment-link').disabled = true;
+    document.getElementById('comment-body').readonly = true;
+    document.getElementById('comment-link').readonly = true;
     document.getElementById('submit-button').disabled = true;
+    return true;
   };
 
   // Submit with ctrl+enter key combo.
@@ -29,7 +30,6 @@ window.onload=function () {
   var enter = 13;
   form.onkeydown = function(e){
       if(e.keyCode == enter){
-console.log('enter');
         if (modifier == true) {
           e.preventDefault();
           form.submit();

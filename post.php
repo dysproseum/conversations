@@ -57,6 +57,7 @@
       $comments = getPostComments($id);
       $last_comment = getLastComment($id);
       $last_id = $last_comment['id'];
+      $current_img = '';
     }
   }
 ?>
@@ -64,9 +65,10 @@
 <html>
 <head>
 <script type="text/javascript">
-  postId = <?php print $id; ?>;
-  commentId = <?php print $last_id; ?>;
+  postId = '<?php print $id; ?>';
+  commentId = '<?php print $last_id; ?>';
 </script>
+<script type="text/javascript" src="fullscreen.js"></script>
 <script type="text/javascript" src="ping.js"></script>
 <script type="text/javascript" src="post.js"></script>
 <link rel="stylesheet" type="text/css" href="styles.css">
@@ -80,12 +82,19 @@
 
       <div id="chat">
         <?php foreach ($comments as $comment): ?>
-          <div class="comment-wrapper <?php if ($comment['uid'] == $user->id) print "me"; ?>">
+          <div class="comment-wrapper">
             <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
-              <img class="avatar-small" src="<?php print $comment['picture']; ?>" alt="user avatar"
-                title="<?php print $comment['name']; ?> <?php print date('Y-m-d H:i', $comment['created']) . " UTC"; ?>" />
+              <?php $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC"; ?>
+              <?php if ($current_img !== $comment['picture']): ?>
+                <?php $current_img = $comment['picture']; ?>
+                <img class="avatar-small" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
+              <?php else: ?>
+                <img class="avatar-small" src="transparent.gif" align="left" title="<?php print $timestamp; ?>" />
+                <?php print date('H:i', $comment['created']); ?>
+              <?php endif; ?>
+
               <?php if ($comment['body']): ?>
-                <p><?php print nl2br($comment['body']); ?></p>
+               <p><?php print nl2br($comment['body']); ?></p>
               <?php endif; ?>
               <?php if ($comment['link']): ?>
                 <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>

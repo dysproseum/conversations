@@ -1,15 +1,26 @@
 html,body {
-  display: block;
+  display: flex;
+  flex-direction: column;
   float: left;
   width: 100%;
-  font-family: Helvetica, Sans-Serif;
+  font-family: system-ui; /*Helvetica, Sans-Serif; */
   margin: 0;
   background: #eeeeee;
+  overflow: hidden;
+  height: 100%;
 }
 
 body.home {
   background-color: #99ccff;
   height: 100%;
+}
+
+.wrapper {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  float: left;
+  width: 100%;
 }
 
 body.home #content {
@@ -37,12 +48,16 @@ body.post h1 {
   background: #0095ff;
   padding-top: 10px;
   padding-bottom: 10px;
+  image-rendering: pixelated;
 }
 
-#header h1 {
+#header a {
   display: inline;
   padding-left: 10px;
   font-size: 28px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
 }
 
 #header h1 a {
@@ -53,13 +68,12 @@ body.post h1 {
 #header .profile-block {
   display: block;
   float: right;
-  padding-right: 10px;
+  margin-right: 5px;
 }
 
 #header .profile-block img {
   float: left;
-  width: 36px;
-  margin-right: 10px;
+  width: 24px;
 }
 
 .sidebar {
@@ -81,8 +95,13 @@ body.post h1 {
   border-left: 1px solid gray;
 }
 
+#sidebar2 .account {
+  background: #cccccc;
+}
+
 #sidebar2 .profile-block {
-  margin: 10px;
+  display: block;
+  padding: 10px;
 }
 
 #sidebar2 .profile-block img {
@@ -168,24 +187,28 @@ body.post .post-body {
 }
 
 #chat .me {
-  float: right;
-  text-align: right;
+  float: left
+  text-align: left;
 }
 
 #chat img {
   float: left;
-  margin-right: 8px;
+  margin-left: 8px;
   margin-top: 8px;
   height: 20px;
 }
 
 #chat .me img {
-  float: right;
+  float: left;
   margin-left: 8px;
 }
 
 #chat .me p {
-  float: right;
+  /*float: left; */
+}
+
+.post .me {
+  float: left;
 }
 
 .comment-wrapper {
@@ -195,24 +218,22 @@ body.post .post-body {
 }
 
 .comment {
-  margin-bottom: 10px;
+  display: block;
   float: left;
+  width: 100%;
+}
+
+.comment:hover {
+  background-color: #eeeeff;
 }
 
 .comment p {
-  padding: 10px;
+  padding: 8px;
   margin-top: 0px;
   margin-bottom: 0px;
-  width: inherit;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
-  background-color: #eeeeee;
-  float: left;
+  margin-left: 24px;
 }
 
-.post .me {
-  float: right;
-}
 
 .post form textarea {
   border-radius: 6px;
@@ -298,8 +319,3 @@ input#submit-button.active {
   vertical-align: middle;
 }
 
-.wrapper {
-  display: block;
-  float: left;
-  width: 100%;
-}
