@@ -58,6 +58,22 @@ try {
   $mysqli->query($query);
 }
 
+// Get a user object by ID.
+function getUser($id) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT * FROM users WHERE id LIKE ? LIMIT 1");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  if ($result) {
+    while ($row = $result->fetch_object()){
+      return $row;
+    }
+  }
+  return FALSE;
+}
+
 // Helper function to get user info.
 function getUserInfo($sub) {
   global $mysqli;
@@ -91,7 +107,19 @@ function newUser($result) {
   $stmt->close();
 }
 
-// Helper function to return posts created and shared with me.
+// Update picture.
+function updatePicture($userid, $picture) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("UPDATE users SET picture = ? WHERE sub=?");
+  $stmt->bind_param('ss',
+    $picture,
+    $userid,
+  );
+  $stmt->execute();
+  $stmt->close();
+}
+
+// Helper function to return posts created and shared with a user.
 function getMyPosts($user) {
   global $mysqli;
   $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
@@ -104,6 +132,35 @@ function getMyPosts($user) {
     $posts[] = $row;
   }
   return $posts;
+}
+
+// Helper function to return posts for the dashboard.
+function getAllPosts($user) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
+  $stmt->bind_param('i', $user->id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    $posts[] = $row;
+  }
+  return $posts;
+}
+
+function getPostAccess($id) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT uid FROM access a WHERE a.id = ?");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $uids = [];
+  foreach ($result as $index => $row) {
+    $uids[] = $row['uid'];
+  }
+  return $uids;
 }
 
 // Helper function to get a post from its id.
@@ -137,9 +194,10 @@ function getPostComments($id) {
   return $posts;
 }
 
+// Return the most recent comment for a given post.
 function getLastComment($id) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT * FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
+  $stmt = $mysqli->prepare("SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -150,4 +208,138 @@ function getLastComment($id) {
   return $post;
 }
 
-//mysqli_close($link);
+function checkAccess($post, $person = '') {
+  global $mysqli;
+
+  if ($person == '') {
+    global $user;
+    $person = $user;
+  }
+
+  $post_id = $post['parent_id'] ? $post['parent_id'] : $post['id'];
+  $user_id = $person->id;
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) AS cnt FROM access a WHERE a.id = ? AND a.uid = ?");
+  $stmt->bind_param('ii',
+    $post_id,
+    $user_id,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+
+  foreach ($result as $row) {
+    $count = $row['cnt'];
+  }
+  if ($count > 0) {
+    return true;
+  }
+
+  return false;
+
+}
+
+// Search function.
+function searchPosts($q) {
+
+  $q = strtolower(trim($q));
+  if (empty($q)) {
+    return [];
+  }
+  else {
+    $q = "%$q%";
+  }
+
+  global $user;
+  global $mysqli;
+  //$stmt = $mysqli->prepare("SELECT p.*, p1.body AS title, p1.created AS creation FROM posts p, posts p1 WHERE p1.id = p.parent_id AND p.body LIKE LOWER(?) ORDER BY p.created DESC");
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p WHERE p.body LIKE LOWER(?) ORDER BY p.created DESC");
+  $stmt->bind_param('s',
+    $q,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $row) {
+    if (checkAccess($row)) {
+      if ($row['parent_id'] != NULL) {
+        $parent = getPost($row['parent_id']);
+
+        $row['title'] = $parent['body'] ? $parent['body'] : '(untitled)';
+        $row['created'] = $parent['created'];
+        $last = getLastComment($row['parent_id']);
+        $row['updated'] = $last['created'];
+      }
+      else {
+        $row['title'] = $row['body'];
+        $row['body'] = '';
+        $last = getLastComment($row['id']);
+        if (!$last) {
+          $row['updated'] = $row['created'];
+        }
+        else {
+          $row['updated'] = $last['created'];
+        }
+      }
+      $posts[] = $row;
+
+    }
+  }
+  return $posts;
+}
+
+function printReport() {
+
+  global $user;
+  global $mysqli;
+
+  $report = array(
+    'num_posts' => 0,
+    'num_comments' => 0,
+    'num_users' => 0,
+  );
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM posts p WHERE p.parent_id IS NULL");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $report['num_posts'] = $r['cnt'];
+  }
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM posts p WHERE p.parent_id IS NOT NULL");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $report['num_comments'] = $r['cnt'];
+  }
+
+  $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM users u");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $report['num_users'] = $r['cnt'];
+  }
+
+  return $report;
+}
+
+// Ping function to get updates.
+function getPing($user) {
+
+  // @todo get unread posts.
+  // @todo implement unread status.
+
+  $response = [
+    'user' => $user->id,
+    'unread' => '87,89',
+    'delay' => 5,
+  ];
+
+  // @todo implement caching bucket.
+  // @todo expire cache upon post creation, for each user that has access.
+
+  return $response;
+}

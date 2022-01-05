@@ -9,9 +9,19 @@
     print "Google client id not found";
     exit;
   }
+  session_start();
+  require_once('database.php');
+  $user = getUserInfo($_SESSION['sub']);
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+
+  // Note: Update user picture on login.
+  // The image URL is passed by login.js upon sign in.
+  // updatePicture() is then called from tokensignin.php.
+
   require_once('template.php');
-  $header = getHeader();
-  $sidebar = getSidebar();
+  $header = getHeader($user);
+  $sidebar = getSidebar($user);
 ?>
 
 <html>
@@ -23,20 +33,41 @@
 </head>
 
 <body class="login">
-  <div id="header"><?php print $header; ?></div>
-  <div id="sidebar"><?php print $sidebar; ?></div>
-  <div id="content">
-    <h1>Login</h1>
-    <p><span id="user-message" /></p>
-    
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <p><a href="#" onclick="signOut();">Sign out</a></p>
-    
-    <p id="user-continue" hidden >
-      Logged in from the backend:
-      <a href="/conversations/dashboard.php">Continue to Dashboard</a>
-    </p>
+  <?php print $header; ?>
+  <div class="wrapper">
+    <?php print $sidebar; ?>
+    <div id="content">
 
+      <h1>Login</h1>
+      <p id="user-instructions">Click "Sign in" to login with your Google account. This site stores no passwords or personal information.</p>
+
+      <span id="user-message" /><?php print $message; ?></span>
+
+      <?php /* https://developers.google.com/identity/sign-in/web/sign-in */ ?>
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+      <p id="user-continue" hidden >
+        <!--
+        <img class="avatar-small-left" src="<?php print $user->picture; ?>" alt="user avatar" />
+        Logged in as <?php print $user->name; ?>
+        <br>
+	<br>
+        -->
+        <a href="#" onclick="signOut();">Sign out</a>
+        <a id="submit-button" href="/conversations/search.php">Continue to Dashboard</a>
+      </p>
+    </div>
   </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4383228-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-4383228-1');
+  </script>
 </body>
+
+
 </html>

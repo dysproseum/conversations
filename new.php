@@ -15,7 +15,7 @@
     else {
       require_once('template.php');
       $header = getHeader($user);
-      $sidebar = getSidebar($user);
+      $sidebar = getSidebar($user, "new");
       $content = getNewPostForm($user);
     }
   }
@@ -26,8 +26,12 @@
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body class="new post">
-  <div id="header"><?php print $header; ?></div>
-  <div id="sidebar"><?php print $sidebar; ?></div>
-  <div id="content"><?php print $content; ?></div>
+  <?php print $header; ?>
+  <div class="wrapper">
+    <?php print $sidebar; ?>
+    <div id="content">
+      <?php print $content; ?>
+    </div>
+  </div>
 </body>
 </html>

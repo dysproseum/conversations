@@ -2,20 +2,31 @@ html,body {
   display: block;
   float: left;
   width: 100%;
-  font-family: Sans-Serif;
+  font-family: Helvetica, Sans-Serif;
   margin: 0;
+  background: #eeeeee;
 }
 
 body.home {
   background-color: #99ccff;
-  color: white;
   height: 100%;
 }
 
 body.home #content {
   width: inherit;
-  margin: 0 auto;
-  text-align: center;
+  margin: 60px auto;
+  float: none;
+}
+
+body.post #content {
+  width: min-content;
+  min-width: 400px;
+}
+
+body.post h1 {
+  overflow: hidden;
+  margin-bottom: 8px;
+  font-size: 18px;
 }
 
 #header {
@@ -31,6 +42,7 @@ body.home #content {
 #header h1 {
   display: inline;
   padding-left: 10px;
+  font-size: 28px;
 }
 
 #header h1 a {
@@ -50,36 +62,73 @@ body.home #content {
   margin-right: 10px;
 }
 
-#sidebar {
+.sidebar {
   display: inherit;
   float: left;
   width: 180px;
   border-right: 1px solid gray;
+  background: white;
 }
 
-#sidebar ul {
+.sidebar a:visited {
+  color: black;
+}
+
+#sidebar2 {
+  display: inherit;
+  float: right;
+  right: 0;
+  border-left: 1px solid gray;
+}
+
+#sidebar2 .profile-block {
+  margin: 10px;
+}
+
+#sidebar2 .profile-block img {
+  width: 36px;
+  float: right;
+  margin: 10px 10px 0 0;
+}
+
+.sidebar ul {
   list-style-type: none;
   margin-top: 0px;
   padding-left: 0px;
   margin-bottom: 0px;
 }
 
-#sidebar li {
+.sidebar li {
   border-bottom: 1px solid gray;
 }
 
-#sidebar a {
+.sidebar a {
   text-decoration: none;
   display: block;
   padding: 20px;
+}
+
+.sidebar .active {
+  background: #0095ff;
+  color: white;
+}
+
+.sidebar .active a {
+  color: white;
 }
 
 #content {
   display: block;
   float: left;
   margin: 0px;
-  padding-left: 20px;
-  padding-top: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  max-width: 800px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 6px;
 }  
 
 #content h1 {
@@ -89,13 +138,21 @@ body.home #content {
 #chat {
   display: block;
   float: left;
-  height: 50%;
-  overflow-y: scroll;
+  font-size: 14px;
+  min-height: 50%;
+  overflow-y: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-height: 50%;
+  min-width: 480px;
+  border-radius: 6px;
+  border-top: 1px solid gray;
+  padding-top: 10px;
 }
 
 body.post textarea {
   width: 100%;
-  height: 100px;
   margin-bottom: 10px;
 }
 
@@ -107,11 +164,28 @@ body.post input[type=text] {
 body.post .post-body {
   display: block;
   float: left;
-  padding: 20px;
-  margin-bottom: 20px;
-  background: #cccccc;
-  border-radius: 6px;
-  width: 600px;
+  width: 100%;
+}
+
+#chat .me {
+  float: right;
+  text-align: right;
+}
+
+#chat img {
+  float: left;
+  margin-right: 8px;
+  margin-top: 8px;
+  height: 20px;
+}
+
+#chat .me img {
+  float: right;
+  margin-left: 8px;
+}
+
+#chat .me p {
+  float: right;
 }
 
 .comment-wrapper {
@@ -121,30 +195,58 @@ body.post .post-body {
 }
 
 .comment {
-  background-color: #eeeeee;
-  border: 1px solid gray;
   margin-bottom: 10px;
-  padding: 10px;
-  width: 50%;
-  border-radius: 6px;
+  float: left;
 }
 
 .comment p {
+  padding: 10px;
   margin-top: 0px;
   margin-bottom: 0px;
+  width: inherit;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background-color: #eeeeee;
+  float: left;
 }
 
 .post .me {
   float: right;
 }
 
-#submit-comment {
-  padding: 20px;
+.post form textarea {
+  border-radius: 6px;
+  border: 1px solid black;
+  resize: vertical;
+  padding: 10px;
+}
+
+.post form input[type=text] {
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#submit-button {
+  padding: 10px;
   width: 200px;
   border-radius: 6px;
   background: #0095ff;
+  border: 1px solid black;
   color: white;
   font-size: 16px;
+  font-weight: bold;
+  float: right;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#submit-button:disabled {
+  background: gray;
+}
+
+input#submit-button.active {
+  background: #006ebd;
 }
 
 .avatar-small {
@@ -156,4 +258,48 @@ body.post .post-body {
   height: 36px;
   float: left;
   margin-right: 10px;
+}
+
+.time-ago {
+  font-size: 12px;
+}
+
+.preview {
+  font-size: 12px;
+}
+
+#search-results {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#search-results li {
+  padding-bottom: 20px;
+}
+
+#search-form input[name=q] {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#search-form .submit-button {
+  display: none;
+}
+
+.user-access-right {
+  float: right;
+  margin-left: 10px;
+}
+
+.user-access img {
+  width: 20px;
+  vertical-align: middle;
+}
+
+.wrapper {
+  display: block;
+  float: left;
+  width: 100%;
 }

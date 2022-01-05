@@ -52,7 +52,7 @@ function time_ago( $timestamp = 0, $now = 0 ) {
     } elseif ( $time_difference < $month_in_seconds ) {
 
         $difference_value = round( $time_difference / $week_in_seconds );
-        $difference_label = 'minute';
+        $difference_label = 'week';
 
     } elseif ( $time_difference < $year_in_seconds ) {
 

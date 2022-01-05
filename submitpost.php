@@ -18,12 +18,27 @@
   // Create new post in database.
   $post = $_POST;
   $time = time();
+  if (empty($post['link']) && empty($post['body'])) {
+    $_SESSION['message'] = 'Empty link and/or body.';
+    header('Location: /conversations/new.php');
+    exit;
+  }
+  $body = strip_tags($post['body']);
+  if (!empty($post['link'])) {
+    $url = filter_var($post['link'], FILTER_VALIDATE_URL);
+    if (!$url) {
+      $_SESSION['message'] = 'Invalid URL';
+      header('Location: /conversations/new.php');
+      exit;
+    }
+  }
+
   $stmt = $mysqli->prepare("INSERT INTO posts (uid, created, link, body) VALUES (?, ?, ?, ?)");
   $stmt->bind_param('iiss',
     $user->id,
     $time,
     $post['link'],
-    $post['body']
+    $body,
   );
   $stmt->execute();
   $stmt->close();
@@ -37,9 +52,18 @@
   $result = $stmt->get_result();
   $stmt->close();
   if (!$result) {
-    print $query;
-    print "database error 2";
+    //print $query;
+    $_SESSION['message'] = "Error retrieving user id for recipient (database error 2)";
+    header('Location: /conversations/new.php');
     exit;
+  }
+  else if (sizeof($result) == 0) {
+    // @todo Handle case where recipient user id does not exist yet
+    // Invite user?
+    $_SESSION['message'] = "No recipient account was found at that address.";
+    header('Location: /conversations/new.php');
+    exit;
+
   }
   foreach ($result as $row) {
     $uid = $row['id'];

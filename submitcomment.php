@@ -16,22 +16,38 @@
   }
 
   $post = $_POST;
-
-  // Insert new comment in the database.
   $parent_id = $post['parent_id'];
-  $stmt = $mysqli->prepare("INSERT INTO posts (parent_id, uid, created, link, body) VALUES (?, ?, ?, ?, ?)");
-  $stmt->bind_param('iiiss',
-    $parent_id,
-    $user->id,
-    time(),
-    $post['link'],
-    $post['body']
-  );
-  $stmt->execute();
-  $stmt->close();
 
-  // @todo Notifications
-  // Browser notification for user that does exist
+  if (!empty($post['link']) || !empty($post['body'])) {
+
+    $body = strip_tags($post['body']);
+    if (!empty($post['link'])) {
+      $url = filter_var($post['link'], FILTER_VALIDATE_URL);
+      if (!$url) {
+        $_SESSION['message'] = 'Invalid URL';
+        header('Location: /conversations/post.php?id=' . $post['parent_id']);
+        exit;
+      }
+    }
+
+    // Insert new comment in the database.
+    $stmt = $mysqli->prepare("INSERT INTO posts (parent_id, uid, created, link, body) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param('iiiss',
+      $parent_id,
+      $user->id,
+      time(),
+      $post['link'],
+      $body,
+    );
+    $stmt->execute();
+    $stmt->close();
+
+    // @todo Notifications
+    // Browser notification for user that does exist
+  }
+  else {
+    $_SESSION['message'] = 'Empty body and/or link.';
+  }
 
   // Redirect to post page.
   // @todo convert to ajax

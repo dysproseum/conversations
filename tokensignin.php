@@ -36,6 +36,8 @@ curl_close($ch);
 // Check token and build response.
 $info = [];
 $result = json_decode($response);
+//var_dump($result);
+//die;
 if ($result->sub !== $userid) {
   header('HTTP/1.1 500 Server Error');
   print "Unable to verify user claim";
@@ -49,6 +51,11 @@ session_start();
 $_SESSION['sub'] = $userid;
 
 require_once('database.php');
+
+// Update picture.
+$picture = $_POST['picture'];
+updatePicture($userid, $picture);
+
 $user = getUserInfo($userid);
 if (!$user) {
   $info['message'] = "Creating new user";
