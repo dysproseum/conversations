@@ -50,8 +50,10 @@
         exit;
       }
 
+      $head = getHtmlHeader(['title' => $post['title']]);
       $header = getHeader($user);
       $sidebar = getSidebar($user, $id);
+      $sidebar2 = getSidebar2($user);
       $content = viewPost($post);
       $form = getPostCommentForm($user, $post);
       $comments = getPostComments($id);
@@ -68,10 +70,9 @@
   postId = '<?php print $id; ?>';
   commentId = '<?php print $last_id; ?>';
 </script>
-<script type="text/javascript" src="fullscreen.js"></script>
-<script type="text/javascript" src="ping.js"></script>
-<script type="text/javascript" src="post.js"></script>
-<link rel="stylesheet" type="text/css" href="styles.css">
+
+<?php print $head; ?>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 </head>
 <body class="post">
   <?php print $header; ?>
@@ -90,7 +91,6 @@
                 <img class="avatar-small" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
               <?php else: ?>
                 <img class="avatar-small" src="transparent.gif" align="left" title="<?php print $timestamp; ?>" />
-                <?php print date('H:i', $comment['created']); ?>
               <?php endif; ?>
 
               <?php if ($comment['body']): ?>
@@ -107,6 +107,7 @@
       <?php print $form; ?>
 
     </div>
+    <?php print $sidebar2; ?>
   </div>
 </body>
 </html>

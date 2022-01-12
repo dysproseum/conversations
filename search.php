@@ -20,17 +20,18 @@
 
       require_once('template.php');
 
+      $head = getHtmlHeader(['title' => 'Search']);
       $header = getHeader($user);
       $sidebar = getSidebar($user, "search");
+      $sidebar2 = getSidebar2($user);
       $form = getSearchForm($q);
       $content = searchPosts($q);
   }
 ?>
 <html>
 <head>
-<title>Search | <?php print SITE_NAME; ?></title>
+<?php print $head; ?>
 <script type="text/javascript" src="search.js"></script>
-<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body class="search">
   <?php print $header; ?>
@@ -62,6 +63,7 @@
         </ul>
       <?php endif; ?>
     </div>
+    <?php print $sidebar2; ?>
   </div>
 </body>
 </html>

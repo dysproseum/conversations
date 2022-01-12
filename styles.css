@@ -5,9 +5,10 @@ html,body {
   width: 100%;
   font-family: system-ui; /*Helvetica, Sans-Serif; */
   margin: 0;
-  background: #eeeeee;
+  background: teal;
   overflow: hidden;
   height: 100%;
+  font-size: 12px;
 }
 
 body.home {
@@ -32,6 +33,14 @@ body.home #content {
 body.post #content {
   width: min-content;
   min-width: 400px;
+  background: lightgray;
+  border-radius: 6px;
+  border-width: 1px;
+  border-color: black;
+}
+
+body.dashboard #content {
+
 }
 
 body.post h1 {
@@ -54,7 +63,6 @@ body.post h1 {
 #header a {
   display: inline;
   padding-left: 10px;
-  font-size: 28px;
   text-decoration: none;
   color: white;
   font-size: 18px;
@@ -84,8 +92,18 @@ body.post h1 {
   background: white;
 }
 
-.sidebar a:visited {
-  color: black;
+#submenu {
+  display: block;
+  float: left;
+  width: 100%;
+  background: lightgray;
+  margin-bottom: 10px;
+}
+
+#submenu span {
+  display: block;
+  float: left;
+  padding: 10px;
 }
 
 #sidebar2 {
@@ -102,12 +120,26 @@ body.post h1 {
 #sidebar2 .profile-block {
   display: block;
   padding: 10px;
+  line-height: 18px;
+  border: 1px solid transparent;
+}
+
+#sidebar2 .profile-block:hover {
+  border: 1px gray dashed;
+}
+
+#sidebar2 .profile-block a:hover {
+  text-decoration: none;
 }
 
 #sidebar2 .profile-block img {
+  float: left;
   width: 36px;
-  float: right;
-  margin: 10px 10px 0 0;
+  margin-right: 10px;
+}
+
+#sidebar2 ul {
+  float: left;
 }
 
 .sidebar ul {
@@ -115,6 +147,7 @@ body.post h1 {
   margin-top: 0px;
   padding-left: 0px;
   margin-bottom: 0px;
+  border-top: 1px solid gray;
 }
 
 .sidebar li {
@@ -124,7 +157,13 @@ body.post h1 {
 .sidebar a {
   text-decoration: none;
   display: block;
-  padding: 20px;
+  padding: 10px;
+  color: black;
+}
+
+.sidebar ul li a:hover {
+  background-color: #1e90ff33; /* dodgerblue 33% */
+  text-decoration: outline;
 }
 
 .sidebar .active {
@@ -166,8 +205,12 @@ body.post h1 {
   max-height: 50%;
   min-width: 480px;
   border-radius: 6px;
-  border-top: 1px solid gray;
+  border-style: inset;
+  border-color: black;
+  border-width: 1px;
+
   padding-top: 10px;
+  background: white;
 }
 
 body.post textarea {
@@ -224,7 +267,7 @@ body.post .post-body {
 }
 
 .comment:hover {
-  background-color: #eeeeff;
+  background-color: #1e90ff33; /* dodgerblue 33% */
 }
 
 .comment p {
@@ -236,16 +279,16 @@ body.post .post-body {
 
 
 .post form textarea {
-  border-radius: 6px;
   border: 1px solid black;
   resize: vertical;
   padding: 10px;
+  margin-left: 10px;
 }
 
 .post form input[type=text] {
-  border-radius: 6px;
   border: 1px solid black;
   padding: 10px;
+  margin-left: 10px;
 }
 
 #submit-button {

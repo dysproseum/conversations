@@ -2,7 +2,24 @@
 
 require_once('utils.php');
 
-define('SITE_NAME', 'DoubleQuote ฅ^•ﻌ•^ฅ');
+define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
+
+// Global items to place in html head tag.
+function getHtmlHeader($options) {
+  ob_start(); ?>
+  <title><?php print $options['title'] . ' | ' . SITE_NAME; ?></title>
+  <script type="text/javascript" src="fullscreen.js"></script>
+  <script type="text/javascript" src="ping.js"></script>
+  <script type="text/javascript" src="post.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
+  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
 
 // Theme header html.
 function getHeader($user) {
@@ -23,6 +40,10 @@ function getHeader($user) {
           <img src="x-icon.png" alt="Exit" title="Logout" />
         </a>
     </div>
+  </div>
+  <div id="submenu">
+    <span>File</span>
+    <span>Edit</span>
   </div>
 
   <?php $html = ob_get_contents();
@@ -99,17 +120,25 @@ function getSidebar($user, $this_post = '') {
 function getSidebar2($user, $this_post = '') {
   global $user;
 
+  if ($user->picture) {
+    $picture = $user->picture;
+  }
+  else {
+    $picture = 'unknown-user.jpg';
+  }
   ob_start(); ?>
   <div class="sidebar" id="sidebar2">
+  <div id="header">Buddy List</div>
   <ul>
   <li class="post account">
-    <div class="profile-block">
-        <img id="user-picture" src="<?php print $user->picture; ?>" />
-    </div>
-    <div class="profile-block">
-        <span id="user-name"><?php print $user->name; ?></span><br>
-    </div>
-        <a href="/conversations/login.php">My Account</a>
+    <a href="/conversations/login.php">
+      <div class="profile-block">
+          <img id="user-picture" src="<?php print $picture; ?>" />
+          <span id="user-name"><?php print $user->name; ?></span>
+          <br>
+          My account
+      </div>
+    </a>
   </li>
   <li class="post">
     <div class="profile-block">
@@ -123,7 +152,7 @@ function getSidebar2($user, $this_post = '') {
     <?php $comment = getLastComment($post_id['id']); ?>
     <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
       <a href="/conversations/post.php?id=<?php print $post['id']; ?>"><?php print substr($comment['body'], 0, 18); ?>
-      <img class="avatar-small-left" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
+      <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
       <!-- @todo read/unread status -->
       <!-- @todo time ago -->
       <span class="time-ago">
@@ -293,4 +322,9 @@ function getSearchForm($q = '') {
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
+}
+function getHtmlFooter() {
+
+
+
 }

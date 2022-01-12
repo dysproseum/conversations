@@ -1,15 +1,16 @@
+<!DOCTYPE html>
 <html>
 <head>
 <title>Desktop</title>
-<style type="text/css">
+<style type="text/css" media="screen">
 body {
   background: teal;
-  font-family: monospace;
+  font-family: system-ui;
 }
 .icon {
   position: absolute;
-  bottom: 10;
-  left: 10;
+  bottom: 10px;
+  left: 10px;
 }
 .icon a {
   text-decoration: none;
@@ -20,12 +21,26 @@ body {
 .icon img {
   vertical-align: middle;
 }
+
+@media screen and (min-width: 768px) {
+  .icon {
+    bottom: 30pt;
+    left: 15pt;
+  }
+  .icon a {
+    font-size: 24pt;
+    padding: 10pt;
+    margin: 5pt;
+  }
+}
 </style>
 </head>
 <body>
   <div class="icon">
     <a href="https://dysproseum.com"><img src="/favicon.ico" /> Dysproseum Home</a>
     <a href="/conversations/dashboard.php">Conversations</a>
+    <a href="/kplaylist-php7">kPlaylist</a>
+    <a href="/vplaylist">vplaylist</a>
   </div>
 </body>
 </html>

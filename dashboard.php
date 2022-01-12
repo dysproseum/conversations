@@ -14,6 +14,7 @@
     }
     else {
       require_once('template.php');
+      $head = getHtmlHeader(['title' => 'Dashboard']);
       $header = getHeader($user);
       $sidebar = getSidebar($user);
       $content = getDashboard($user);
@@ -24,10 +25,9 @@
 
 <html>
 <head>
-<script type="text/javascript" src="fullscreen.js"></script>
-<link rel="stylesheet" type="text/css" href="styles.css">
+<?php print $head; ?>
 </head>
-<body>
+<body class="dashboard">
   <?php print $header; ?>
   <div class="wrapper">
     <?php print $sidebar; ?>
