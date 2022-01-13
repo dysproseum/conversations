@@ -139,6 +139,21 @@ function getMyPosts($user) {
   return $posts;
 }
 
+// Helper function to return posts created by a user.
+function getPostsCreatedByUser($user) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p  WHERE p.uid = ? ORDER BY created DESC");
+  $stmt->bind_param('i', $user->id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    $posts[] = $row;
+  }
+  return $posts;
+}
+
 // Helper function to return posts for the dashboard.
 function getAllPosts($user) {
   global $mysqli;

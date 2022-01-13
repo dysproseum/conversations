@@ -43,7 +43,6 @@
 
       <?php if (sizeof($content) == 0): ?>
         <?php if (!empty($q)) print "No results"; ?>
-        <h1>Dashboard</h1>
         <?php print getDashboard($user); ?>
       <?php else: ?>
         <?php print sizeof($content); ?> results:

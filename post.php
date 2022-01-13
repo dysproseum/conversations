@@ -60,6 +60,7 @@
       $last_comment = getLastComment($id);
       $last_id = $last_comment['id'];
       $current_img = '';
+      $current_day = '';
     }
   }
 ?>
@@ -83,24 +84,30 @@
 
       <div id="chat">
         <?php foreach ($comments as $comment): ?>
-          <div class="comment-wrapper">
-            <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
-              <?php $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC"; ?>
-              <?php if ($current_img !== $comment['picture']): ?>
-                <?php $current_img = $comment['picture']; ?>
-                <img class="avatar-small" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
-              <?php else: ?>
-                <img class="avatar-small" src="transparent.gif" align="left" title="<?php print $timestamp; ?>" />
-              <?php endif; ?>
+          <?php $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC"; ?>
 
-              <?php if ($comment['body']): ?>
-               <p><?php print nl2br($comment['body']); ?></p>
-              <?php endif; ?>
-              <?php if ($comment['link']): ?>
-                <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
-              <?php endif; ?>
-            </div>
-          </div>
+          <?php if (($current_img !== $comment['picture']) || ($current_day !== date('d', $comment['created']))): ?>
+            <?php $current_img = $comment['picture']; ?>
+            <?php $current_day = date('d', $comment['created']); ?>
+            <div class="comment-wrapper current">
+              <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
+                <img class="avatar-small current" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
+          <?php else: ?>
+            <div class="comment-wrapper">
+              <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
+                <img class="avatar-small" src="transparent.gif" align="left" title="<?php print $timestamp; ?>" />
+          <?php endif; ?>
+
+          <?php if ($comment['body']): ?>
+             <p><?php print nl2br($comment['body']); ?></p>
+          <?php endif; ?>
+
+          <?php if ($comment['link']): ?>
+            <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
+          <?php endif; ?>
+
+              </div> <!-- comment -->
+            </div> <!-- comment-wrapper -->
         <?php endforeach; ?>
       </div>
 

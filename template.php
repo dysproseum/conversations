@@ -23,6 +23,7 @@ function getHtmlHeader($options) {
 
 // Theme header html.
 function getHeader($user) {
+return;
   $name = $user ? $user->name : '';
   $img = $user ? $user->picture: 'transparent.gif';
 
@@ -54,9 +55,10 @@ function getHeader($user) {
 // Theme sidebar html.
 function getSidebar($user, $this_post = '') {
 
-  $posts = getMyPosts($user);
+  $posts = getPostsCreatedByUser($user);
+
+  // Re-sort posts by latest comment.
   $sorted = [];
-  // Re-sort posts.
   foreach ($posts as $post) {
     $comment = getLastComment($post['id']);
     $sorted[$comment['created']] = $post;
@@ -68,9 +70,9 @@ function getSidebar($user, $this_post = '') {
     <ul>
     <?php if ($user): ?>
     <li class="post search <?php if ($this_post == "search") print "active"; ?>">
-      <a href="/conversations/search.php">Search ></a>
+      <a href="/conversations/search.php">Conversations</a>
     </li>
-      <li class="<?php if ($this_post == "new") print "active"; ?>">
+      <li class="new <?php if ($this_post == "new") print "active"; ?>">
         <a href="/conversations/new.php">New Topic +</a>
       </li>
     <?php foreach ($sorted as $post_id): ?>
@@ -100,10 +102,6 @@ function getSidebar($user, $this_post = '') {
         </a>
       </li>
     <?php endforeach; ?>
-      <li class="<?php if ($this_post == "new") print "active"; ?>">
-      <img src="newfileicon.png" alt="new post" width="36" />
-        <a href="/conversations/new.php">New post</a>
-      </li>
     <?php endif; ?>
       <li class="<?php if ($this_post == "reports") print "active"; ?>">
         <a href="/conversations/reports.php">Reports</a>
@@ -126,10 +124,32 @@ function getSidebar2($user, $this_post = '') {
   else {
     $picture = 'unknown-user.jpg';
   }
+
+  $posts = getMyPosts($user);
+  // Re-sort posts by latest comment.
+  $sorted = [];
+  foreach ($posts as $post) {
+    $comment = getLastComment($post['id']);
+    $sorted[$comment['created']] = $post;
+  }
+  krsort($sorted);
+
   ob_start(); ?>
   <div class="sidebar" id="sidebar2">
-  <div id="header">Buddy List</div>
   <ul>
+  <li class="post active header">
+    <a href="#" style="float: left">Recent Topics</a>
+
+        <a href="/conversations/minimize.html" id="minimize">
+          <img src="min-button.png" alt="Minimize" title="Hide" />
+        </a>
+        <a href="#" onclick="toggleFullscreen(this)" id="maximize">
+          <img src="max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
+        </a>
+        <a href="/conversations/login.php" id="exit">
+          <img src="x-icon.png" alt="Exit" title="Logout" />
+        </a>
+  </li>
   <li class="post account">
     <a href="/conversations/login.php">
       <div class="profile-block">
@@ -140,27 +160,35 @@ function getSidebar2($user, $this_post = '') {
       </div>
     </a>
   </li>
-  <li class="post">
-    <div class="profile-block">
-      Buddy List
-    </div>
-      <a href="#">Add buddy/friend/user/recipient</a>
-  </li>
 
-  <?php foreach (getMyPosts($user) as $post_id): ?>
+  <!-- @todo read/unread status -->
+
+  <?php foreach ($sorted as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
+    <?php $link = "/conversations/post.php?id=" . $post['id'] . "&cid=" . $comment['id']; ?>
     <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
-      <a href="/conversations/post.php?id=<?php print $post['id']; ?>"><?php print substr($comment['body'], 0, 18); ?>
-      <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
-      <!-- @todo read/unread status -->
-      <!-- @todo time ago -->
-      <span class="time-ago">
-      <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
-      </span>
+      <a href="<?php print $link; ?>">
+
+        <?php if (!empty($post['body'])): ?>
+          <?php print substr($post['body'], 0, 24); ?>
+        <?php elseif (!empty($post['link'])): ?>
+          <?php print substr($post['link'], 0, 18); ?>
+        <?php else: ?>
+          (untitled)
+        <?php endif; ?>
+        <br>
+        > <?php print substr($comment['body'], 0, 18); ?>
+
+        <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
+
+        <span class="time-ago">
+          <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
+        </span>
       </a>
     </li>
   <?php endforeach; ?>
+
   </ul>
   </div>
 
@@ -269,9 +297,9 @@ function viewPost($post) {
   $users = [];
   $uids = getPostAccess($post['id']);
   foreach ($uids as $uid) {
-    if ($uid !== $user->id) {
+//    if ($uid !== $user->id) {
       $users[] = getUser($uid);
-    }
+//    }
   }
 
   ob_start(); ?>
@@ -285,9 +313,7 @@ function viewPost($post) {
     <?php if ($users[0]->id && $users[0]->id !== $post['uid']): ?>
       and shared with
       <?php foreach ($users as $u): ?>
-        <?php if ($u->id == $post['uid']): ?>
-          me
-        <?php else: ?>
+        <?php if ($u->id != $post['uid']): ?>
          <span class="user-access">
           <img src="<?php print $u->picture; ?>" alt="user avatar" />
           <?php print $u->name; ?>
@@ -295,11 +321,15 @@ function viewPost($post) {
         <?php endif; ?>
       <?php endforeach; ?>
     <?php endif; ?>
-    <span class="user-access-right">
+    <br>
+    <span class="user-access">
       <a href="#">Delete this post</a>
     </span>
-    <span class="user-access-right">
-      <a href="#">Invite more</a>
+    <span class="user-access">
+      <a href="#">Archive this post</a>
+    </span>
+    <span class="user-access">
+      <a href="#">Share with others</a>
     </span>
   </span>
   <div class="post-body"></div>

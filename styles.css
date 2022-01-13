@@ -22,6 +22,8 @@ body.home {
   display: block;
   float: left;
   width: 100%;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 
 body.home #content {
@@ -34,9 +36,12 @@ body.post #content {
   width: min-content;
   min-width: 400px;
   background: lightgray;
-  border-radius: 6px;
-  border-width: 1px;
-  border-color: black;
+  border-radius: 12px;
+  border-width: 6px;
+  border-color: dodgerblue;
+  border-style: outset;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
 }
 
 body.dashboard #content {
@@ -46,7 +51,8 @@ body.dashboard #content {
 body.post h1 {
   overflow: hidden;
   margin-bottom: 8px;
-  font-size: 18px;
+  font-size: 12px;
+  font-weight: normal;
 }
 
 #header {
@@ -88,8 +94,10 @@ body.post h1 {
   display: inherit;
   float: left;
   width: 180px;
-  border-right: 1px solid gray;
   background: white;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
 }
 
 #submenu {
@@ -110,11 +118,18 @@ body.post h1 {
   display: inherit;
   float: right;
   right: 0;
-  border-left: 1px solid gray;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 #sidebar2 .account {
   background: #cccccc;
+}
+
+#sidebar2 .account:hover {
+  background-color: #1e90ff33; /* dodgerblue 33% */
 }
 
 #sidebar2 .profile-block {
@@ -147,17 +162,28 @@ body.post h1 {
   margin-top: 0px;
   padding-left: 0px;
   margin-bottom: 0px;
-  border-top: 1px solid gray;
 }
 
 .sidebar li {
-  border-bottom: 1px solid gray;
+  border-bottom: 1px dashed lightgray;
 }
 
 .sidebar a {
+  color: black;
+}
+
+.sidebar a:link {
   text-decoration: none;
   display: block;
   padding: 10px;
+}
+
+.sidebar a:visited {
+  font-weight: normal;
+  color: gray;
+}
+
+.sidebar .account a, .sidebar .search a, .sidebar .new a {
   color: black;
 }
 
@@ -169,10 +195,21 @@ body.post h1 {
 .sidebar .active {
   background: #0095ff;
   color: white;
+  border-bottom: 0px;
 }
 
 .sidebar .active a {
   color: white;
+}
+
+.sidebar .header {
+  padding: 10px;
+  text-align: right;
+}
+
+.sidebar .header a {
+  padding: 0;
+  display: inline;
 }
 
 #content {
@@ -187,10 +224,24 @@ body.post h1 {
   background: white;
   border: 1px solid black;
   border-radius: 6px;
+  overflow: hidden;
 }  
 
 #content h1 {
-  margin-top: 0px;
+  position: relative;
+  top: -8px;
+  right: 19px;
+  background: dodgerblue;
+  padding: 10px 10px 10px 10px;
+  text-align: center;
+  color: white;
+  margin: -14px -10px 5px -10px;
+  width: 110%;
+  font-size: 14px;
+}
+
+#content h1 a {
+  color: white;
 }
 
 #chat {
@@ -213,9 +264,22 @@ body.post h1 {
   background: white;
 }
 
+#chat .current {
+  border-top: 1px dashed lightgray;
+}
+
 body.post textarea {
   width: 100%;
   margin-bottom: 10px;
+  font-family: system-ui;
+}
+
+body.post textarea:focus-visible {
+  outline: 0px;
+}
+
+body.post input[type=text]:focus-visible {
+  outline: 0px;
 }
 
 body.post input[type=text] {
@@ -277,39 +341,42 @@ body.post .post-body {
   margin-left: 24px;
 }
 
+.post form {
+  float: left;
+  width: 100%;
+}
 
 .post form textarea {
   border: 1px solid black;
   resize: vertical;
   padding: 10px;
-  margin-left: 10px;
 }
 
 .post form input[type=text] {
   border: 1px solid black;
   padding: 10px;
-  margin-left: 10px;
 }
 
 #submit-button {
   padding: 10px;
   width: 200px;
   border-radius: 6px;
-  background: #0095ff;
-  border: 1px solid black;
+  background: dodgerblue;
+  border: 0px;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   float: right;
   cursor: pointer;
   text-decoration: none;
+  text-align: center;
 }
 
 #submit-button:disabled {
   background: gray;
 }
 
-input#submit-button.active {
+input#submit-button.active, input#submit-button:active {
   background: #006ebd;
 }
 
