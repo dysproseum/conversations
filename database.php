@@ -142,7 +142,7 @@ function getMyPosts($user) {
 // Helper function to return posts created by a user.
 function getPostsCreatedByUser($user) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT p.* FROM posts p  WHERE p.uid = ? ORDER BY created DESC");
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p WHERE p.uid = ? AND p.parent_id IS NULL ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();
   $result = $stmt->get_result();

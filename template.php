@@ -70,7 +70,7 @@ function getSidebar($user, $this_post = '') {
     <ul>
     <?php if ($user): ?>
     <li class="post search <?php if ($this_post == "search") print "active"; ?>">
-      <a href="/conversations/search.php">Conversations</a>
+      <a href="/conversations/search.php">Conversations &#x1F50E;</a>
     </li>
       <li class="new <?php if ($this_post == "new") print "active"; ?>">
         <a href="/conversations/new.php">New Topic +</a>
@@ -118,6 +118,12 @@ function getSidebar($user, $this_post = '') {
 function getSidebar2($user, $this_post = '') {
   global $user;
 
+  if ($user->name) {
+    $username = $user->name;
+  }
+  else {
+    $username = 'Unknown';
+  }
   if ($user->picture) {
     $picture = $user->picture;
   }
@@ -154,7 +160,7 @@ function getSidebar2($user, $this_post = '') {
     <a href="/conversations/login.php">
       <div class="profile-block">
           <img id="user-picture" src="<?php print $picture; ?>" />
-          <span id="user-name"><?php print $user->name; ?></span>
+          <span id="user-name"><?php print $username; ?></span>
           <br>
           My account
       </div>
@@ -261,13 +267,13 @@ function getPostCommentForm($user, $post) {
   ob_start(); ?>
 
   <form action="submitcomment.php" method="POST" id="comment-form">
+    <span id="user-message" /><?php print $message; ?></span>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <textarea name="body" id="comment-body" rows="1"></textarea>
     <br>
-    <input type="text" name="link" id="comment-link" placeholder="Link (optional)"/>
     <br>
-    <span id="user-message" /><?php print $message; ?></span>
     <input type="submit" id="submit-button" value="Send" />
+    <input type="text" name="link" id="comment-link" placeholder="Link (optional)"/>
   </form>
 
   <?php $html = ob_get_contents();
@@ -323,13 +329,10 @@ function viewPost($post) {
     <?php endif; ?>
     <br>
     <span class="user-access">
-      <a href="#">Delete this post</a>
+      <a href="#">delete this topic</a>,
     </span>
     <span class="user-access">
-      <a href="#">Archive this post</a>
-    </span>
-    <span class="user-access">
-      <a href="#">Share with others</a>
+      <a href="#" title="New users must login first">sharing</a>
     </span>
   </span>
   <div class="post-body"></div>

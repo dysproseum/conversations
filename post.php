@@ -84,6 +84,8 @@
 
       <div id="chat">
         <?php foreach ($comments as $comment): ?>
+          <?php $imgs = getImagesLinks($comment['body']); ?>
+          <?php $body = displayTextWithLinks(nl2br($comment['body'])); ?>
           <?php $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC"; ?>
 
           <?php if (($current_img !== $comment['picture']) || ($current_day !== date('d', $comment['created']))): ?>
@@ -99,8 +101,14 @@
           <?php endif; ?>
 
           <?php if ($comment['body']): ?>
-             <p><?php print nl2br($comment['body']); ?></p>
+             <p><?php print $body; ?></p>
           <?php endif; ?>
+
+          <?php foreach ($imgs[0] as $img): ?>
+              <p><a target="_blank" href="<?php print $img; ?>">
+                <img class="comment-preview-thumb" src="<?php print $img; ?>" />
+              </a></p>
+          <?php endforeach; ?>
 
           <?php if ($comment['link']): ?>
             <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
