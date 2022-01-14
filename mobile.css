@@ -1,19 +1,49 @@
+html, body {
+  width: 100%;
+}
+
+.wrapper {
+  padding: 0;
+  display: unset;
+}
+
 .sidebar {
   width: 100%;
+  border-radius: 0px;
 }
 
 body.post .sidebar {
-  display: none;
+  border-radius: 0;
 }
 
 .content, #content {
- width: 88%;
- min-width: unset;
- margin: 0;
- padding: 0;
+  width: 88%;
+  min-width: unset;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
 }
 
 #chat {
+  width: 90%;
+  min-width: unset;
+}
+
+#sidebar2 ul {
   width: 100%;
 }
 
+#content h1 {
+  margin: 0;
+  width: 100%;
+}
+
+body.post #content {
+  border: 0px;
+  border-radius: 0px;
+}
+
+textarea {
+  font-size: 14px;
+}

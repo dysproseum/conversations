@@ -273,7 +273,7 @@ function getPostCommentForm($user, $post) {
     <br>
     <br>
     <input type="submit" id="submit-button" value="Send" />
-    <input type="text" name="link" id="comment-link" placeholder="Link (optional)"/>
+    <input type="hidden" name="link" id="comment-link" placeholder="Link (optional)"/>
   </form>
 
   <?php $html = ob_get_contents();
