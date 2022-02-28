@@ -15,6 +15,10 @@ body.home {
   height: 100%;
 }
 
+body.home #header {
+  text-align: center;
+}
+
 .wrapper {
   overflow-y: auto;
   overflow-x: hidden;
@@ -31,7 +35,7 @@ body.home {
 
 body.home #content {
   width: inherit;
-  margin: 60px auto;
+  margin: 36px;
   float: none;
 }
 
@@ -40,7 +44,7 @@ body.post #content {
   min-width: 400px;
   background: lightgray;
   border-radius: 12px;
-  border-width: 6px;
+  border-width: 4px;
   border-color: dodgerblue;
   border-style: outset;
 }
@@ -128,6 +132,11 @@ body.post h1 {
 
 #sidebar2 .account {
   background: #cccccc;
+  border: 0;
+}
+
+#sidebar2 .account a {
+  color: black;
 }
 
 #sidebar2 .account:hover {
@@ -138,11 +147,10 @@ body.post h1 {
   display: block;
   padding: 10px;
   line-height: 18px;
-  border: 1px solid transparent;
+  border: 1px gray dashed;
 }
 
 #sidebar2 .profile-block:hover {
-  border: 1px gray dashed;
 }
 
 #sidebar2 .profile-block a:hover {
@@ -168,11 +176,12 @@ body.post h1 {
 }
 
 .sidebar li {
-  border-bottom: 1px dashed lightgray;
+  border-top: 1px dashed gray;
 }
 
 .sidebar a {
   color: black;
+  text-decoration: none;
 }
 
 .sidebar a:link {
@@ -186,33 +195,56 @@ body.post h1 {
   color: gray;
 }
 
-.sidebar .account a, .sidebar .search a, .sidebar .new a {
+.sidebar .search a, .sidebar .new a, .sidebar .reports a {
   color: black;
 }
 
-.sidebar ul li a:hover {
+.sidebar .search, .sidebar .search:hover {
+  border-top: 0px;
+  background: #1e90ff33; /* dodgerblue 33% */
+  text-decoration: none;
+}
+
+.sidebar .new, .sidebar .search, .sidebar .reports {
+  background: #cccccc;
+}
+
+.sidebar .new:hover {
+  background: #1e90ff33; /* dodgerblue 33% */
+}
+
+.sidebar .post a:hover {
   background-color: #1e90ff33; /* dodgerblue 33% */
-  text-decoration: outline;
+  text-decoration: underline;
+  color: black;
 }
 
 .sidebar .active {
   background: #0095ff;
   color: white;
-  border-bottom: 0px;
+  border-top: 1px dashed lightgray;
 }
 
 .sidebar .active a {
   color: white;
 }
 
+.sidebar .active a:hover {
+  color: white;
+  text-decoration: none;
+  background: dodgerblue;
+}
+
 .sidebar .header {
   padding: 10px;
   text-align: right;
+  border: 0;
 }
 
 .sidebar .header a {
   padding: 0;
   display: inline;
+  color: white;
 }
 
 #content {
@@ -221,7 +253,7 @@ body.post h1 {
   margin: 0px;
   margin-top: 20px;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   max-width: 800px;
   background: white;
   border: 1px solid black;
@@ -232,15 +264,14 @@ body.post h1 {
 
 #content h1 {
   position: relative;
-  top: -8px;
-  right: 19px;
+  right: 20px;
   background: dodgerblue;
-  padding: 10px 10px 10px 10px;
   text-align: center;
   color: white;
-  margin: -14px -10px 5px -10px;
-  width: 110%;
+  width: 100%;
   font-size: 14px;
+  margin-top: 0px;
+  padding: 6px 20px 10px 20px;
 }
 
 #content h1 a {
@@ -258,11 +289,10 @@ body.post h1 {
   width: 100%;
   max-height: 65%;
   min-width: 480px;
-  border-radius: 6px;
+  border-radius: 0px;
   border-style: inset;
-  border-color: black;
-  border-width: 1px;
-
+  border-color: darkgray;
+  border-width: 4px;
   padding-top: 10px;
   background: white;
 }
@@ -275,6 +305,8 @@ body.post textarea {
   width: 100%;
   margin-bottom: 10px;
   font-family: system-ui;
+  border: 4px inset darkgray;
+  font-size: 14px;
 }
 
 body.post textarea:focus-visible {
@@ -303,8 +335,7 @@ body.post .post-body {
 
 #chat .avatar-small {
   float: left;
-  margin-left: 8px;
-  margin-top: 8px;
+  margin: 8px;
   height: 20px;
 }
 
@@ -342,6 +373,7 @@ body.post .post-body {
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 24px;
+  line-height: 20px;
 }
 
 .comment a {
@@ -359,7 +391,6 @@ img.comment-preview-thumb {
 }
 
 .post form textarea {
-  border: 1px solid black;
   resize: vertical;
   padding: 10px;
 }

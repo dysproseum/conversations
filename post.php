@@ -64,7 +64,7 @@
     }
   }
 ?>
-
+<!DOCTYPE HTML>
 <html>
 <head>
 <script type="text/javascript">
@@ -104,11 +104,13 @@
              <p><?php print $body; ?></p>
           <?php endif; ?>
 
+          <?php if ($imgs): ?>
           <?php foreach ($imgs[0] as $img): ?>
               <p><a target="_blank" href="<?php print $img; ?>">
                 <img class="comment-preview-thumb" src="<?php print $img; ?>" />
               </a></p>
-          <?php endforeach; ?>
+	  <?php endforeach; ?>
+          <?php endif; ?>
 
           <?php if ($comment['link']): ?>
             <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>

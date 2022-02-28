@@ -16,6 +16,8 @@ function getHtmlHeader($options) {
   <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
@@ -72,7 +74,7 @@ function getSidebar($user, $this_post = '') {
     <li class="post search <?php if ($this_post == "search") print "active"; ?>">
       <a href="/conversations/search.php">Conversations &#x1F50E;</a>
     </li>
-      <li class="new <?php if ($this_post == "new") print "active"; ?>">
+      <li class="post new">
         <a href="/conversations/new.php">New Topic +</a>
       </li>
     <?php foreach ($sorted as $post_id): ?>
@@ -91,10 +93,6 @@ function getSidebar($user, $this_post = '') {
             (untitled)
           <?php endif; ?>
           <br />
-          <span class="preview">
-            > <?php print substr($comment['body'], 0, 18); ?>
-          </span>
-          <br />
           <span class="time-ago">
             <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
           </span>
@@ -102,10 +100,14 @@ function getSidebar($user, $this_post = '') {
         </a>
       </li>
     <?php endforeach; ?>
-    <?php endif; ?>
-      <li class="<?php if ($this_post == "reports") print "active"; ?>">
+      <li class="reports <?php if ($this_post == "reports") print "active"; ?>">
         <a href="/conversations/reports.php">Reports</a>
       </li>
+    <?php else: ?>
+      <li>
+        <a href="/conversations/">Home</a>
+      </li>
+    <?php endif; ?>
     </ul>
   </div>
 
@@ -143,7 +145,7 @@ function getSidebar2($user, $this_post = '') {
   ob_start(); ?>
   <div class="sidebar" id="sidebar2">
   <ul>
-  <li class="post active header">
+  <li class="active header">
     <a href="#" style="float: left">Recent Topics</a>
 
         <a href="/conversations/minimize.html" id="minimize">
@@ -309,7 +311,7 @@ function viewPost($post) {
   }
 
   ob_start(); ?>
-  <h1><?php print $body; ?></h1>
+  <h1 id="contentheader"><?php print $body; ?></h1>
   <span class="time-ago">
     posted <?php print time_ago($post['created']); ?> by
     <span class="user-access">
