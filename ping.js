@@ -1,12 +1,18 @@
 /**
- * Javascript for post page.
+ * Javascript for comment ping functionality.
  */
 
 function loadDoc(url) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText);
+        var data = this.responseText;
+        if (data > commentId) {
+          console.log("Newer comments available");
+          // Display a message in #chat.
+          var msg = document.getElementById('user-message');
+          msg.innerHTML = "<a href="&refresh">Newer comments available</a>";
+        }
       }
     };
     xhttp.open("GET", url, true);

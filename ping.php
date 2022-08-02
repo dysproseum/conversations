@@ -13,8 +13,9 @@
       exit;
     }
     else {
-      $response = getPing($user);
-      print json_encode($response);
+      $id = (int) $_REQUEST['id'];
+      $cid = (int) $_REQUEST['comment'];
+      print getPing($id, $cid);
       exit;
     }
   }

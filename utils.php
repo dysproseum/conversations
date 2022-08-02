@@ -78,3 +78,20 @@ function time_ago( $timestamp = 0, $now = 0 ) {
 
     return $time_ago;
 }
+
+// Helper function to prepare html for links in comment body.
+function displayTextWithLinks($s) {
+  return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a target="blank" href="$1">$1</a>', $s);
+}
+
+// Helper function to preview image links beneath comments.
+function getImagesLinks($s) {
+  $matches = [];
+  $num = preg_match_all('/(https?:\/\/\S+\.(?:jpg|jpeg|png|gif))/', $s, $matches);
+  if ($num) {
+    return array_values($matches);
+  }
+  else {
+    return [];
+  }
+}

@@ -90,6 +90,11 @@ function getUserInfo($sub) {
   return FALSE;
 }
 
+// Function to get corresponding users.
+function getBuddies($user) {
+  // SELECT * FROM access a WHERE 
+}
+
 // Helper function to create a new user in the database.
 function newUser($result) {
   global $mysqli;
@@ -122,7 +127,28 @@ function updatePicture($userid, $picture) {
 // Helper function to return posts created and shared with a user.
 function getMyPosts($user) {
   global $mysqli;
+  if (!$user->id) {
+    return false;
+  }
   $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
+  $stmt->bind_param('i', $user->id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    $posts[] = $row;
+  }
+  return $posts;
+}
+
+// Helper function to return posts created by a user.
+function getPostsCreatedByUser($user) {
+  global $mysqli;
+  if (!$user->id) {
+    return false;
+  }
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p WHERE p.uid = ? AND p.parent_id IS NULL ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -182,7 +208,7 @@ function getPost($id) {
 // Helper function to get a post's comments.
 function getPostComments($id) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT * FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created ASC");
+  $stmt = $mysqli->prepare("SELECT p.id AS post_id, p.*, u.* FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created ASC");
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -327,16 +353,23 @@ function printReport() {
 }
 
 // Ping function to get updates.
-function getPing($user) {
+function getPing($post_id, $comment_id = '') {
 
   // @todo get unread posts.
   // @todo implement unread status.
 
-  $response = [
-    'user' => $user->id,
-    'unread' => '87,89',
-    'delay' => 5,
-  ];
+  $comments = getPostComments($post_id);
+  $last = getLastComment($post_id);
+
+  if ($last['id'] > $comment_id) {
+    $response = $last['id'];
+  }
+  foreach ($comments as $comment) {
+    if ($comment->post_id > $comment_id) {
+        $response = $comment->post_id;
+    }
+  }
+  return $response;
 
   // @todo implement caching bucket.
   // @todo expire cache upon post creation, for each user that has access.

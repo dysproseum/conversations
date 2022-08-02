@@ -14,17 +14,17 @@
     global $user;
 
       require_once('template.php');
-
+      $head = getHtmlHeader(['title' => 'Reports']);
       $header = getHeader($user);
       $sidebar = getSidebar($user, "reports");
+      $sidebar2 = getSidebar2($user);
       $content = printReport();
   }
 ?>
 
 <html>
 <head>
-<script type="text/javascript" src="post.js"></script>
-<link rel="stylesheet" type="text/css" href="styles.css">
+<?php print $head; ?>
 </head>
 <body class="post">
   <?php print $header; ?>
@@ -37,6 +37,7 @@
       Total Comments: <?php print $content['num_comments']; ?><br>
       Total Users: <?php print $content['num_users']; ?><br>
     </div>
+    <?php print $sidebar2; ?>
   </div>
 </body>
 </html>

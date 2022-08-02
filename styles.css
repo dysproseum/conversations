@@ -1,10 +1,13 @@
 html,body {
-  display: block;
+  display: flex;
   float: left;
   width: 100%;
-  font-family: Helvetica, Sans-Serif;
+  font-family: system-ui; /*Helvetica, Sans-Serif; */
   margin: 0;
-  background: #eeeeee;
+  background: teal;
+  overflow: hidden;
+  height: 100%;
+  font-size: 12px;
 }
 
 body.home {
@@ -12,21 +15,53 @@ body.home {
   height: 100%;
 }
 
+body.home #header {
+  text-align: center;
+}
+
+.wrapper {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  float: left;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  /*align-items: center; */
+  align-items: start;
+}
+
 body.home #content {
   width: inherit;
-  margin: 60px auto;
+  margin: 36px;
   float: none;
 }
 
 body.post #content {
   width: min-content;
   min-width: 400px;
+  background: lightgray;
+  border-radius: 12px;
+  border-width: 4px;
+  border-color: dodgerblue;
+  border-style: outset;
+}
+
+body.dashboard #content {
+
 }
 
 body.post h1 {
   overflow: hidden;
   margin-bottom: 8px;
-  font-size: 18px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+h1#contentheader {
+  cursor: pointer;
 }
 
 #header {
@@ -37,12 +72,15 @@ body.post h1 {
   background: #0095ff;
   padding-top: 10px;
   padding-bottom: 10px;
+  image-rendering: pixelated;
 }
 
-#header h1 {
+#header a {
   display: inline;
   padding-left: 10px;
-  font-size: 28px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
 }
 
 #header h1 a {
@@ -53,42 +91,84 @@ body.post h1 {
 #header .profile-block {
   display: block;
   float: right;
-  padding-right: 10px;
+  margin-right: 5px;
 }
 
 #header .profile-block img {
   float: left;
-  width: 36px;
-  margin-right: 10px;
+  width: 24px;
 }
 
 .sidebar {
-  display: inherit;
+  display: block;
   float: left;
   width: 180px;
-  border-right: 1px solid gray;
   background: white;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+  flex: 0 0 180px;
 }
 
-.sidebar a:visited {
-  color: black;
+#submenu {
+  display: block;
+  float: left;
+  width: 100%;
+  background: lightgray;
+  margin-bottom: 10px;
+}
+
+#submenu span {
+  display: block;
+  float: left;
+  padding: 10px;
 }
 
 #sidebar2 {
   display: inherit;
   float: right;
   right: 0;
-  border-left: 1px solid gray;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+#sidebar2 .account {
+  background: #cccccc;
+  border: 0;
+}
+
+#sidebar2 .account a {
+  color: black;
+}
+
+#sidebar2 .account:hover {
+  background-color: #1e90ff33; /* dodgerblue 33% */
 }
 
 #sidebar2 .profile-block {
-  margin: 10px;
+  display: block;
+  padding: 10px;
+  line-height: 18px;
+  border: 1px gray dashed;
+}
+
+#sidebar2 .profile-block:hover {
+}
+
+#sidebar2 .profile-block a:hover {
+  text-decoration: none;
 }
 
 #sidebar2 .profile-block img {
+  float: left;
   width: 36px;
-  float: right;
-  margin: 10px 10px 0 0;
+  margin-right: 10px;
+}
+
+#sidebar2 ul {
+  float: left;
 }
 
 .sidebar ul {
@@ -96,24 +176,78 @@ body.post h1 {
   margin-top: 0px;
   padding-left: 0px;
   margin-bottom: 0px;
+  width: 100%;
 }
 
 .sidebar li {
-  border-bottom: 1px solid gray;
+  border-top: 1px dashed gray;
 }
 
 .sidebar a {
+  color: black;
+  text-decoration: none;
+}
+
+.sidebar a:link {
   text-decoration: none;
   display: block;
-  padding: 20px;
+  padding: 10px;
+}
+
+.sidebar a:visited {
+  font-weight: normal;
+  color: gray;
+}
+
+.sidebar .search a, .sidebar .new a, .sidebar .reports a {
+  color: black;
+}
+
+.sidebar .search, .sidebar .search:hover {
+  border-top: 0px;
+  background: #1e90ff33; /* dodgerblue 33% */
+  text-decoration: none;
+}
+
+.sidebar .new, .sidebar .search, .sidebar .reports {
+  background: #cccccc;
+}
+
+.sidebar .new:hover {
+  background: #1e90ff33; /* dodgerblue 33% */
+}
+
+.sidebar .post a:hover {
+  background-color: #1e90ff33; /* dodgerblue 33% */
+  text-decoration: underline;
+  color: black;
 }
 
 .sidebar .active {
   background: #0095ff;
   color: white;
+  border-top: 1px dashed lightgray;
 }
 
 .sidebar .active a {
+  color: white;
+}
+
+.sidebar .active a:hover {
+  color: white;
+  text-decoration: none;
+  background: dodgerblue;
+}
+
+.sidebar .header {
+  padding: 10px;
+  text-align: right;
+  border: 0;
+}
+
+.sidebar .header a {
+  padding: 0;
+  display: inline;
   color: white;
 }
 
@@ -121,18 +255,31 @@ body.post h1 {
   display: block;
   float: left;
   margin: 0px;
-  margin-left: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   max-width: 800px;
   background: white;
   border: 1px solid black;
   border-radius: 6px;
+  overflow: hidden;
+  flex: 1 1 auto;
 }  
 
 #content h1 {
+  position: relative;
+  right: 20px;
+  background: dodgerblue;
+  text-align: center;
+  color: white;
+  width: 100%;
+  font-size: 14px;
   margin-top: 0px;
+  padding: 6px 20px 10px 20px;
+}
+
+#content h1 a {
+  color: white;
 }
 
 #chat {
@@ -144,16 +291,34 @@ body.post h1 {
   margin-top: 10px;
   margin-bottom: 10px;
   width: 100%;
-  max-height: 50%;
+  max-height: 65%;
   min-width: 480px;
-  border-radius: 6px;
-  border-top: 1px solid gray;
+  border-radius: 0px;
+  border-style: inset;
+  border-color: darkgray;
+  border-width: 4px;
   padding-top: 10px;
+  background: white;
+}
+
+#chat .current {
+  border-top: 1px dashed lightgray;
 }
 
 body.post textarea {
   width: 100%;
   margin-bottom: 10px;
+  font-family: system-ui;
+  border: 4px inset darkgray;
+  font-size: 14px;
+}
+
+body.post textarea:focus-visible {
+  outline: 0px;
+}
+
+body.post input[type=text]:focus-visible {
+  outline: 0px;
 }
 
 body.post input[type=text] {
@@ -168,61 +333,74 @@ body.post .post-body {
 }
 
 #chat .me {
-  float: right;
-  text-align: right;
+  float: left
+  text-align: left;
 }
 
-#chat img {
+#chat .avatar-small {
   float: left;
-  margin-right: 8px;
-  margin-top: 8px;
+  margin: 8px;
   height: 20px;
 }
 
 #chat .me img {
-  float: right;
+  float: left;
   margin-left: 8px;
 }
 
 #chat .me p {
-  float: right;
+  /*float: left; */
+}
+
+.post .me {
+  float: left;
 }
 
 .comment-wrapper {
   display: block;
   float: left;
   width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .comment {
-  margin-bottom: 10px;
+  display: block;
   float: left;
+  width: 100%;
+}
+
+.comment:hover {
+  background-color: #1e90ff33; /* dodgerblue 33% */
 }
 
 .comment p {
-  padding: 10px;
+  padding: 8px;
   margin-top: 0px;
   margin-bottom: 0px;
-  width: inherit;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
-  background-color: #eeeeee;
-  float: left;
+  margin-left: 24px;
+  line-height: 20px;
 }
 
-.post .me {
-  float: right;
+.comment a {
+  color: cornflowerblue;
+}
+
+img.comment-preview-thumb {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.post form {
+  float: left;
+  width: 100%;
 }
 
 .post form textarea {
-  border-radius: 6px;
-  border: 1px solid black;
   resize: vertical;
   padding: 10px;
 }
 
 .post form input[type=text] {
-  border-radius: 6px;
   border: 1px solid black;
   padding: 10px;
 }
@@ -231,21 +409,23 @@ body.post .post-body {
   padding: 10px;
   width: 200px;
   border-radius: 6px;
-  background: #0095ff;
-  border: 1px solid black;
+  background: dodgerblue;
+  background-color: dodgerblue;
+  border: 0px;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   float: right;
   cursor: pointer;
   text-decoration: none;
+  text-align: center;
 }
 
 #submit-button:disabled {
   background: gray;
 }
 
-input#submit-button.active {
+input#submit-button.active, input#submit-button:active {
   background: #006ebd;
 }
 
@@ -298,8 +478,3 @@ input#submit-button.active {
   vertical-align: middle;
 }
 
-.wrapper {
-  display: block;
-  float: left;
-  width: 100%;
-}

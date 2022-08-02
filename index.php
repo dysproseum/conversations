@@ -9,19 +9,20 @@
 
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>Conversations | Open-source chat service</title>
+
+  <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
+  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+
 </head>
 <body class="home">
   <div id="header">
     <h1>conversations</h1>
-    <div class="profile-block">
-      <a href="login.php">Login with Google</a>
-    </div>
+    alpha
   </div>
   <div class="wrapper">
-    <div class="sidebar">
-      <ul></ul>
-    </div>
     <div id="content">
       <h1>Hello</h1>
       Welcome to Conversations!
@@ -40,7 +41,7 @@
         <li>Run your own instance</li>
       </ul>
 
-      <a href="login.php">Login with Google</a>
+      <a id="submit-button" href="login.php">Login with Google</a>
 
     </div>
   </div>

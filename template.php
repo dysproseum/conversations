@@ -2,23 +2,51 @@
 
 require_once('utils.php');
 
-define('SITE_NAME', 'Search ฅ^•ﻌ•^ฅ');
+define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
+
+// Global items to place in html head tag.
+function getHtmlHeader($options) {
+  ob_start(); ?>
+  <title><?php print $options['title'] . ' | ' . SITE_NAME; ?></title>
+  <script type="text/javascript" src="fullscreen.js"></script>
+  <script type="text/javascript" src="ping.js"></script>
+  <script type="text/javascript" src="post.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
+  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
 
 // Theme header html.
 function getHeader($user) {
+return;
   $name = $user ? $user->name : '';
   $img = $user ? $user->picture: 'transparent.gif';
 
   ob_start(); ?>
   <div id="header">
-    <h1><a href="/conversations/search.php">conversations</a></h1>
+      <a href="/conversations/search.php" title="Home">Conversations</a>
     <div class="profile-block">
-      <img id="user-picture" src="<?php print $img; ?>" />
+        <a href="/conversations/minimize.html" id="minimize">
+          <img src="min-button.png" alt="Minimize" title="Hide" />
+        </a>
+        <a href="#" onclick="toggleFullscreen(this)" id="maximize">
+          <img src="max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
+        </a>
+        <a href="/conversations/login.php" id="exit">
+          <img src="x-icon.png" alt="Exit" title="Logout" />
+        </a>
     </div>
-    <div class="profile-block">
-        <span id="user-name">Hello <?php print $name; ?></span><br>
-        <a href="/conversations/login.php">User Account</a>
-    </div>
+  </div>
+  <div id="submenu">
+    <span>File</span>
+    <span>Edit</span>
   </div>
 
   <?php $html = ob_get_contents();
@@ -29,14 +57,18 @@ function getHeader($user) {
 // Theme sidebar html.
 function getSidebar($user, $this_post = '') {
 
-  $posts = getMyPosts($user);
+  $posts = getPostsCreatedByUser($user);
   $sorted = [];
-  // Re-sort posts.
-  foreach ($posts as $post) {
-    $comment = getLastComment($post['id']);
-    $sorted[$comment['created']] = $post;
+  if (!$posts) {
+//    return false;
   }
-  print "<br>\n";
+  else {
+    // Re-sort posts by latest comment.
+    foreach ($posts as $post) {
+      $comment = getLastComment($post['id']);
+      $sorted[$comment['created']] = $post;
+    }
+  }
   krsort($sorted);
 
   ob_start(); ?>
@@ -44,9 +76,9 @@ function getSidebar($user, $this_post = '') {
     <ul>
     <?php if ($user): ?>
     <li class="post search <?php if ($this_post == "search") print "active"; ?>">
-      <a href="/conversations/search.php">Search ></a>
+      <a href="/conversations/search.php">Conversations &#x1F50E;</a>
     </li>
-      <li class="<?php if ($this_post == "new") print "active"; ?>">
+      <li class="post new">
         <a href="/conversations/new.php">New Topic +</a>
       </li>
     <?php foreach ($sorted as $post_id): ?>
@@ -65,10 +97,6 @@ function getSidebar($user, $this_post = '') {
             (untitled)
           <?php endif; ?>
           <br />
-          <span class="preview">
-            > <?php print substr($comment['body'], 0, 18); ?>
-          </span>
-          <br />
           <span class="time-ago">
             <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
           </span>
@@ -76,14 +104,14 @@ function getSidebar($user, $this_post = '') {
         </a>
       </li>
     <?php endforeach; ?>
-      <li class="<?php if ($this_post == "new") print "active"; ?>">
-      <img src="newfileicon.png" alt="new post" width="36" />
-        <a href="/conversations/new.php">New post</a>
-      </li>
-    <?php endif; ?>
-      <li class="<?php if ($this_post == "reports") print "active"; ?>">
+      <li class="reports <?php if ($this_post == "reports") print "active"; ?>">
         <a href="/conversations/reports.php">Reports</a>
       </li>
+    <?php else: ?>
+      <li>
+        <a href="/conversations/">Home</a>
+      </li>
+    <?php endif; ?>
     </ul>
   </div>
 
@@ -96,39 +124,89 @@ function getSidebar($user, $this_post = '') {
 function getSidebar2($user, $this_post = '') {
   global $user;
 
+  $posts = getMyPosts($user);
+  $sorted = [];
+  if (!$posts) {
+//    return false;
+  }
+  else {
+    // Re-sort posts by latest comment.
+    foreach ($posts as $post) {
+      $comment = getLastComment($post['id']);
+      $sorted[$comment['created']] = $post;
+    }
+  }
+  krsort($sorted);
+
+  if ($user->name) {
+    $username = $user->name;
+  }
+  else {
+    $username = 'Unknown';
+  }
+  if ($user->picture) {
+    $picture = $user->picture;
+  }
+  else {
+    $picture = 'unknown-user.jpg';
+  }
+
+
   ob_start(); ?>
   <div class="sidebar" id="sidebar2">
   <ul>
-  <li class="post">
-    <div class="profile-block">
-        <img id="user-picture" src="<?php print $user->picture; ?>" />
-    </div>
-    <div class="profile-block">
-        <span id="user-name"><?php print $user->name; ?></span><br>
-    </div>
-        <a href="/conversations/login.php">My Account</a>
+  <li class="active header">
+    <a href="#" style="float: left">Recent Topics</a>
+
+        <a href="/conversations/minimize.html" id="minimize">
+          <img src="min-button.png" alt="Minimize" title="Hide" />
+        </a>
+        <a href="#" onclick="toggleFullscreen(this)" id="maximize">
+          <img src="max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
+        </a>
+        <a href="/conversations/login.php" id="exit">
+          <img src="x-icon.png" alt="Exit" title="Logout" />
+        </a>
   </li>
-  <li class="post">
-    <div class="profile-block">
-      Buddy List
-    </div>
-      <a href="#">Add buddy/friend/user/recipient</a>
+  <li class="post account">
+    <a href="/conversations/login.php">
+      <div class="profile-block">
+          <img id="user-picture" src="<?php print $picture; ?>" />
+          <span id="user-name"><?php print $username; ?></span>
+          <br>
+          My account
+      </div>
+    </a>
   </li>
 
-  <?php foreach (getMyPosts($user) as $post_id): ?>
+  <!-- @todo read/unread status -->
+
+  <?php foreach ($sorted as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
+    <?php $link = "/conversations/post.php?id=" . $post['id'] . "&cid=" . $comment['id']; ?>
     <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
-      <a href="/conversations/post.php?id=<?php print $post['id']; ?>"><?php print substr($comment['body'], 0, 18); ?>
-      <img class="avatar-small-left" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
-      <!-- @todo read/unread status -->
-      <!-- @todo time ago -->
-      <span class="time-ago">
-      <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
-      </span>
+      <a href="<?php print $link; ?>">
+
+        <?php if (!empty($post['body'])): ?>
+          <?php print substr($post['body'], 0, 24); ?>
+        <?php elseif (!empty($post['link'])): ?>
+          <?php print substr($post['link'], 0, 18); ?>
+        <?php else: ?>
+          (untitled)
+        <?php endif; ?>
+        <br>
+        > <?php print substr($comment['body'], 0, 18); ?>
+
+        <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
+
+        <span class="time-ago">
+          <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
+        </span>
       </a>
     </li>
   <?php endforeach; ?>
+
   </ul>
   </div>
 
@@ -200,15 +278,14 @@ function getPostCommentForm($user, $post) {
 
   ob_start(); ?>
 
-
   <form action="submitcomment.php" method="POST" id="comment-form">
+    <span id="user-message" /><?php print $message; ?></span>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <textarea name="body" id="comment-body" rows="1"></textarea>
     <br>
-    <input type="text" name="link" id="comment-link" placeholder="Link (optional)"/>
     <br>
-    <span id="user-message" /><?php print $message; ?></span>
     <input type="submit" id="submit-button" value="Send" />
+    <input type="hidden" name="link" id="comment-link" placeholder="Link (optional)"/>
   </form>
 
   <?php $html = ob_get_contents();
@@ -238,13 +315,13 @@ function viewPost($post) {
   $users = [];
   $uids = getPostAccess($post['id']);
   foreach ($uids as $uid) {
-    if ($uid !== $user->id) {
+//    if ($uid !== $user->id) {
       $users[] = getUser($uid);
-    }
+//    }
   }
 
   ob_start(); ?>
-  <h1><?php print $body; ?></h1>
+  <h1 id="contentheader"><?php print $body; ?></h1>
   <span class="time-ago">
     posted <?php print time_ago($post['created']); ?> by
     <span class="user-access">
@@ -254,9 +331,7 @@ function viewPost($post) {
     <?php if ($users[0]->id && $users[0]->id !== $post['uid']): ?>
       and shared with
       <?php foreach ($users as $u): ?>
-        <?php if ($u->id == $post['uid']): ?>
-          me
-        <?php else: ?>
+        <?php if ($u->id != $post['uid']): ?>
          <span class="user-access">
           <img src="<?php print $u->picture; ?>" alt="user avatar" />
           <?php print $u->name; ?>
@@ -264,11 +339,12 @@ function viewPost($post) {
         <?php endif; ?>
       <?php endforeach; ?>
     <?php endif; ?>
-    <span class="user-access-right">
-      <a href="#">Delete this post</a>
+    <br>
+    <span class="user-access">
+      <a href="#">delete this topic</a>,
     </span>
-    <span class="user-access-right">
-      <a href="#">Invite more</a>
+    <span class="user-access">
+      <a href="#" title="New users must login first">sharing</a>
     </span>
   </span>
   <div class="post-body"></div>
@@ -291,4 +367,9 @@ function getSearchForm($q = '') {
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
+}
+function getHtmlFooter() {
+
+
+
 }
