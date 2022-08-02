@@ -21,6 +21,7 @@ function onSignIn(googleUser) {
   xhr.open('POST', '/conversations/tokensignin.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
+	    console.log(xhr.responseText);
     var info = JSON.parse(xhr.responseText);
     if (!info.user) {
       $message.textContent = "Error: " + info.message;

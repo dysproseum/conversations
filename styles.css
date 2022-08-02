@@ -60,6 +60,10 @@ body.post h1 {
   font-weight: normal;
 }
 
+h1#contentheader {
+  cursor: pointer;
+}
+
 #header {
   color: white;
   display: block;
@@ -356,6 +360,7 @@ body.post .post-body {
   display: block;
   float: left;
   width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .comment {

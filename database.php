@@ -127,6 +127,9 @@ function updatePicture($userid, $picture) {
 // Helper function to return posts created and shared with a user.
 function getMyPosts($user) {
   global $mysqli;
+  if (!$user->id) {
+    return false;
+  }
   $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();
@@ -142,6 +145,9 @@ function getMyPosts($user) {
 // Helper function to return posts created by a user.
 function getPostsCreatedByUser($user) {
   global $mysqli;
+  if (!$user->id) {
+    return false;
+  }
   $stmt = $mysqli->prepare("SELECT p.* FROM posts p WHERE p.uid = ? AND p.parent_id IS NULL ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();

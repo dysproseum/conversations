@@ -58,12 +58,16 @@ return;
 function getSidebar($user, $this_post = '') {
 
   $posts = getPostsCreatedByUser($user);
-
-  // Re-sort posts by latest comment.
   $sorted = [];
-  foreach ($posts as $post) {
-    $comment = getLastComment($post['id']);
-    $sorted[$comment['created']] = $post;
+  if (!$posts) {
+//    return false;
+  }
+  else {
+    // Re-sort posts by latest comment.
+    foreach ($posts as $post) {
+      $comment = getLastComment($post['id']);
+      $sorted[$comment['created']] = $post;
+    }
   }
   krsort($sorted);
 
@@ -120,6 +124,20 @@ function getSidebar($user, $this_post = '') {
 function getSidebar2($user, $this_post = '') {
   global $user;
 
+  $posts = getMyPosts($user);
+  $sorted = [];
+  if (!$posts) {
+//    return false;
+  }
+  else {
+    // Re-sort posts by latest comment.
+    foreach ($posts as $post) {
+      $comment = getLastComment($post['id']);
+      $sorted[$comment['created']] = $post;
+    }
+  }
+  krsort($sorted);
+
   if ($user->name) {
     $username = $user->name;
   }
@@ -133,14 +151,6 @@ function getSidebar2($user, $this_post = '') {
     $picture = 'unknown-user.jpg';
   }
 
-  $posts = getMyPosts($user);
-  // Re-sort posts by latest comment.
-  $sorted = [];
-  foreach ($posts as $post) {
-    $comment = getLastComment($post['id']);
-    $sorted[$comment['created']] = $post;
-  }
-  krsort($sorted);
 
   ob_start(); ?>
   <div class="sidebar" id="sidebar2">

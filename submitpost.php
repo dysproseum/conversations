@@ -46,25 +46,24 @@
 
   // Get user id for recipient.
   $recipient = $post['recipient'];
-  $stmt = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1");
-  $stmt->bind_param('s', $recipient);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $stmt->close();
+  $stmt2 = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1");
+  $stmt2->bind_param('s', $recipient);
+  $stmt2->execute();
+  $result = $stmt2->get_result();
   if (!$result) {
-    //print $query;
     $_SESSION['message'] = "Error retrieving user id for recipient (database error 2)";
     header('Location: /conversations/new.php');
     exit;
   }
-  else if (sizeof($result) == 0) {
+  else {
     // @todo Handle case where recipient user id does not exist yet
     // Invite user?
-    $_SESSION['message'] = "No recipient account was found at that address.";
-    header('Location: /conversations/new.php');
-    exit;
-
+    //$_SESSION['message'] = "No recipient account was found at that address.";
+    //header('Location: /conversations/new.php');
+    //exit;
   }
+  $stmt2->close();
+
   foreach ($result as $row) {
     $uid = $row['id'];
   }
@@ -81,4 +80,5 @@
 
   // Redirect to post.
   header('Location: /conversations/post.php?id=' . $id);
+  exit;
 
