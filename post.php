@@ -87,17 +87,25 @@
           <?php $imgs = getImagesLinks($comment['body']); ?>
           <?php $body = displayTextWithLinks(nl2br($comment['body'])); ?>
           <?php $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC"; ?>
+	  <?php $permalink = '?id=' . $post['id'] . '&cid=' . $comment['post_id']; ?>
 
           <?php if (($current_img !== $comment['picture']) || ($current_day !== date('d', $comment['created']))): ?>
+
             <?php $current_img = $comment['picture']; ?>
             <?php $current_day = date('d', $comment['created']); ?>
             <div class="comment-wrapper current">
               <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
                 <img class="avatar-small current" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
+
+		<a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
+
           <?php else: ?>
             <div class="comment-wrapper">
               <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
                 <img class="avatar-small" src="transparent.gif" align="left" title="<?php print $timestamp; ?>" />
+
+		<a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
+
           <?php endif; ?>
 
           <?php if ($comment['body']): ?>
@@ -105,11 +113,11 @@
           <?php endif; ?>
 
           <?php if ($imgs): ?>
-          <?php foreach ($imgs[0] as $img): ?>
-              <p><a target="_blank" href="<?php print $img; ?>">
-                <img class="comment-preview-thumb" src="<?php print $img; ?>" />
-              </a></p>
-	  <?php endforeach; ?>
+            <?php foreach ($imgs[0] as $img): ?>
+                <p><a target="_blank" href="<?php print $img; ?>">
+                  <img class="comment-preview-thumb" src="<?php print $img; ?>" />
+                </a></p>
+            <?php endforeach; ?>
           <?php endif; ?>
 
           <?php if ($comment['link']): ?>

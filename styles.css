@@ -375,6 +375,21 @@ body.post .post-body {
   background-color: #1e90ff33; /* dodgerblue 33% */
 }
 
+.comment .permalink {
+	color: #1e90ff33;
+	display: none;
+	float: right;
+	padding: 10px;
+}
+
+.comment:hover .permalink {
+	display: block;
+}
+
+.comment .permalink:hover {
+	color: purple;
+}
+
 .comment p {
   padding: 8px;
   margin-top: 0px;

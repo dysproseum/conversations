@@ -150,9 +150,11 @@ function getSidebar2($user, $this_post = '') {
   <?php foreach ($sorted as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
+    <?php $time_ago = $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
     <?php $link = "/conversations/post.php?id=" . $post['id'] . "&cid=" . $comment['id']; ?>
+
     <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
-      <a href="<?php print $link; ?>">
+      <a href="<?php print $link; ?>" title="<?php print $time_ago; ?>">
 
         <?php if (!empty($post['body'])): ?>
           <?php print substr($post['body'], 0, 24); ?>
@@ -166,9 +168,7 @@ function getSidebar2($user, $this_post = '') {
 
         <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
 
-        <span class="time-ago">
-          <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
-        </span>
+        <span class="time-ago"></span>
       </a>
     </li>
   <?php endforeach; ?>
@@ -207,6 +207,24 @@ function getDashboard($user) {
       </p>
     <?php endforeach; ?>
   <?php endif; ?>
+
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
+
+// @todo nothing calls this yet
+function dayByDay($user) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+
+  $posts = dayByDatabase($user);
+
+  ob_start(); ?>
+  <h1>Day By Day</h1>
+  <?php foreach ($days as $day): ?>
+    <?php echo $post['title']; ?>
+  <?php endforeach; ?>
 
   <?php $html = ob_get_contents();
   ob_end_clean();
