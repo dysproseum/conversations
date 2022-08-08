@@ -33,7 +33,7 @@ return;
   <div id="header">
       <a href="/conversations/search.php" title="Home">Conversations</a>
     <div class="profile-block">
-        <a href="/conversations/minimize.html" id="minimize">
+        <a href="/conversations/open-source-desktop.html" id="minimize">
           <img src="min-button.png" alt="Minimize" title="Hide" />
         </a>
         <a href="#" onclick="toggleFullscreen(this)" id="maximize">
@@ -57,53 +57,19 @@ return;
 // Theme sidebar html.
 function getSidebar($user, $this_post = '') {
 
-  $posts = getPostsCreatedByUser($user);
-  $sorted = [];
-  if (!$posts) {
-//    return false;
-  }
-  else {
-    // Re-sort posts by latest comment.
-    foreach ($posts as $post) {
-      $comment = getLastComment($post['id']);
-      $sorted[$comment['created']] = $post;
-    }
-  }
-  krsort($sorted);
-
   ob_start(); ?>
   <div class="sidebar">
     <ul>
     <?php if ($user): ?>
-    <li class="post search <?php if ($this_post == "search") print "active"; ?>">
-      <a href="/conversations/search.php">Conversations &#x1F50E;</a>
-    </li>
+      <li class="post new">
+        <a href="/conversations/dashboard.php">Dashboard</a>
+      </li>
+      <li class="post new <?php if ($this_post == "search") print "active"; ?>">
+        <a href="/conversations/search.php">Search &#x1F50E;</a>
+      </li>
       <li class="post new">
         <a href="/conversations/new.php">New Topic +</a>
       </li>
-    <?php foreach ($sorted as $post_id): ?>
-      <?php $post = getPost($post_id['id']); ?>
-      <?php $comment = getLastComment($post['id']); ?>
-      <li class="post <?php if($post['id'] == $this_post) print "active"; ?>">
-        <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
-
-          <!-- @todo read/unread status -->
-
-          <?php if (!empty($post['body'])): ?>
-            <?php print substr($post['body'], 0, 18); ?>
-          <?php elseif (!empty($post['link'])): ?>
-            <?php print substr($post['link'], 0, 18); ?>
-          <?php else: ?>
-            (untitled)
-          <?php endif; ?>
-          <br />
-          <span class="time-ago">
-            <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
-          </span>
-          <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
-        </a>
-      </li>
-    <?php endforeach; ?>
       <li class="reports <?php if ($this_post == "reports") print "active"; ?>">
         <a href="/conversations/reports.php">Reports</a>
       </li>
@@ -156,9 +122,9 @@ function getSidebar2($user, $this_post = '') {
   <div class="sidebar" id="sidebar2">
   <ul>
   <li class="active header">
-    <a href="#" style="float: left">Recent Topics</a>
+    <a href="#" style="float: left">Conversations</a>
 
-        <a href="/conversations/minimize.html" id="minimize">
+        <a href="/conversations/open-source-desktop.html" id="minimize">
           <img src="min-button.png" alt="Minimize" title="Hide" />
         </a>
         <a href="#" onclick="toggleFullscreen(this)" id="maximize">
@@ -184,9 +150,11 @@ function getSidebar2($user, $this_post = '') {
   <?php foreach ($sorted as $post_id): ?>
     <?php $post = getPost($post_id['id']); ?>
     <?php $comment = getLastComment($post_id['id']); ?>
+    <?php $time_ago = $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
     <?php $link = "/conversations/post.php?id=" . $post['id'] . "&cid=" . $comment['id']; ?>
+
     <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
-      <a href="<?php print $link; ?>">
+      <a href="<?php print $link; ?>" title="<?php print $time_ago; ?>">
 
         <?php if (!empty($post['body'])): ?>
           <?php print substr($post['body'], 0, 24); ?>
@@ -200,9 +168,7 @@ function getSidebar2($user, $this_post = '') {
 
         <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
 
-        <span class="time-ago">
-          <?php print $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
-        </span>
+        <span class="time-ago"></span>
       </a>
     </li>
   <?php endforeach; ?>
@@ -241,6 +207,24 @@ function getDashboard($user) {
       </p>
     <?php endforeach; ?>
   <?php endif; ?>
+
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
+
+// @todo nothing calls this yet
+function dayByDay($user) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+
+  $posts = dayByDatabase($user);
+
+  ob_start(); ?>
+  <h1>Day By Day</h1>
+  <?php foreach ($days as $day): ?>
+    <?php echo $post['title']; ?>
+  <?php endforeach; ?>
 
   <?php $html = ob_get_contents();
   ob_end_clean();

@@ -376,3 +376,24 @@ function getPing($post_id, $comment_id = '') {
 
   return $response;
 }
+
+// @todo nothing calls this yet
+function dayByDatabase($user) {
+  global $mysqli;
+  if (!$user->id) {
+    return false;
+  }
+  $today_order_by_date_desc;
+  $posts = getMyPosts($user);
+
+  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
+  $stmt->bind_param('i', $user->id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    $posts[] = $row;
+  }
+  return $posts;
+}

@@ -3,10 +3,22 @@
  */
 
 window.onload=function () {
-  // Scroll to bottom of chat window on load.
+  // Check for cid param and scroll to that comment.
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const cid = urlParams.get('cid')
   var objDiv = document.getElementById("chat");
-  objDiv.scrollTop = objDiv.scrollHeight;
-  document.getElementById("comment-body").focus();
+  if (cid) {
+    var commentDiv = document.getElementById(cid);
+    commentDiv.scrollIntoView();
+    commentDiv.focus();
+    commentDiv.classList.add('highlighted');
+  }
+  else {
+    // Else scroll to bottom of chat window on load.
+    objDiv.scrollTop = objDiv.scrollHeight;
+    document.getElementById("comment-body").focus();
+  }
 
   // Set up ping.
   timeout = setTimeout(function() {

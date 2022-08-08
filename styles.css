@@ -210,17 +210,19 @@ h1#contentheader {
 }
 
 .sidebar .new, .sidebar .search, .sidebar .reports {
-  background: #cccccc;
+  background: white;
 }
 
 .sidebar .new:hover {
-  background: #1e90ff33; /* dodgerblue 33% */
+  background: white; /* dodgerblue 33% */
 }
 
 .sidebar .post a:hover {
-  background-color: #1e90ff33; /* dodgerblue 33% */
-  text-decoration: underline;
   color: black;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
 }
 
 .sidebar .active {
@@ -369,8 +371,23 @@ body.post .post-body {
   width: 100%;
 }
 
-.comment:hover {
+.comment:hover, .highlighted {
   background-color: #1e90ff33; /* dodgerblue 33% */
+}
+
+.comment .permalink {
+	color: #1e90ff33;
+	display: none;
+	float: right;
+	padding: 10px;
+}
+
+.comment:hover .permalink, .highlighted .permalink {
+	display: block;
+}
+
+.comment .permalink:hover, .highlighted .permalink {
+	color: purple;
 }
 
 .comment p {
