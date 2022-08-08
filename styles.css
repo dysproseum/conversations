@@ -371,7 +371,7 @@ body.post .post-body {
   width: 100%;
 }
 
-.comment:hover {
+.comment:hover, .highlighted {
   background-color: #1e90ff33; /* dodgerblue 33% */
 }
 
@@ -382,11 +382,11 @@ body.post .post-body {
 	padding: 10px;
 }
 
-.comment:hover .permalink {
+.comment:hover .permalink, .highlighted .permalink {
 	display: block;
 }
 
-.comment .permalink:hover {
+.comment .permalink:hover, .highlighted .permalink {
 	color: purple;
 }
 
