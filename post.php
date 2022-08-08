@@ -50,7 +50,7 @@
         exit;
       }
 
-      $head = getHtmlHeader(['title' => $post['title']]);
+      $head = getHtmlHeader(['title' => $post['body']]);
       $header = getHeader($user);
       $sidebar = getSidebar($user, $id);
       $sidebar2 = getSidebar2($user);

@@ -50,7 +50,19 @@ body.post #content {
 }
 
 body.dashboard #content {
+  margin-top: 10px;
+}
 
+body.dashboard p {
+  padding: 4px 0px 4px 8px;
+  margin: 10px 10px 0px 0px;
+  background: lightblue;
+  border-radius: 4px;
+  width: 96px;
+  height: 96px;
+  display: block;
+  float: left;
+  overflow: hidden;
 }
 
 body.post h1 {
@@ -266,6 +278,7 @@ h1#contentheader {
   border-radius: 6px;
   overflow: hidden;
   flex: 1 1 auto;
+  position: absolute; /* draggable */
 }  
 
 #content h1 {

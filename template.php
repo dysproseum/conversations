@@ -11,6 +11,7 @@ function getHtmlHeader($options) {
   <script type="text/javascript" src="fullscreen.js"></script>
   <script type="text/javascript" src="ping.js"></script>
   <script type="text/javascript" src="post.js"></script>
+  <script type="text/javascript" src="drag.js"></script>
 
   <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
   <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
@@ -193,10 +194,9 @@ function getDashboard($user) {
 
   ob_start(); ?>
   <?php if ($user): ?>
+    <div class="dashboard">
     <?php foreach ($posts as $post): ?>
       <p>
-        <?php print getUser($post['uid'])->name; ?>
-        posted
         <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
           <?php if (empty($post['body'])): ?>
             (untitled)
@@ -204,8 +204,15 @@ function getDashboard($user) {
             <?php print substr($post['body'], 0, 128); ?>
           <?php endif; ?>
         </a>
+        <br>
+        <?php $comment = getLastComment($post['id']); ?>
+        <?php $comments = getPostcomments($post['id']); ?>
+        <?php print sizeof($comments); ?> posts
+        <br>
+        posted by <?php print getUser($post['uid'])->name; ?>
       </p>
     <?php endforeach; ?>
+    </div>
   <?php endif; ?>
 
   <?php $html = ob_get_contents();
