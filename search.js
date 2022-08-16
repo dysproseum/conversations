@@ -1,12 +1,12 @@
 /**
- * Javascript for post page.
+ * Javascript for search page.
  */
 
-window.onload=function () {
-  // Scroll to bottom of chat window on load.
-  var objDiv = document.getElementById("q");
-//  objDiv.scrollTop = objDiv.scrollHeight;
-   objDiv.focus();
+window.addEventListener("load",function(event) {
 
-   objDiv.setSelectionRange(objDiv.value.length,objDiv.value.length);
-}
+  // Focus and select search bar on load.
+  var objDiv = document.getElementById("q");
+  objDiv.focus();
+  objDiv.setSelectionRange(objDiv.value.length,objDiv.value.length);
+
+},false);

@@ -2,7 +2,8 @@
  * Javascript for post page.
  */
 
-window.onload=function () {
+window.addEventListener("load",function(event) {
+
   // Check for cid param and scroll to that comment.
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -16,6 +17,7 @@ window.onload=function () {
   }
   else {
     // Else scroll to bottom of chat window on load.
+    console.log("I am doing this");
     objDiv.scrollTop = objDiv.scrollHeight;
     document.getElementById("comment-body").focus();
   }
@@ -63,4 +65,4 @@ window.onload=function () {
     }
   };
 
-}
+},false);

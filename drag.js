@@ -5,7 +5,7 @@ var elmntHeader;
 var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 var offsetLeft = 0, offsetTop = 0;
 
-window.onload = function() {
+window.addEventListener("load", function(event) {
 
   elmnt = document.getElementById('content');
   elmntHeader = document.getElementById('contentheader');
@@ -32,6 +32,8 @@ window.onload = function() {
     // call a function whenever the cursor moves:
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag;
+
+    elmnt.classList.add('dragging');
   }
 
   function elementDrag(e) {
@@ -49,5 +51,8 @@ window.onload = function() {
     // stop moving when mouse button is released:
     document.onmouseup = null;
     document.onmousemove = null;
+
+    elmnt.classList.remove('dragging');
   }
-}
+
+},false);
