@@ -49,8 +49,14 @@ body.post #content {
   border-style: outset;
 }
 
-body.dashboard #content {
+body.dashboard #content, body.search #content {
   margin-top: 10px;
+  max-width: 680px;
+}
+
+body.dashboard .dashboard, body.search .dashboard {
+  overflow-y: auto;
+  height: 80%;
 }
 
 body.dashboard p {
@@ -483,9 +489,15 @@ input#submit-button.active, input#submit-button:active {
   font-size: 12px;
 }
 
+#search-form {
+  margin-top: 20px;
+}
+
 #search-results {
   list-style-type: none;
   padding-left: 0;
+  overflow-y: auto;
+  height: 80%;
 }
 
 #search-results li {
