@@ -7,6 +7,8 @@ var offsetLeft = 0, offsetTop = 0;
 
 window.addEventListener("load", function(event) {
 
+  centerContent();
+
   elmnt = document.getElementById('content');
   elmntHeader = document.getElementById('contentheader');
   dragElement(elmnt);
@@ -56,3 +58,10 @@ window.addEventListener("load", function(event) {
   }
 
 },false);
+
+function centerContent() {
+  var x = (screen.width - 528) / 2;
+  var y = 100; // (screen.height - 348) / 2;
+  var c = document.querySelector('#content')
+  c.setAttribute('style', 'left: ' + x + 'px; top: ' + y + 'px');
+}

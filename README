@@ -1,0 +1,18 @@
+It's yet another messaging app!
+
+Intended to be a replacement for Google Hangouts
+* Use existing Google accounts
+* Accessible from mobile and desktop
+
+Adding:
+* Must have search
+* Link previews
+* Multiple threads between 2 or more users
+
+Create API keys here:
+https://developers.google.com/identity/sign-in/web/sign-in
+
+Using the Google API Client Library for PHP:
+https://github.com/google/google-api-php-client/
+
+Created 2022-02-22
