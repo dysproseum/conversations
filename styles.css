@@ -47,11 +47,15 @@ body.post #content {
   border-width: 4px;
   border-color: dodgerblue;
   border-style: outset;
+  left: 300px;
+  top: 100px;
 }
 
 body.dashboard #content, body.search #content {
   margin-top: 10px;
   max-width: 680px;
+  left: 300px;
+  top: 100px;
 }
 
 body.dashboard .dashboard, body.search .dashboard {
