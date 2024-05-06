@@ -228,6 +228,7 @@ function getLastComment($id) {
   $stmt->execute();
   $result = $stmt->get_result();
   $stmt->close();
+  $post = [];
   foreach ($result as $row) {
     $post = $row;
   }
@@ -360,16 +361,7 @@ function getPing($post_id, $comment_id = '') {
 
   $comments = getPostComments($post_id);
   $last = getLastComment($post_id);
-
-  if ($last['id'] > $comment_id) {
-    $response = $last['id'];
-  }
-  foreach ($comments as $comment) {
-    if ($comment->post_id > $comment_id) {
-        $response = $comment->post_id;
-    }
-  }
-  return $response;
+  $response = $last['id'];
 
   // @todo implement caching bucket.
   // @todo expire cache upon post creation, for each user that has access.

@@ -17,7 +17,6 @@ window.addEventListener("load",function(event) {
   }
   else {
     // Else scroll to bottom of chat window on load.
-    console.log("I am doing this");
     objDiv.scrollTop = objDiv.scrollHeight;
     document.getElementById("comment-body").focus();
   }

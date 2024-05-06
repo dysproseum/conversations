@@ -16,7 +16,7 @@
       require_once('template.php');
       $head = getHtmlHeader(['title' => 'New Topic']);
       $header = getHeader($user);
-      $sidebar = getSidebar($user, "search");
+      $sidebar = getSidebar($user, "new");
       $sidebar2 = getSidebar2($user, "new");
       $content = getNewPostForm($user);
     }

@@ -1,7 +1,9 @@
 <?php
   // Get search term if exists.
-  $q = $_GET['q'];
-  if (!$q) {
+  if (isset($_GET['q'])) {
+    $q = $_GET['q'];
+  }
+  else {
     $q = '';
   }
 

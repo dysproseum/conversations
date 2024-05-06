@@ -11,7 +11,8 @@ function loadDoc(url) {
           console.log("Newer comments available");
           // Display a message in #chat.
           var msg = document.getElementById('user-message');
-          msg.innerHTML = '<a href="&refresh">Newer comments available</a>';
+          var refresh = window.location.href;
+          msg.innerHTML = '<a href="' + refresh + '">Newer comments available</a>';
         }
       }
     };
