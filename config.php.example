@@ -1,0 +1,16 @@
+<?php
+
+global $conf;
+
+// MySQL database connection.
+$conf['database'] = [
+  'name' => 'conversations',
+  'user' => 'root',
+  'pass' => 'password',
+  'host' => 'localhost',
+];
+
+// Google API keys.
+$conf['google'] = [
+  'client_id' => 'YOUR_CLIENT_ID.apps.googleusercontent.com',
+];

@@ -1,0 +1,497 @@
+html,body {
+  display: flex;
+  float: left;
+  width: 100%;
+  font-family: system-ui; /*Helvetica, Sans-Serif; */
+  margin: 0;
+  background: teal;
+  overflow: hidden;
+  height: 100%;
+  font-size: 12px;
+}
+
+body.home {
+  background-color: #99ccff;
+  height: 100%;
+}
+
+body.home #header {
+  text-align: center;
+}
+
+.wrapper {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  float: left;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  /*align-items: center; */
+  align-items: start;
+}
+
+body.home #content {
+  width: inherit;
+  margin: 36px;
+  float: none;
+}
+
+body.post #content {
+  width: min-content;
+  min-width: 400px;
+  background: lightgray;
+  border-radius: 12px;
+  border-width: 4px;
+  border-color: dodgerblue;
+  border-style: outset;
+}
+
+body.dashboard #content {
+
+}
+
+body.post h1 {
+  overflow: hidden;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+h1#contentheader {
+  cursor: pointer;
+}
+
+#header {
+  color: white;
+  display: block;
+  float: left;
+  width: 100%;
+  background: #0095ff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  image-rendering: pixelated;
+}
+
+#header a {
+  display: inline;
+  padding-left: 10px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+}
+
+#header h1 a {
+ color: white;
+ text-decoration: none;
+}
+
+#header .profile-block {
+  display: block;
+  float: right;
+  margin-right: 5px;
+}
+
+#header .profile-block img {
+  float: left;
+  width: 24px;
+}
+
+.sidebar {
+  display: block;
+  float: left;
+  width: 180px;
+  background: white;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+  flex: 0 0 180px;
+}
+
+#submenu {
+  display: block;
+  float: left;
+  width: 100%;
+  background: lightgray;
+  margin-bottom: 10px;
+}
+
+#submenu span {
+  display: block;
+  float: left;
+  padding: 10px;
+}
+
+#sidebar2 {
+  display: inherit;
+  float: right;
+  right: 0;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+#sidebar2 .account {
+  background: #cccccc;
+  border: 0;
+}
+
+#sidebar2 .account a {
+  color: black;
+}
+
+#sidebar2 .account:hover {
+  background-color: #1e90ff33; /* dodgerblue 33% */
+}
+
+#sidebar2 .profile-block {
+  display: block;
+  padding: 10px;
+  line-height: 18px;
+  border: 1px gray dashed;
+}
+
+#sidebar2 .profile-block:hover {
+}
+
+#sidebar2 .profile-block a:hover {
+  text-decoration: none;
+}
+
+#sidebar2 .profile-block img {
+  float: left;
+  width: 36px;
+  margin-right: 10px;
+}
+
+#sidebar2 ul {
+  float: left;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  margin-top: 0px;
+  padding-left: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+}
+
+.sidebar li {
+  border-top: 1px dashed gray;
+}
+
+.sidebar a {
+  color: black;
+  text-decoration: none;
+}
+
+.sidebar a:link {
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+}
+
+.sidebar a:visited {
+  font-weight: normal;
+  color: gray;
+}
+
+.sidebar .search a, .sidebar .new a, .sidebar .reports a {
+  color: black;
+}
+
+.sidebar .search, .sidebar .search:hover {
+  border-top: 0px;
+  background: #1e90ff33; /* dodgerblue 33% */
+  text-decoration: none;
+}
+
+.sidebar .new, .sidebar .search, .sidebar .reports {
+  background: white;
+}
+
+.sidebar .new:hover {
+  background: white; /* dodgerblue 33% */
+}
+
+.sidebar .post a:hover {
+  color: black;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+.sidebar .active {
+  background: #0095ff;
+  color: white;
+  border-top: 1px dashed lightgray;
+}
+
+.sidebar .active a {
+  color: white;
+}
+
+.sidebar .active a:hover {
+  color: white;
+  text-decoration: none;
+  background: dodgerblue;
+}
+
+.sidebar .header {
+  padding: 10px;
+  text-align: right;
+  border: 0;
+}
+
+.sidebar .header a {
+  padding: 0;
+  display: inline;
+  color: white;
+}
+
+#content {
+  display: block;
+  float: left;
+  margin: 0px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 0 20px 20px 20px;
+  max-width: 800px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 6px;
+  overflow: hidden;
+  flex: 1 1 auto;
+}  
+
+#content h1 {
+  position: relative;
+  right: 20px;
+  background: dodgerblue;
+  text-align: center;
+  color: white;
+  width: 100%;
+  font-size: 14px;
+  margin-top: 0px;
+  padding: 6px 20px 10px 20px;
+}
+
+#content h1 a {
+  color: white;
+}
+
+#chat {
+  display: block;
+  float: left;
+  font-size: 14px;
+  min-height: 50%;
+  overflow-y: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-height: 65%;
+  min-width: 480px;
+  border-radius: 0px;
+  border-style: inset;
+  border-color: darkgray;
+  border-width: 4px;
+  padding-top: 10px;
+  background: white;
+}
+
+#chat .current {
+  border-top: 1px dashed lightgray;
+}
+
+body.post textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: system-ui;
+  border: 4px inset darkgray;
+  font-size: 14px;
+}
+
+body.post textarea:focus-visible {
+  outline: 0px;
+}
+
+body.post input[type=text]:focus-visible {
+  outline: 0px;
+}
+
+body.post input[type=text] {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+body.post .post-body {
+  display: block;
+  float: left;
+  width: 100%;
+}
+
+#chat .me {
+  float: left
+  text-align: left;
+}
+
+#chat .avatar-small {
+  float: left;
+  margin: 8px;
+  height: 20px;
+}
+
+#chat .me img {
+  float: left;
+  margin-left: 8px;
+}
+
+#chat .me p {
+  /*float: left; */
+}
+
+.post .me {
+  float: left;
+}
+
+.comment-wrapper {
+  display: block;
+  float: left;
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.comment {
+  display: block;
+  float: left;
+  width: 100%;
+}
+
+.comment:hover, .highlighted {
+  background-color: #1e90ff33; /* dodgerblue 33% */
+}
+
+.comment .permalink {
+	color: #1e90ff33;
+	display: none;
+	float: right;
+	padding: 10px;
+}
+
+.comment:hover .permalink, .highlighted .permalink {
+	display: block;
+}
+
+.comment .permalink:hover, .highlighted .permalink {
+	color: purple;
+}
+
+.comment p {
+  padding: 8px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 24px;
+  line-height: 20px;
+}
+
+.comment a {
+  color: cornflowerblue;
+}
+
+img.comment-preview-thumb {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.post form {
+  float: left;
+  width: 100%;
+}
+
+.post form textarea {
+  resize: vertical;
+  padding: 10px;
+}
+
+.post form input[type=text] {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#submit-button {
+  padding: 10px;
+  width: 200px;
+  border-radius: 6px;
+  background: dodgerblue;
+  background-color: dodgerblue;
+  border: 0px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  float: right;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+#submit-button:disabled {
+  background: gray;
+}
+
+input#submit-button.active, input#submit-button:active {
+  background: #006ebd;
+}
+
+.avatar-small {
+  height: 16px;
+  float: right;
+}
+
+.avatar-small-left {
+  height: 36px;
+  float: left;
+  margin-right: 10px;
+}
+
+.time-ago {
+  font-size: 12px;
+}
+
+.preview {
+  font-size: 12px;
+}
+
+#search-results {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#search-results li {
+  padding-bottom: 20px;
+}
+
+#search-form input[name=q] {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#search-form .submit-button {
+  display: none;
+}
+
+.user-access-right {
+  float: right;
+  margin-left: 10px;
+}
+
+.user-access img {
+  width: 20px;
+  vertical-align: middle;
+}
+
