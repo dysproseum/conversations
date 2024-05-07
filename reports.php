@@ -7,13 +7,13 @@
     exit;
   }
   else {
-    require_once('database.php');
+    require_once('include/database.php');
     global $mysqli;
 
     $user = getUserInfo($_SESSION['sub']);
     global $user;
 
-      require_once('template.php');
+      require_once('include/template.php');
       $head = getHtmlHeader(['title' => 'Reports']);
       $header = getHeader($user);
       $sidebar = getSidebar($user, "reports");

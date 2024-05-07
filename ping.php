@@ -6,7 +6,7 @@
     exit;
   }
   else {
-    require_once('database.php');
+    require_once('include/database.php');
     $user = getUserInfo($_SESSION['sub']);
     if (!$user) {
       header('HTTP/1.0 403 Forbidden');

@@ -6,14 +6,14 @@
     exit;
   }
   else {
-    require_once('database.php');
+    require_once('include/database.php');
     $user = getUserInfo($_SESSION['sub']);
     if (!$user) {
       header('Location: /conversations/login.php');
       exit;
     }
     else {
-      require_once('template.php');
+      require_once('include/template.php');
       $head = getHtmlHeader(['title' => 'New Topic']);
       $header = getHeader($user);
       $sidebar = getSidebar($user, "new");

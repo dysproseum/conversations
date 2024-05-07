@@ -10,7 +10,7 @@
     exit;
   }
   session_start();
-  require_once('database.php');
+  require_once('include/database.php');
   $user = getUserInfo($_SESSION['sub']);
   $message = $_SESSION['message'];
   unset($_SESSION['message']);
@@ -19,7 +19,7 @@
   // The image URL is passed by login.js upon sign in.
   // updatePicture() is then called from tokensignin.php.
 
-  require_once('template.php');
+  require_once('include/template.php');
   $header = getHeader($user);
   $sidebar = getSidebar($user);
   $sidebar2 = getSidebar2($user);
@@ -28,9 +28,9 @@
 <html>
 <head>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script type="text/javascript" src="login.js"></script>
+  <script type="text/javascript" src="js/login.js"></script>
   <meta name="google-signin-client_id" content="<?php print CLIENT_ID; ?>">
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
 <body class="login">
