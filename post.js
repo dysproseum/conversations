@@ -2,7 +2,8 @@
  * Javascript for post page.
  */
 
-window.onload=function () {
+window.addEventListener("load",function(event) {
+
   // Check for cid param and scroll to that comment.
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -63,4 +64,4 @@ window.onload=function () {
     }
   };
 
-}
+},false);

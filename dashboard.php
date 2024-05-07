@@ -32,6 +32,7 @@
   <div class="wrapper">
     <?php print $sidebar; ?>
     <div id="content">
+      <h1 id="contentheader">Dashboard</h1>
       <?php print $content; ?>
     </div>
     <?php print $sidebar2; ?>

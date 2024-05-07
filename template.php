@@ -11,6 +11,7 @@ function getHtmlHeader($options) {
   <script type="text/javascript" src="fullscreen.js"></script>
   <script type="text/javascript" src="ping.js"></script>
   <script type="text/javascript" src="post.js"></script>
+  <script type="text/javascript" src="drag.js"></script>
 
   <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
   <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
@@ -67,7 +68,7 @@ function getSidebar($user, $this_post = '') {
       <li class="post new <?php if ($this_post == "search") print "active"; ?>">
         <a href="/conversations/search.php">Search &#x1F50E;</a>
       </li>
-      <li class="post new">
+      <li class="post new <?php if ($this_post == "new") print "active"; ?>">
         <a href="/conversations/new.php">New Topic +</a>
       </li>
       <li class="reports <?php if ($this_post == "reports") print "active"; ?>">
@@ -99,7 +100,9 @@ function getSidebar2($user, $this_post = '') {
     // Re-sort posts by latest comment.
     foreach ($posts as $post) {
       $comment = getLastComment($post['id']);
-      $sorted[$comment['created']] = $post;
+      if (isset($comment['created'])) {
+        $sorted[$comment['created']] = $post;
+      }
     }
   }
   krsort($sorted);
@@ -193,10 +196,9 @@ function getDashboard($user) {
 
   ob_start(); ?>
   <?php if ($user): ?>
+    <div class="dashboard">
     <?php foreach ($posts as $post): ?>
       <p>
-        <?php print getUser($post['uid'])->name; ?>
-        posted
         <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
           <?php if (empty($post['body'])): ?>
             (untitled)
@@ -204,8 +206,15 @@ function getDashboard($user) {
             <?php print substr($post['body'], 0, 128); ?>
           <?php endif; ?>
         </a>
+        <br>
+        <?php $comment = getLastComment($post['id']); ?>
+        <?php $comments = getPostcomments($post['id']); ?>
+        <?php print sizeof($comments); ?> posts
+        <br>
+        posted by <?php print getUser($post['uid'])->name; ?>
       </p>
     <?php endforeach; ?>
+    </div>
   <?php endif; ?>
 
   <?php $html = ob_get_contents();
@@ -215,15 +224,14 @@ function getDashboard($user) {
 
 // @todo nothing calls this yet
 function dayByDay($user) {
-  $message = $_SESSION['message'];
-  unset($_SESSION['message']);
-
   $posts = dayByDatabase($user);
 
   ob_start(); ?>
   <h1>Day By Day</h1>
-  <?php foreach ($days as $day): ?>
-    <?php echo $post['title']; ?>
+  <?php foreach ($posts as $post): ?>
+    <?php if (isset($post)): ?>
+      <?php echo $post['title']; ?>
+    <?php endif; ?>
   <?php endforeach; ?>
 
   <?php $html = ob_get_contents();
@@ -233,8 +241,10 @@ function dayByDay($user) {
 
 // Theme new post form html.
 function getNewPostForm($user) {
-  $message = $_SESSION['message'];
-  unset($_SESSION['message']);
+  if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']);
+  }
 
   ob_start(); ?>
   <h1>Start a New Topic</h1>
@@ -246,7 +256,9 @@ function getNewPostForm($user) {
     <br>
     <input type="text" name="link" placeholder="Link URL (optional)" />
     <br>
-    <span id="user-message" /><?php print $message; ?></span>
+    <?php if (isset($message)): ?>
+      <span id="user-message" /><?php print $message; ?></span>
+    <?php endif; ?>
     <input type="submit" id="submit-button" value="Post Topic" />
   </form>
 
@@ -257,13 +269,17 @@ function getNewPostForm($user) {
 
 // Theme new comment form.
 function getPostCommentForm($user, $post) {
-  $message = $_SESSION['message'];
-  unset($_SESSION['message']);
+  if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']);
+  }
 
   ob_start(); ?>
 
   <form action="submitcomment.php" method="POST" id="comment-form">
-    <span id="user-message" /><?php print $message; ?></span>
+    <?php if (isset($message)): ?>
+      <span id="user-message" /><?php print $message; ?></span>
+    <?php endif; ?>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <textarea name="body" id="comment-body" rows="1"></textarea>
     <br>

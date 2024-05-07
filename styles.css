@@ -47,10 +47,32 @@ body.post #content {
   border-width: 4px;
   border-color: dodgerblue;
   border-style: outset;
+  left: 300px;
+  top: 100px;
 }
 
-body.dashboard #content {
+body.dashboard #content, body.search #content {
+  margin-top: 10px;
+  max-width: 680px;
+  left: 300px;
+  top: 100px;
+}
 
+body.dashboard .dashboard, body.search .dashboard {
+  overflow-y: auto;
+  height: 80%;
+}
+
+body.dashboard p {
+  padding: 4px 0px 4px 8px;
+  margin: 10px 10px 0px 0px;
+  background: lightblue;
+  border-radius: 4px;
+  width: 96px;
+  height: 96px;
+  display: block;
+  float: left;
+  overflow: hidden;
 }
 
 body.post h1 {
@@ -260,12 +282,15 @@ h1#contentheader {
   margin-top: 20px;
   margin-bottom: 20px;
   padding: 0 20px 20px 20px;
-  max-width: 800px;
   background: white;
   border: 1px solid black;
   border-radius: 6px;
-  overflow: hidden;
   flex: 1 1 auto;
+  position: absolute; /* draggable */
+  height: 60%;
+  min-height: 60%;
+  overflow: hidden; /* resizable */
+  resize: both;
 }  
 
 #content h1 {
@@ -278,6 +303,10 @@ h1#contentheader {
   font-size: 14px;
   margin-top: 0px;
   padding: 6px 20px 10px 20px;
+}
+
+#content.dragging {
+  cursor: pointer;
 }
 
 #content h1 a {
@@ -301,6 +330,7 @@ h1#contentheader {
   border-width: 4px;
   padding-top: 10px;
   background: white;
+  height: 60%;
 }
 
 #chat .current {
@@ -394,7 +424,7 @@ body.post .post-body {
   padding: 8px;
   margin-top: 0px;
   margin-bottom: 0px;
-  margin-left: 24px;
+  margin-left: 28px;
   line-height: 20px;
 }
 
@@ -414,7 +444,7 @@ img.comment-preview-thumb {
 
 .post form textarea {
   resize: vertical;
-  padding: 10px;
+  padding: 10px 0px 10px 0px;
 }
 
 .post form input[type=text] {
@@ -465,9 +495,15 @@ input#submit-button.active, input#submit-button:active {
   font-size: 12px;
 }
 
+#search-form {
+  margin-top: 20px;
+}
+
 #search-results {
   list-style-type: none;
   padding-left: 0;
+  overflow-y: auto;
+  height: 80%;
 }
 
 #search-results li {

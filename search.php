@@ -1,7 +1,9 @@
 <?php
   // Get search term if exists.
-  $q = $_GET['q'];
-  if (!$q) {
+  if (isset($_GET['q'])) {
+    $q = $_GET['q'];
+  }
+  else {
     $q = '';
   }
 
@@ -38,6 +40,7 @@
   <div class="wrapper">
     <?php print $sidebar; ?>
     <div id="content">
+      <h1 id="contentheader">Search</h1>
 
       <?php print $form; ?>
 
