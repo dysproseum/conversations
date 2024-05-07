@@ -103,7 +103,7 @@
           <?php else: ?>
             <div class="comment-wrapper current" id="<?php print $cid; ?>">
               <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
-                <img class="avatar-small" src="transparent.gif" align="left" title="<?php print $timestamp; ?>" />
+                <img class="avatar-small" src="images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
 
 		<a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
 
