@@ -6,7 +6,7 @@
     exit;
   }
   else {
-    require_once('database.php');
+    require_once('include/database.php');
     global $mysqli;
     $user = getUserInfo($_SESSION['sub']);
     if (!$user) {

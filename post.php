@@ -14,7 +14,7 @@
     exit;
   }
   else {
-    require_once('database.php');
+    require_once('include/database.php');
     global $mysqli;
 
     $user = getUserInfo($_SESSION['sub']);
@@ -35,7 +35,7 @@
         $access = TRUE;
       }
 
-      require_once('template.php');
+      require_once('include/template.php');
       $post = [];
       if ($access) {
         $post = getPost($id);

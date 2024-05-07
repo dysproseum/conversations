@@ -39,7 +39,7 @@ function onSignIn(googleUser) {
     } 
   };
   xhr.send('idtoken=' + id_token + "&picture=" + profile.getImageUrl());
-  $picture.src = "loading.gif";
+  $picture.src = "images/loading.gif";
   $picture.hidden = false;
 }
 

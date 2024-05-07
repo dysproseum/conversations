@@ -50,7 +50,7 @@ if ($result->sub !== $userid) {
 session_start();
 $_SESSION['sub'] = $userid;
 
-require_once('database.php');
+require_once('include/database.php');
 
 // Update picture.
 $picture = $_POST['picture'];

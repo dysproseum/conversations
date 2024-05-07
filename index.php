@@ -11,8 +11,8 @@
 <head>
   <title>Conversations | Open-source chat service</title>
 
-  <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
-  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="css/styles.css" media="screen">
+  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='css/mobile.css' type='text/css' />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 

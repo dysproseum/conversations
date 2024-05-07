@@ -1,6 +1,6 @@
 <?php
 
-require_once('utils.php');
+require_once('include/utils.php');
 
 define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
 
@@ -8,13 +8,13 @@ define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
 function getHtmlHeader($options) {
   ob_start(); ?>
   <title><?php print $options['title'] . ' | ' . SITE_NAME; ?></title>
-  <script type="text/javascript" src="fullscreen.js"></script>
-  <script type="text/javascript" src="ping.js"></script>
-  <script type="text/javascript" src="post.js"></script>
-  <script type="text/javascript" src="drag.js"></script>
+  <script type="text/javascript" src="js/fullscreen.js"></script>
+  <script type="text/javascript" src="js/ping.js"></script>
+  <script type="text/javascript" src="js/post.js"></script>
+  <script type="text/javascript" src="js/drag.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
-  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='mobile.css' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="css/styles.css" media="screen">
+  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='css/mobile.css' type='text/css' />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 
@@ -28,20 +28,20 @@ function getHtmlHeader($options) {
 function getHeader($user) {
 return;
   $name = $user ? $user->name : '';
-  $img = $user ? $user->picture: 'transparent.gif';
+  $img = $user ? $user->picture: 'images/transparent.gif';
 
   ob_start(); ?>
   <div id="header">
       <a href="/conversations/search.php" title="Home">Conversations</a>
     <div class="profile-block">
         <a href="/conversations/open-source-desktop.html" id="minimize">
-          <img src="min-button.png" alt="Minimize" title="Hide" />
+          <img src="images/min-button.png" alt="Minimize" title="Hide" />
         </a>
         <a href="#" onclick="toggleFullscreen(this)" id="maximize">
-          <img src="max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
+          <img src="images/max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
         </a>
         <a href="/conversations/login.php" id="exit">
-          <img src="x-icon.png" alt="Exit" title="Logout" />
+          <img src="images/x-icon.png" alt="Exit" title="Logout" />
         </a>
     </div>
   </div>
@@ -117,7 +117,7 @@ function getSidebar2($user, $this_post = '') {
     $picture = $user->picture;
   }
   else {
-    $picture = 'unknown-user.jpg';
+    $picture = 'images/unknown-user.jpg';
   }
 
 
@@ -128,13 +128,13 @@ function getSidebar2($user, $this_post = '') {
     <a href="#" style="float: left">Conversations</a>
 
         <a href="/conversations/open-source-desktop.html" id="minimize">
-          <img src="min-button.png" alt="Minimize" title="Hide" />
+          <img src="images/min-button.png" alt="Minimize" title="Hide" />
         </a>
         <a href="#" onclick="toggleFullscreen(this)" id="maximize">
-          <img src="max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
+          <img src="images/max-button.png" alt="Maximize" title="Fullscreen" style="margin-right: 10px" />
         </a>
         <a href="/conversations/login.php" id="exit">
-          <img src="x-icon.png" alt="Exit" title="Logout" />
+          <img src="images/x-icon.png" alt="Exit" title="Logout" />
         </a>
   </li>
   <li class="post account">
