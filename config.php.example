@@ -14,3 +14,5 @@ $conf['database'] = [
 $conf['google'] = [
   'client_id' => 'YOUR_CLIENT_ID.apps.googleusercontent.com',
 ];
+
+$conf['minimize'] = 'http://dysproseum.com/open-source-desktop.html';

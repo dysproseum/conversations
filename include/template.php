@@ -34,7 +34,7 @@ return;
   <div id="header">
       <a href="/conversations/search.php" title="Home">Conversations</a>
     <div class="profile-block">
-        <a href="/conversations/open-source-desktop.html" id="minimize">
+      <a href="<?php print $conf['minimize']; ?>" id="minimize">
           <img src="images/min-button.png" alt="Minimize" title="Hide" />
         </a>
         <a href="#" onclick="toggleFullscreen(this)" id="maximize">
@@ -89,6 +89,7 @@ function getSidebar($user, $this_post = '') {
 
 // Theme sidebar html.
 function getSidebar2($user, $this_post = '') {
+  global $conf;
   global $user;
 
   $posts = getMyPosts($user);
@@ -127,7 +128,7 @@ function getSidebar2($user, $this_post = '') {
   <li class="active header">
     <a href="#" style="float: left">Conversations</a>
 
-        <a href="/conversations/open-source-desktop.html" id="minimize">
+        <a href="<?php print $conf['minimize']; ?>" id="minimize">
           <img src="images/min-button.png" alt="Minimize" title="Hide" />
         </a>
         <a href="#" onclick="toggleFullscreen(this)" id="maximize">
