@@ -10,7 +10,7 @@ else {
   print "Missing google client id";
   exit;
 }
-require_once dirname(__FILE__) . '/google-api-php-client/vendor/autoload.php';
+require_once dirname(__FILE__) . '/include/google-api-php-client/vendor/autoload.php';
 
 // Get $id_token via HTTPS POST.
 $id_token = $_POST['idtoken'];
