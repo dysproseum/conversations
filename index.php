@@ -45,16 +45,8 @@
 
     </div>
   </div>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5F5YW297EN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-5F5YW297EN');
-</script>
-
+  <?php if (file_exists('include/analytics.html')): ?>
+  <?php include('include/analytics.html'); ?>
+  <?php endif; ?>
 </body>
 </html>
