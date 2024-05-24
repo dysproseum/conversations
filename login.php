@@ -11,6 +11,7 @@
   }
   session_start();
   require_once('include/database.php');
+  $sub = isset($_SESSION['sub']) ? true : false;
   $user = getUserInfo($_SESSION['sub']);
   $message = $_SESSION['message'];
   unset($_SESSION['message']);
@@ -20,6 +21,7 @@
   // updatePicture() is then called from tokensignin.php.
 
   require_once('include/template.php');
+  $head = getHtmlHeader(['title' => 'Login']);
   $header = getHeader($user);
   $sidebar = getSidebar($user);
   $sidebar2 = getSidebar2($user);
@@ -27,33 +29,30 @@
 
 <html>
 <head>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <?php print $head; ?>
   <script type="text/javascript" src="js/login.js"></script>
-  <meta name="google-signin-client_id" content="<?php print CLIENT_ID; ?>">
-  <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
 <body class="login">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <?php print $header; ?>
   <div class="wrapper">
     <?php print $sidebar; ?>
     <div id="content">
 
-      <h1>Login</h1>
+      <h1 id="contentheader">Login</h1>
       <p id="user-instructions">Click "Sign in" to login with your Google account. This site stores no passwords or personal information.</p>
 
       <span id="user-message" /><?php print $message; ?></span>
 
-      <?php /* https://developers.google.com/identity/sign-in/web/sign-in */ ?>
-      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      <div id="g_id_onload"
+        data-client_id="<?php print CLIENT_ID; ?>"
+        data-callback="handleCredentialResponse">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
 
-      <p id="user-continue" hidden >
-        <!--
-        <img class="avatar-small-left" src="<?php print $user->picture; ?>" alt="user avatar" />
-        Logged in as <?php print $user->name; ?>
-        <br>
-	<br>
-        -->
+      <p id="user-continue" <?php if (!$sub) print "hidden"; ?>>
         <a href="#" onclick="signOut();">Sign out</a>
         <a id="submit-button" href="/conversations/search.php">Continue to Dashboard</a>
       </p>

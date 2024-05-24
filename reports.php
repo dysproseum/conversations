@@ -32,7 +32,7 @@
     <?php print $sidebar; ?>
     <div id="content">
 
-      <h1>System Reports</h1>
+      <h1 id="contentheader">System Reports</h1>
       Total Posts: <?php print $content['num_posts']; ?><br>
       Total Comments: <?php print $content['num_comments']; ?><br>
       Total Users: <?php print $content['num_users']; ?><br>

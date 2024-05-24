@@ -67,5 +67,4 @@ else {
 }
 $info['user'] = $user;
 
-print json_encode($info);
-
+print json_encode($info, JSON_PRETTY_PRINT);

@@ -76,6 +76,9 @@ function getUser($id) {
 
 // Helper function to get user info.
 function getUserInfo($sub) {
+  if (!$sub) {
+    return FALSE;
+  }
   global $mysqli;
   $stmt = $mysqli->prepare("SELECT * FROM users WHERE sub LIKE ? LIMIT 1");
   $stmt->bind_param('s', $sub);
