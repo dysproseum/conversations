@@ -43,19 +43,20 @@ body.post #content {
   width: min-content;
   min-width: 400px;
   background: lightgray;
-  border-radius: 12px;
-  border-width: 4px;
-  border-color: dodgerblue;
-  border-style: outset;
-  left: 300px;
-  top: 100px;
 }
 
 body.dashboard #content, body.search #content {
   margin-top: 10px;
   max-width: 680px;
+}
+
+body #content {
   left: 300px;
   top: 100px;
+  border-radius: 12px;
+  border-width: 4px;
+  border-color: dodgerblue;
+  border-style: outset;
 }
 
 body.dashboard .dashboard, body.search .dashboard {
@@ -79,7 +80,6 @@ body.post h1 {
   overflow: hidden;
   margin-bottom: 8px;
   font-size: 12px;
-  font-weight: normal;
 }
 
 h1#contentheader {

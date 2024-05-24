@@ -94,10 +94,7 @@ function getSidebar2($user, $this_post = '') {
 
   $posts = getMyPosts($user);
   $sorted = [];
-  if (!$posts) {
-//    return false;
-  }
-  else {
+  if ($posts) {
     // Re-sort posts by latest comment.
     foreach ($posts as $post) {
       $comment = getLastComment($post['id']);
@@ -105,22 +102,21 @@ function getSidebar2($user, $this_post = '') {
         $sorted[$comment['created']] = $post;
       }
     }
+    krsort($sorted);
   }
-  krsort($sorted);
 
-  if ($user->name) {
+  if (isset($user->name)) {
     $username = $user->name;
   }
   else {
     $username = 'Unknown';
   }
-  if ($user->picture) {
+  if (isset($user->picture)) {
     $picture = $user->picture;
   }
   else {
     $picture = 'images/unknown-user.jpg';
   }
-
 
   ob_start(); ?>
   <div class="sidebar" id="sidebar2">
@@ -248,7 +244,7 @@ function getNewPostForm($user) {
   }
 
   ob_start(); ?>
-  <h1>Start a New Topic</h1>
+  <h1 id="contentheader">Start a New Topic</h1>
 
   <form action="submitpost.php" method="POST">
     <input type="text" name="body" placeholder="Post topic (title or short message)" />
