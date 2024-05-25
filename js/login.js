@@ -32,18 +32,33 @@ function handleCredentialResponse(response) {
     }
     else {
       // Login success.
-      $name.textContent = info.user.name;
-      $picture.src = info.user.picture
-      $continue.hidden = false;
-      $message.textContent = '';
+      if ($name) {
+        $name.textContent = info.user.name;
+      }
+      if ($picture) {
+        $picture.src = info.user.picture
+      }
+      if ($continue) {
+        $continue.hidden = false;
+      }
+      if ($message) {
+        $message.textContent = '';
+      }
 
       console.log("info.message: " + info.message);
       console.log('Signed in as: ' + info.user.email);
+
+      if (window.location.pathname != '/conversations/login.php') {
+        window.location.href="/conversations/login.php";
+      }
     }
   };
   xhr.send('idtoken=' + id_token + "&picture=" + responsePayload.picture);
-  $picture.src = "images/loading.gif";
-  $picture.hidden = false;
+
+  if ($picture) {
+    $picture.src = "images/loading.gif";
+    $picture.hidden = false;
+  }
 }
 
 // Callback function for Google account signout.
@@ -67,7 +82,7 @@ function signOut() {
     $picture.hidden = true;
     $continue.hidden = true;
 
-    window.location.href="/conversations/login.php";
+    window.location.href="/conversations/index.php";
   };
   xhr.send();
 
