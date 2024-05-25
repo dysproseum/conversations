@@ -10,9 +10,11 @@ $conf['database'] = [
   'host' => 'localhost',
 ];
 
-// Google API keys.
+// Google API: Enable the People API.
 $conf['google'] = [
+  // Create an Oauth 2.0 Client ID of type Web application.
   'client_id' => 'YOUR_CLIENT_ID.apps.googleusercontent.com',
 ];
 
+// Minimize button link href.
 $conf['minimize'] = 'http://dysproseum.com/open-source-desktop.html';
