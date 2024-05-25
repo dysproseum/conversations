@@ -17,6 +17,7 @@ body.home {
 
 body.home #header {
   text-align: center;
+  width: 50%;
 }
 
 .wrapper {
@@ -33,10 +34,28 @@ body.home #header {
   align-items: start;
 }
 
+body.home .wrapper {
+  width: 50%;
+}
+
 body.home #content {
-  width: inherit;
+  position: relative;
+  width: 42%;
   margin: 36px;
   float: none;
+  left: 0px;
+}
+
+body.home #footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 50%;
+}
+
+body.home #footer a {
+  text-decoration: underline;
+  font-size: 12px;
 }
 
 body.post #content {
@@ -91,7 +110,7 @@ h1#contentheader {
   display: block;
   float: left;
   width: 100%;
-  background: #0095ff;
+  background: dodgerblue;
   padding-top: 10px;
   padding-bottom: 10px;
   image-rendering: pixelated;
