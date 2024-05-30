@@ -48,9 +48,7 @@ function handleCredentialResponse(response) {
       console.log("info.message: " + info.message);
       console.log('Signed in as: ' + info.user.email);
 
-      if (window.location.pathname != '/conversations/login.php') {
-        window.location.href="/conversations/login.php";
-      }
+      window.location.href="/conversations/dashboard.php";
     }
   };
   xhr.send('idtoken=' + id_token + "&picture=" + responsePayload.picture);

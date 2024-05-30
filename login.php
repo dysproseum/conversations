@@ -54,7 +54,7 @@
 
       <p id="user-continue" <?php if (!$sub) print "hidden"; ?>>
         <a href="#" onclick="signOut();">Sign out</a>
-        <a id="submit-button" href="/conversations/search.php">Continue to Dashboard</a>
+        <a id="submit-button" href="/conversations/dashboard.php">Continue to Dashboard</a>
       </p>
     </div>
     <?php print $sidebar2; ?>

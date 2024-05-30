@@ -47,7 +47,6 @@
         <li>Manage topics in message threads</li>
         <li>Search everything easily from your phone or computer</li>
       </ul>
-      <br>
       <h2>Privacy and Security</h2>
       <ul>
         <li>No personal account information is stored</li>
@@ -72,6 +71,7 @@
            data-logo_alignment="left"
            data-width="300px">
       </div>
+      <p>Click "Sign in" to login with your Google account. This site stores no passwords or personal information.</p>
 
     </div>
   </div>
