@@ -44,12 +44,15 @@
 
       <?php print $form; ?>
 
+      <ul id="search-results">
       <?php if (sizeof($content) == 0): ?>
-        <?php if (!empty($q)) print "No results"; ?>
-        <?php print getDashboard($user); ?>
+        <?php if (!empty($q)): ?>
+          <li>No results<li>
+        <?php else: ?>
+          <?php print getSearchDefault($user); ?>
+        <?php endif; ?>
       <?php else: ?>
         <?php print sizeof($content); ?> results:
-        <ul id="search-results">
         <?php foreach ($content as $post): ?>
           <li>
             <a href="/conversations/post.php?id=<?php print $post['parent_id'] ? $post['parent_id'] : $post['id']; ?>">

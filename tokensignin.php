@@ -36,12 +36,10 @@ curl_close($ch);
 // Check token and build response.
 $info = [];
 $result = json_decode($response);
-//var_dump($result);
-//die;
 if ($result->sub !== $userid) {
   header('HTTP/1.1 500 Server Error');
-  print "Unable to verify user claim";
-  var_dump($user);
+  $info['message'] = "Unable to verify user claim";
+  print json_encode($info, JSON_PRETTY_PRINT);
   exit;
 }
 

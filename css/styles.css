@@ -83,7 +83,7 @@ body.dashboard .dashboard, body.search .dashboard {
   height: 80%;
 }
 
-body.dashboard p {
+body.dashboard .tile {
   padding: 4px 0px 4px 8px;
   margin: 10px 10px 0px 0px;
   background: lightblue;
@@ -516,11 +516,12 @@ input#submit-button.active, input#submit-button:active {
 
 #search-form {
   margin-top: 20px;
+  font-family: system-ui;
 }
 
 #search-results {
   list-style-type: none;
-  padding-left: 0;
+  padding-left: 10px;
   overflow-y: auto;
   height: 80%;
 }

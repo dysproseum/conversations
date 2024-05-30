@@ -14,7 +14,7 @@ function getHtmlHeader($options) {
   <script type="text/javascript" src="js/drag.js"></script>
 
   <link rel="stylesheet" type="text/css" href="css/styles.css" media="screen">
-  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='css/mobile.css' type='text/css' />
+  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='css/mobile.css?<?php print time(); ?>' type='text/css' />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 
@@ -59,10 +59,10 @@ return;
 function getSidebar($user, $this_post = '') {
 
   ob_start(); ?>
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar1">
     <ul>
     <?php if ($user): ?>
-      <li class="post new">
+      <li class="post new <?php if ($this_post == "dashboard") print "active"; ?>">
         <a href="/conversations/dashboard.php">Dashboard</a>
       </li>
       <li class="post new <?php if ($this_post == "search") print "active"; ?>">
@@ -192,10 +192,33 @@ function getDashboard($user) {
   }
 
   ob_start(); ?>
-  <?php if ($user): ?>
-    <div class="dashboard">
-    <?php foreach ($posts as $post): ?>
+  <?php if (sizeof($posts) == "0"): ?>
+    <div id="content">
+      <h1 id="contentheader">Dashboard</h1>
+      <p>No posts yet! Click here to create one:</p>
       <p>
+        <a id="submit-button" href="/new.php">New Post</a>
+      </p>
+    </div>
+  <?php endif; ?>
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
+
+// Theme search html.
+function getSearchDefault($user) {
+  if ($user) {
+    $posts = getMyPosts($user);
+  }
+  else {
+    print "Invalid user search";
+    exit;
+  }
+
+  ob_start(); ?>
+    <?php foreach ($posts as $post): ?>
+      <li>
         <a href="/conversations/post.php?id=<?php print $post['id']; ?>">
           <?php if (empty($post['body'])): ?>
             (untitled)
@@ -209,11 +232,8 @@ function getDashboard($user) {
         <?php print sizeof($comments); ?> posts
         <br>
         posted by <?php print getUser($post['uid'])->name; ?>
-      </p>
+      </li>
     <?php endforeach; ?>
-    </div>
-  <?php endif; ?>
-
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
