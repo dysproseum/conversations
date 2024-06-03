@@ -133,7 +133,7 @@ function getMyPosts($user) {
   if (!$user->id) {
     return false;
   }
-  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
+  $stmt = $mysqli->prepare("SELECT p.*, u.picture FROM posts p, users u, access a WHERE a.uid = ? AND p.id = a.id AND u.id = p.uid ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();
   $result = $stmt->get_result();

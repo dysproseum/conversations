@@ -149,13 +149,13 @@ function getSidebar2($user, $this_post = '') {
 
   <!-- @todo read/unread status -->
 
-  <?php foreach ($sorted as $post_id): ?>
-    <?php $post = getPost($post_id['id']); ?>
-    <?php $comment = getLastComment($post_id['id']); ?>
+  <?php foreach ($sorted as $post): ?>
+    <?php $comment = getLastComment($post['id']); ?>
     <?php $time_ago = $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
+    <?php $picture = $comment ? $comment['picture'] : $post['picture']; ?>
     <?php $link = "/conversations/post.php?id=" . $post['id'] . "&cid=" . $comment['id']; ?>
 
-    <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
+    <li class="post <?php if($post['id'] == $this_post) print "active"; ?>">
       <a href="<?php print $link; ?>" title="<?php print $time_ago; ?>">
 
         <?php if (!empty($post['body'])): ?>
@@ -168,7 +168,7 @@ function getSidebar2($user, $this_post = '') {
         <br>
         > <?php print substr($comment['body'], 0, 18); ?>
 
-        <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
+        <img class="avatar-small" src="<?php print $picture; ?>" alt="user avatar" />
 
         <span class="time-ago"></span>
       </a>
