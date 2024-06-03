@@ -15,7 +15,20 @@
     else {
       $id = (int) $_REQUEST['id'];
       $cid = (int) $_REQUEST['comment'];
-      print getPing($id, $cid);
+      $response = getPing($id, $cid);
+      if ($response['id'] == $cid) {
+        header('HTTP/1.1 304 Not Modified');
+        exit;
+      }
+      else {
+        require_once('include/template.php');
+        $comment = getLastComment($id);
+        $last = getComment($cid);
+        $current_img = $last['picture'];
+        $current_day = date('d', $last['created']);
+        $response['html'] = buildComment($comment, $current_img, $current_day);
+      }
+      print json_encode($response, JSON_PRETTY_PRINT);
       exit;
     }
   }

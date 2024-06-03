@@ -5,14 +5,20 @@
 function loadDoc(url) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        var data = this.responseText;
-        if (data > commentId) {
-          console.log("Newer comments available");
-          // Display a message in #chat.
-          var msg = document.getElementById('user-message');
-          var refresh = window.location.href;
-          msg.innerHTML = '<a href="' + refresh + '">Newer comments available</a>';
+      if (this.readyState == XMLHttpRequest.DONE) {
+        if (this.status == 200) {
+          var data = JSON.parse(this.responseText);
+          if (data.id > commentId) {
+            commentId = data.id;
+
+            // Display a message in #chat.
+            var chat = document.getElementById("chat");
+            var next = document.createElement("div");
+            next.innerHTML = data.html;
+            chat.appendChild(next);
+            //window.scrollTo(chat);
+            chat.scrollTop = chat.scrollHeight;
+          }
         }
       }
     };
@@ -21,11 +27,8 @@ function loadDoc(url) {
     return true;
 }
 
-var timeout;
 var timeOut;
 var delay = 15000;
-//var postId = 0;
-//var commentId = 0;
 var url = "/conversations/ping.php?id=" + postId;
 
 timeOut = function() {
@@ -35,3 +38,7 @@ timeOut = function() {
       delay);
   }
 }
+
+window.addEventListener("load", function() {
+  setTimeout(timeOut, delay);
+});

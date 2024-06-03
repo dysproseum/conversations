@@ -238,6 +238,21 @@ function getLastComment($id) {
   return $post;
 }
 
+// Return the comment by id.
+function getComment($id) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.id = ? AND u.id = p.uid LIMIT 1");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $post = [];
+  foreach ($result as $row) {
+    $post = $row;
+  }
+  return $post;
+}
+
 function checkAccess($post, $person = '') {
   global $mysqli;
 
@@ -364,7 +379,10 @@ function getPing($post_id, $comment_id = '') {
 
   $comments = getPostComments($post_id);
   $last = getLastComment($post_id);
-  $response = $last['id'];
+  $response = [
+    'id' => $last['id'],
+    'comment' => $last,
+  ];
 
   // @todo implement caching bucket.
   // @todo expire cache upon post creation, for each user that has access.

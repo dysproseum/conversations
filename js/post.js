@@ -21,11 +21,6 @@ window.addEventListener("load",function(event) {
     document.getElementById("comment-body").focus();
   }
 
-  // Set up ping.
-  timeout = setTimeout(function() {
-    timeOut();
-  }, delay);
-
   // Disable form for visual indication
   // and to prevent double posts.
   var form = document.getElementById('comment-form');

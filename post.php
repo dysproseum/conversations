@@ -84,49 +84,7 @@
 
       <div id="chat">
         <?php foreach ($comments as $comment): ?>
-          <?php $imgs = getImagesLinks($comment['body']); ?>
-          <?php $body = displayTextWithLinks(nl2br($comment['body'])); ?>
-          <?php $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC"; ?>
-          <?php $cid = $comment['post_id']; ?>
-          <?php $permalink = '?id=' . $post['id'] . '&cid=' . $cid; ?>
-
-          <?php if (($current_img !== $comment['picture']) || ($current_day !== date('d', $comment['created']))): ?>
-
-            <?php $current_img = $comment['picture']; ?>
-            <?php $current_day = date('d', $comment['created']); ?>
-            <div class="comment-wrapper current" id="<?php print $cid; ?>">
-              <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
-                <img class="avatar-small current" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
-
-		<a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
-
-          <?php else: ?>
-            <div class="comment-wrapper current" id="<?php print $cid; ?>">
-              <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
-                <img class="avatar-small" src="images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
-
-		<a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
-
-          <?php endif; ?>
-
-          <?php if ($comment['body']): ?>
-             <p><?php print $body; ?></p>
-          <?php endif; ?>
-
-          <?php if ($imgs): ?>
-            <?php foreach ($imgs[0] as $img): ?>
-                <p><a target="_blank" href="<?php print $img; ?>">
-                  <img class="comment-preview-thumb" src="<?php print $img; ?>" />
-                </a></p>
-            <?php endforeach; ?>
-          <?php endif; ?>
-
-          <?php if ($comment['link']): ?>
-            <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
-          <?php endif; ?>
-
-              </div> <!-- comment -->
-            </div> <!-- comment-wrapper -->
+            <?php print buildComment($comment, $current_img, $current_day); ?>
         <?php endforeach; ?>
       </div>
 
