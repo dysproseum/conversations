@@ -18,7 +18,6 @@ function getHtmlHeader($options) {
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 
-  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
