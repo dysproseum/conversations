@@ -16,13 +16,13 @@
       $id = (int) $_REQUEST['id'];
       $cid = (int) $_REQUEST['comment'];
       $response = getPing($id, $cid);
-      if ($response['id'] == $cid) {
+      $comment = $response['comment'];
+      if ($comment['id'] == $cid) {
         header('HTTP/1.1 304 Not Modified');
         exit;
       }
       else {
         require_once('include/template.php');
-        $comment = getLastComment($id);
         $last = getComment($cid);
         $current_img = $last['picture'];
         $current_day = date('d', $last['created']);

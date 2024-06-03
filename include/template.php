@@ -392,7 +392,7 @@ function buildComment($comment, &$current_img, &$current_day) {
   $imgs = getImagesLinks($comment['body']);
   $body = displayTextWithLinks(nl2br($comment['body']));
   $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC";
-  $cid = $comment['id'];
+  $cid = $comment['post_id'];
   $permalink = '?id=' . $post['id'] . '&cid=' . $cid;
 
   ob_start(); ?>
