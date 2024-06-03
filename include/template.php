@@ -397,25 +397,21 @@ function buildComment($comment, &$current_img, &$current_day) {
 
   ob_start(); ?>
 
-  <?php if (($current_img !== $comment['picture']) || ($current_day !== date('d', $comment['created']))): ?>
-    <?php
-      $current_img = $comment['picture'];
-      $current_day = date('d', $comment['created']);
-    ?>
+  <div class="comment-wrapper current" id="<?php print $cid; ?>">
+    <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
+    <?php if (($current_img !== $comment['picture']) || ($current_day !== date('d', $comment['created']))): ?>
 
-    <div class="comment-wrapper current" id="<?php print $cid; ?>">
-      <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
-        <img class="avatar-small current" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
-
-        <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
+      <?php
+        $current_img = $comment['picture'];
+        $current_day = date('d', $comment['created']);
+      ?>
+      <img class="avatar-small current" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
+      <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
 
     <?php else: ?>
 
-    <div class="comment-wrapper current" id="<?php print $cid; ?>">
-      <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
-        <img class="avatar-small" src="images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
-
-        <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
+      <img class="avatar-small" src="images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
+      <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
 
     <?php endif; ?>
 
