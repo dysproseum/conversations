@@ -10,16 +10,17 @@ function loadDoc(url) {
           var data = JSON.parse(this.responseText);
           if (data.id > commentId) {
             commentId = data.id;
+            retryCount = 0;
 
             // Display a message in #chat.
             var chat = document.getElementById("chat");
             var next = document.createElement("div");
             next.innerHTML = data.html;
             chat.appendChild(next);
-            //window.scrollTo(chat);
             chat.scrollTop = chat.scrollHeight;
           }
         }
+        exponentialBackoff();
       }
     };
     xhttp.open("GET", url, true);
@@ -28,17 +29,23 @@ function loadDoc(url) {
 }
 
 var timeOut;
-var delay = 15000;
+const initialDelay = 5 * 1000;
+const maxDelay = 5 * 60 * 1000;
+var delay = initialDelay;
+var retryCount = 0;
 var url = "/conversations/ping.php?id=" + postId;
 
 timeOut = function() {
-  if (loadDoc(url + "&comment=" + commentId)) {
-    delay = 5000;
-    setTimeout(timeOut,
-      delay);
-  }
+  loadDoc(url + "&comment=" + commentId);
+}
+
+exponentialBackoff = function() {
+  delay = initialDelay + (initialDelay * Math.pow(2.0, retryCount));
+  retryCount++;
+  if (delay > maxDelay) delay = maxDelay;
+  setTimeout(timeOut, delay);
 }
 
 window.addEventListener("load", function() {
-  setTimeout(timeOut, delay);
+  setTimeout(timeOut, initialDelay);
 });
