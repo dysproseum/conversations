@@ -100,6 +100,9 @@ function getSidebar2($user, $this_post = '') {
       if (isset($comment['created'])) {
         $sorted[$comment['created']] = $post;
       }
+      else {
+        $sorted[$post['created']] = $post;
+      }
     }
     krsort($sorted);
   }
