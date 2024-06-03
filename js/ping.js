@@ -8,8 +8,8 @@ function loadDoc(url) {
       if (this.readyState == XMLHttpRequest.DONE) {
         if (this.status == 200) {
           var data = JSON.parse(this.responseText);
-          if (data.id > commentId) {
-            commentId = data.id;
+          if (data.comment.id > commentId) {
+            commentId = data.comment.id;
             retryCount = 0;
 
             // Display a message in #chat.

@@ -226,7 +226,7 @@ function getPostComments($id) {
 // Return the most recent comment for a given post.
 function getLastComment($id) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
+  $stmt = $mysqli->prepare("SELECT p.id AS post_id, p.*, u.name, u.picture FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -377,10 +377,8 @@ function getPing($post_id, $comment_id = '') {
   // @todo get unread posts.
   // @todo implement unread status.
 
-  $comments = getPostComments($post_id);
   $last = getLastComment($post_id);
   $response = [
-    'id' => $last['id'],
     'comment' => $last,
   ];
 
