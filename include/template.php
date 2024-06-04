@@ -358,7 +358,7 @@ function viewPost($post) {
     <?php endif; ?>
     <br>
     <span class="user-access">
-      <a href="#">delete this topic</a>,
+      <a href="/conversations/access.php?id=<?php print $post['id']; ?>">access</a>,
     </span>
     <span class="user-access">
       <a href="#" title="New users must login first">sharing</a>
