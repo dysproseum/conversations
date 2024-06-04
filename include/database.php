@@ -408,3 +408,39 @@ function dayByDatabase($user) {
   }
   return $posts;
 }
+
+// Remove user access to post.
+function deleteAccess($post_id, $user) {
+  global $mysqli;
+
+  $stmt = $mysqli->prepare("DELETE FROM access WHERE a.id = ? and a.uid = ?");
+  $stmt->bind_param('ii', 
+    $post_id,
+    $user->id,
+  );
+  $stmt->execute();
+  $result = $mysqli->affected_rows;
+  $stmt->close();
+
+  return $result;
+}
+
+// Delete post.
+function deletePost($post_id, $user) {
+  global $mysqli;
+
+  // @todo check access.
+  $post = getPost($post_id);
+  if (!checkAccess($post, $user)) {
+    // @todo set message in delete.php
+    return false;
+  }
+
+  $stmt = $mysqli->prepare("DELETE FROM posts WHERE id = ? LIMIT 1");
+  $stmt->bind_param('i', $post_id);
+  $stmt->execute();
+  $result = $mysqli->affected_rows;
+  $stmt->close();
+
+  return $result;
+}

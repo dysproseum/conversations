@@ -479,6 +479,7 @@ img.comment-preview-thumb {
   color: white;
   font-size: 14px;
   font-weight: bold;
+  font-family: system-ui;
   float: right;
   cursor: pointer;
   text-decoration: none;

@@ -19,6 +19,8 @@
       $sidebar = getSidebar($user, "dashboard");
       $content = getDashboard($user);
       $sidebar2 = getSidebar2($user);
+      $message = $_SESSION['message'];
+      unset($_SESSION['message']);
     }
   }
 ?>
@@ -31,6 +33,7 @@
   <?php print $header; ?>
   <div class="wrapper">
     <?php print $sidebar; ?>
+    <span id="message"><?php print $message; ?></span>
     <?php if ($content): ?>
       <?php print $content; ?>
     <?php endif; ?>
