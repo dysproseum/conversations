@@ -8,6 +8,11 @@ define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
 function getHtmlHeader($options) {
   ob_start(); ?>
   <title><?php print $options['title'] . ' | ' . SITE_NAME; ?></title>
+
+  <script type="text/javascript">
+    var postId;
+    var commentId;
+  </script>
   <script type="text/javascript" src="js/fullscreen.js"></script>
   <script type="text/javascript" src="js/ping.js"></script>
   <script type="text/javascript" src="js/post.js"></script>

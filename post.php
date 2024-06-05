@@ -51,8 +51,8 @@
 <head>
   <?php print $head; ?>
   <script type="text/javascript">
-    const postId = '<?php print $id; ?>';
-    var commentId = '<?php print $last_id; ?>';
+    postId = '<?php print $id; ?>';
+    commentId = '<?php print $last_id; ?>';
   </script>
 </head>
 <body class="post">

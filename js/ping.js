@@ -36,6 +36,10 @@ var retryCount = 0;
 var url = "/conversations/ping.php";
 
 timeOut = function() {
+  if (!postId) {
+    postId = -1;
+    commentId = -1;
+  }
   loadDoc(url + "?id=" + postId + "&comment=" + commentId);
 }
 
