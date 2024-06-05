@@ -133,7 +133,7 @@ function getMyPosts($user) {
   if (!$user->id) {
     return false;
   }
-  $stmt = $mysqli->prepare("SELECT p.* FROM posts p, access a WHERE a.uid = ? AND p.id = a.id ORDER BY created DESC");
+  $stmt = $mysqli->prepare("SELECT p.*, u.picture FROM posts p, users u, access a WHERE a.uid = ? AND p.id = a.id AND u.id = p.uid ORDER BY created DESC");
   $stmt->bind_param('i', $user->id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -226,7 +226,22 @@ function getPostComments($id) {
 // Return the most recent comment for a given post.
 function getLastComment($id) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
+  $stmt = $mysqli->prepare("SELECT p.id AS post_id, p.*, u.name, u.picture FROM posts p, users u WHERE p.parent_id = ? AND u.id = p.uid ORDER BY created DESC LIMIT 1");
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $post = [];
+  foreach ($result as $row) {
+    $post = $row;
+  }
+  return $post;
+}
+
+// Return the comment by id.
+function getComment($id) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT p.*, u.name, u.picture FROM posts p, users u WHERE p.id = ? AND u.id = p.uid LIMIT 1");
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -362,9 +377,10 @@ function getPing($post_id, $comment_id = '') {
   // @todo get unread posts.
   // @todo implement unread status.
 
-  $comments = getPostComments($post_id);
   $last = getLastComment($post_id);
-  $response = $last['id'];
+  $response = [
+    'comment' => $last,
+  ];
 
   // @todo implement caching bucket.
   // @todo expire cache upon post creation, for each user that has access.

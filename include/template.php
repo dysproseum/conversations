@@ -8,6 +8,11 @@ define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
 function getHtmlHeader($options) {
   ob_start(); ?>
   <title><?php print $options['title'] . ' | ' . SITE_NAME; ?></title>
+
+  <script type="text/javascript">
+    var postId;
+    var commentId;
+  </script>
   <script type="text/javascript" src="js/fullscreen.js"></script>
   <script type="text/javascript" src="js/ping.js"></script>
   <script type="text/javascript" src="js/post.js"></script>
@@ -18,7 +23,6 @@ function getHtmlHeader($options) {
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
 
-  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
@@ -101,6 +105,9 @@ function getSidebar2($user, $this_post = '') {
       if (isset($comment['created'])) {
         $sorted[$comment['created']] = $post;
       }
+      else {
+        $sorted[$post['created']] = $post;
+      }
     }
     krsort($sorted);
   }
@@ -147,13 +154,13 @@ function getSidebar2($user, $this_post = '') {
 
   <!-- @todo read/unread status -->
 
-  <?php foreach ($sorted as $post_id): ?>
-    <?php $post = getPost($post_id['id']); ?>
-    <?php $comment = getLastComment($post_id['id']); ?>
+  <?php foreach ($sorted as $post): ?>
+    <?php $comment = getLastComment($post['id']); ?>
     <?php $time_ago = $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
+    <?php $picture = $comment ? $comment['picture'] : $post['picture']; ?>
     <?php $link = "/conversations/post.php?id=" . $post['id'] . "&cid=" . $comment['id']; ?>
 
-    <li class="post <?php if($post_id['id'] == $this_post) print "active"; ?>">
+    <li class="post <?php if($post['id'] == $this_post) print "active"; ?>">
       <a href="<?php print $link; ?>" title="<?php print $time_ago; ?>">
 
         <?php if (!empty($post['body'])): ?>
@@ -166,7 +173,7 @@ function getSidebar2($user, $this_post = '') {
         <br>
         > <?php print substr($comment['body'], 0, 18); ?>
 
-        <img class="avatar-small" src="<?php print $comment ? $comment['picture'] : $post['picture']; ?>" alt="user avatar" />
+        <img class="avatar-small" src="<?php print $picture; ?>" alt="user avatar" />
 
         <span class="time-ago"></span>
       </a>
@@ -273,9 +280,9 @@ function getNewPostForm($user) {
     <br>
     <input type="text" name="link" placeholder="Link URL (optional)" />
     <br>
-    <?php if (isset($message)): ?>
-      <span id="user-message" /><?php print $message; ?></span>
-    <?php endif; ?>
+      <span id="user-message">
+        <?php if (isset($message)) print $message; ?>
+      </span>
     <input type="submit" id="submit-button" value="Post Topic" />
   </form>
 
@@ -294,13 +301,13 @@ function getPostCommentForm($user, $post) {
   ob_start(); ?>
 
   <form action="submitcomment.php" method="POST" id="comment-form">
-    <?php if (isset($message)): ?>
-      <span id="user-message" /><?php print $message; ?></span>
-    <?php endif; ?>
+    <span id="user-message">
+      <?php if (isset($message)) print $message; ?>
+    </span>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
+    <div class="for-padding">
     <textarea name="body" id="comment-body" rows="1"></textarea>
-    <br>
-    <br>
+    </div>
     <input type="submit" id="submit-button" value="Send" />
     <input type="hidden" name="link" id="comment-link" placeholder="Link (optional)"/>
   </form>
@@ -385,6 +392,58 @@ function getSearchForm($q = '') {
   ob_end_clean();
   return $html;
 }
+
+function buildComment($comment, &$current_img, &$current_day) {
+  $imgs = getImagesLinks($comment['body']);
+  $body = displayTextWithLinks(nl2br($comment['body']));
+  $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC";
+  $cid = $comment['post_id'];
+  $permalink = '?id=' . $comment['parent_id'] . '&cid=' . $cid;
+
+  ob_start(); ?>
+
+  <div class="comment-wrapper current" id="<?php print $cid; ?>">
+    <div class="comment <?php if ($comment['uid'] == $user->id) print "me"; ?>">
+    <?php if (($current_img !== $comment['picture']) || ($current_day !== date('d', $comment['created']))): ?>
+
+      <?php
+        $current_img = $comment['picture'];
+        $current_day = date('d', $comment['created']);
+      ?>
+      <img class="avatar-small current" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
+
+    <?php else: ?>
+
+      <img class="avatar-small" src="images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
+
+    <?php endif; ?>
+
+    <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
+
+    <?php if ($comment['body']): ?>
+       <p><?php print $body; ?></p>
+    <?php endif; ?>
+
+    <?php if ($imgs): ?>
+      <?php foreach ($imgs[0] as $img): ?>
+        <p><a target="_blank" href="<?php print $img; ?>">
+          <img class="comment-preview-thumb" src="<?php print $img; ?>" />
+        </a></p>
+      <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($comment['link']): ?>
+      <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
+    <?php endif; ?>
+
+    </div> <!-- comment -->
+  </div> <!-- comment-wrapper -->
+
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
+}
+
 function getHtmlFooter() {
 
 

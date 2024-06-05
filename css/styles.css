@@ -60,7 +60,6 @@ body.home #footer a {
 
 body.post #content {
   width: min-content;
-  min-width: 400px;
   background: lightgray;
 }
 
@@ -335,14 +334,13 @@ h1#contentheader {
 #chat {
   display: block;
   float: left;
-  font-size: 14px;
+  font-size: 12px;
   min-height: 50%;
   overflow-y: auto;
   margin-top: 10px;
   margin-bottom: 10px;
   width: 100%;
   max-height: 65%;
-  min-width: 480px;
   border-radius: 0px;
   border-style: inset;
   border-color: darkgray;
@@ -463,7 +461,7 @@ img.comment-preview-thumb {
 
 .post form textarea {
   resize: vertical;
-  padding: 10px 0px 10px 0px;
+  padding: 10px 0px 10px 10px;
 }
 
 .post form input[type=text] {

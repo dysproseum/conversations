@@ -26,7 +26,7 @@
   $sidebar = getSidebar($user);
   $sidebar2 = getSidebar2($user);
 ?>
-
+<!DOCTYPE HTML>
 <html>
 <head>
   <?php print $head; ?>
@@ -63,6 +63,4 @@
   <?php include('include/analytics.html'); ?>
   <?php endif; ?>
 </body>
-
-
 </html>

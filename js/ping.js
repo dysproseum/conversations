@@ -5,15 +5,22 @@
 function loadDoc(url) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        var data = this.responseText;
-        if (data > commentId) {
-          console.log("Newer comments available");
-          // Display a message in #chat.
-          var msg = document.getElementById('user-message');
-          var refresh = window.location.href;
-          msg.innerHTML = '<a href="' + refresh + '">Newer comments available</a>';
+      if (this.readyState == XMLHttpRequest.DONE) {
+        if (this.status == 200) {
+          var data = JSON.parse(this.responseText);
+          if (data.comment.id > commentId) {
+            commentId = data.comment.id;
+            retryCount = 0;
+
+            // Display a message in #chat.
+            var chat = document.getElementById("chat");
+            var next = document.createElement("div");
+            next.innerHTML = data.html;
+            chat.appendChild(next);
+            chat.scrollTop = chat.scrollHeight;
+          }
         }
+        exponentialBackoff();
       }
     };
     xhttp.open("GET", url, true);
@@ -21,17 +28,28 @@ function loadDoc(url) {
     return true;
 }
 
-var timeout;
 var timeOut;
-var delay = 15000;
-//var postId = 0;
-//var commentId = 0;
-var url = "/conversations/ping.php?id=" + postId;
+const initialDelay = 5 * 1000;
+const maxDelay = 5 * 60 * 1000;
+var delay = initialDelay;
+var retryCount = 0;
+var url = "/conversations/ping.php";
 
 timeOut = function() {
-  if (loadDoc(url + "&comment=" + commentId)) {
-    delay = 5000;
-    setTimeout(timeOut,
-      delay);
+  if (!postId) {
+    postId = -1;
+    commentId = -1;
   }
+  loadDoc(url + "?id=" + postId + "&comment=" + commentId);
 }
+
+exponentialBackoff = function() {
+  delay = initialDelay + (initialDelay * Math.pow(2.0, retryCount));
+  retryCount++;
+  if (delay > maxDelay) delay = maxDelay;
+  setTimeout(timeOut, delay);
+}
+
+window.addEventListener("load", function() {
+  setTimeout(timeOut, initialDelay);
+});

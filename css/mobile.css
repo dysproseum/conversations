@@ -92,20 +92,17 @@ body.search #content, body.dashboard #content {
 body.post #content {
   width: 100%;
   height: 100%;
-  position: absolute;
-  font-size: 8px;
 }
 
-body.post .time-ago, body.post .user-access {
+body.post .time-ago {
+  display: block;
+  float: left;
   margin-left: 10px;
-  font-size: 8px;
 }
 
 #chat {
-  width: 100%;
-  height: 50%;
-  max-height: 65%;
-  font-size: 8px;
+  border-style: none;
+  max-height: 40%;
 }
 
 #chat .avatar-small {
@@ -114,9 +111,16 @@ body.post .time-ago, body.post .user-access {
 
 .comment p {
   line-height: 16px;
-  font-size: 8px;
+}
+
+body.post .for-padding {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 body.post textarea {
+  box-sizing: border-box;
   font-size: 12px;
+  border: 1px solid gray;
+  border-radius: 10px;
 }

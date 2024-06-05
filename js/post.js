@@ -2,7 +2,7 @@
  * Javascript for post page.
  */
 
-window.addEventListener("load",function(event) {
+window.addEventListener("load", function() {
 
   // Check for cid param and scroll to that comment.
   const queryString = window.location.search;
@@ -20,11 +20,6 @@ window.addEventListener("load",function(event) {
     objDiv.scrollTop = objDiv.scrollHeight;
     document.getElementById("comment-body").focus();
   }
-
-  // Set up ping.
-  timeout = setTimeout(function() {
-    timeOut();
-  }, delay);
 
   // Disable form for visual indication
   // and to prevent double posts.
@@ -64,4 +59,9 @@ window.addEventListener("load",function(event) {
     }
   };
 
-},false);
+});
+
+// @todo scroll back to bottom of window when keyboard goes away.
+window.visualViewport.addEventListener('resize', function() {
+  console.log("resize");
+});
