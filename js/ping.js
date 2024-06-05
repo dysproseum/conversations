@@ -33,10 +33,10 @@ const initialDelay = 5 * 1000;
 const maxDelay = 5 * 60 * 1000;
 var delay = initialDelay;
 var retryCount = 0;
-var url = "/conversations/ping.php?id=" + postId;
+var url = "/conversations/ping.php";
 
 timeOut = function() {
-  loadDoc(url + "&comment=" + commentId);
+  loadDoc(url + "?id=" + postId + "&comment=" + commentId);
 }
 
 exponentialBackoff = function() {

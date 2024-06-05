@@ -300,9 +300,9 @@ function getPostCommentForm($user, $post) {
       <?php if (isset($message)) print $message; ?>
     </span>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
+    <div class="for-padding">
     <textarea name="body" id="comment-body" rows="1"></textarea>
-    <br>
-    <br>
+    </div>
     <input type="submit" id="submit-button" value="Send" />
     <input type="hidden" name="link" id="comment-link" placeholder="Link (optional)"/>
   </form>
