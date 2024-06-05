@@ -393,7 +393,7 @@ function buildComment($comment, &$current_img, &$current_day) {
   $body = displayTextWithLinks(nl2br($comment['body']));
   $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC";
   $cid = $comment['post_id'];
-  $permalink = '?id=' . $post['id'] . '&cid=' . $cid;
+  $permalink = '?id=' . $comment['parent_id'] . '&cid=' . $cid;
 
   ob_start(); ?>
 
@@ -406,14 +406,14 @@ function buildComment($comment, &$current_img, &$current_day) {
         $current_day = date('d', $comment['created']);
       ?>
       <img class="avatar-small current" src="<?php print $current_img; ?>" alt="user avatar" title="<?php print $timestamp; ?>" align="left" />
-      <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
 
     <?php else: ?>
 
       <img class="avatar-small" src="images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
-      <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
 
     <?php endif; ?>
+
+    <a class="permalink" title="<?php print $timestamp; ?>" href="<?php print $permalink; ?>">Permalink</a>
 
     <?php if ($comment['body']): ?>
        <p><?php print $body; ?></p>
