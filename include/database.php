@@ -130,7 +130,7 @@ function updatePicture($userid, $picture) {
 // Get user id for recipient.
 function getUserIDByEmail($recipient) {
   global $mysqli;
-  $stmt = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1    ");
+  $stmt = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1");
   $stmt->bind_param('s', $recipient);
   $stmt->execute();
   $result = $stmt->get_result();
