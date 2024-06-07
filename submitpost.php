@@ -44,41 +44,32 @@
   $stmt->close();
   $id = $mysqli->insert_id;
 
+
+  // Set up access for OP.
+  if (!createAccess($id, $user->id)) {
+    $_SESSION['message'] = "Error creating access for OP.";
+  }
+
   // Get user id for recipient.
-  $recipient = $post['recipient'];
-  $stmt2 = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1");
-  $stmt2->bind_param('s', $recipient);
-  $stmt2->execute();
-  $result = $stmt2->get_result();
-  if (!$result) {
-    $_SESSION['message'] = "Error retrieving user id for recipient (database error 2)";
-    header('Location: /conversations/new.php');
-    exit;
-  }
-  else {
-    // @todo Handle case where recipient user id does not exist yet
-    // Invite user?
-    //$_SESSION['message'] = "No recipient account was found at that address.";
-    //header('Location: /conversations/new.php');
-    //exit;
-  }
-  $stmt2->close();
+  if (isset($post['recipient'])) {
+    $recipient = $post['recipient'];
+    $uid = getUserIDByEmail($recipient);
+    if (!$uid) {
+      // @todo Notifications
+      // Email user an invite if they don't exist
+      // Browser notification for user that does exist
 
-  foreach ($result as $row) {
-    $uid = $row['id'];
+      $_SESSION['message'] = "No recipient account was found at that address.";
+    }
   }
 
-  // Set up access for OP and recipient.
-  $stmt = $mysqli->prepare("INSERT INTO access (id, uid) VALUES (?, ?), (?, ?)");
-  $stmt->bind_param('iiii', $id, $uid, $id, $user->id);
-  $stmt->execute();
-  $stmt->close();
-
-  // @todo Notifications
-  // Email user an invite if they don't exist
-  // Browser notification for user that does exist
+  // Set up access for recipient.
+  if ($uid) {
+    if (!createAccess($id, $uid)) {
+      $_SESSION['message'] = "Error creating access for recipient.";
+    }
+  }
 
   // Redirect to post.
   header('Location: /conversations/post.php?id=' . $id);
   exit;
-

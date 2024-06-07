@@ -127,6 +127,34 @@ function updatePicture($userid, $picture) {
   $stmt->close();
 }
 
+// Get user id for recipient.
+function getUserIDByEmail($recipient) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT id FROM users WHERE email like ? LIMIT 1    ");
+  $stmt->bind_param('s', $recipient);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+
+  foreach ($result as $row) {
+    $uid = $row['id'];
+  }
+
+  return $uid;
+}
+
+function createAccess($post_id, $user_id) {
+  global $mysqli;
+
+  $stmt = $mysqli->prepare("INSERT INTO access (id, uid) VALUES (?, ?)");
+  $stmt->bind_param('ii', $post_id, $user_id);
+  $stmt->execute();
+  $result = $mysqli->affected_rows;
+  $stmt->close();
+
+  return $result;
+}
+
 // Helper function to return posts created and shared with a user.
 function getMyPosts($user) {
   global $mysqli;
@@ -286,6 +314,8 @@ function checkAccess($post, $person = '') {
 
 // Search function.
 function searchPosts($q) {
+  global $user;
+  global $mysqli;
 
   $q = strtolower(trim($q));
   if (empty($q)) {
@@ -295,13 +325,8 @@ function searchPosts($q) {
     $q = "%$q%";
   }
 
-  global $user;
-  global $mysqli;
-  //$stmt = $mysqli->prepare("SELECT p.*, p1.body AS title, p1.created AS creation FROM posts p, posts p1 WHERE p1.id = p.parent_id AND p.body LIKE LOWER(?) ORDER BY p.created DESC");
   $stmt = $mysqli->prepare("SELECT p.* FROM posts p WHERE p.body LIKE LOWER(?) ORDER BY p.created DESC");
-  $stmt->bind_param('s',
-    $q,
-  );
+  $stmt->bind_param('s', $q);
   $stmt->execute();
   $result = $stmt->get_result();
   $stmt->close();
@@ -477,13 +502,13 @@ function dayByDatabase($user) {
 }
 
 // Remove user access to post.
-function deleteAccess($post_id, $user) {
+function removeAccess($post_id, $user_id) {
   global $mysqli;
 
-  $stmt = $mysqli->prepare("DELETE FROM access WHERE a.id = ? and a.uid = ?");
+  $stmt = $mysqli->prepare("DELETE FROM access WHERE id = ? and uid = ? LIMIT 1");
   $stmt->bind_param('ii', 
     $post_id,
-    $user->id,
+    $user_id,
   );
   $stmt->execute();
   $result = $mysqli->affected_rows;
@@ -493,15 +518,8 @@ function deleteAccess($post_id, $user) {
 }
 
 // Delete post.
-function deletePost($post_id, $user) {
+function deletePost($post_id) {
   global $mysqli;
-
-  // @todo check access.
-  $post = getPost($post_id);
-  if (!checkAccess($post, $user)) {
-    // @todo set message in delete.php
-    return false;
-  }
 
   $stmt = $mysqli->prepare("DELETE FROM posts WHERE id = ? LIMIT 1");
   $stmt->bind_param('i', $post_id);
@@ -510,4 +528,24 @@ function deletePost($post_id, $user) {
   $stmt->close();
 
   return $result;
+}
+
+// Delete comments.
+function deletePostComments($post_id) {
+  global $mysqli;
+
+  $num_comments = getPostComments($post_id);
+
+  $stmt = $mysqli->prepare("DELETE FROM posts WHERE parent_id = ?");
+  $stmt->bind_param('i', $post_id);
+  $stmt->execute();
+  $result = $mysqli->affected_rows;
+  $stmt->close();
+
+  if ($result == sizeof($num_comments)) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
