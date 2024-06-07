@@ -333,15 +333,16 @@ function searchPosts($q) {
   return $posts;
 }
 
-function printReport() {
-
-  global $user;
+function generateReport() {
   global $mysqli;
 
   $report = array(
     'num_posts' => 0,
     'num_comments' => 0,
     'num_users' => 0,
+    'posts_no_access' => [],
+    'access_no_posts' => [],
+    'comment_no_posts' => [],
   );
 
   $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM posts p WHERE p.parent_id IS NULL");
@@ -366,6 +367,72 @@ function printReport() {
   $stmt->close();
   foreach ($result as $r) {
     $report['num_users'] = $r['cnt'];
+  }
+
+  // Posts with no access.
+  $stmt = $mysqli->prepare("SELECT p.id, p.body FROM posts p WHERE p.parent_id IS NULL ORDER BY p.id DESC");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $rid = $r['id'];
+
+    $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM access WHERE id = ?");
+    $stmt->bind_param('i', $rid);
+    $stmt->execute();
+    $result2 = $stmt->get_result();
+    $stmt->close();
+
+    foreach ($result2 as $r2) {
+      if ($r2['cnt'] == 0) {
+        $report['posts_no_access'][$rid] = "post $rid: " . $r['body'];
+        $report['posts_no_access'][$rid] .= ": " . $r2['cnt'];
+      }
+    }
+  }
+
+  // Access with no posts.
+  $stmt = $mysqli->prepare("SELECT a.id, a.uid FROM access a ORDER BY a.id DESC");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $rid = $r['id'];
+
+    $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM posts WHERE id = ?");
+    $stmt->bind_param('i', $rid);
+    $stmt->execute();
+    $result2 = $stmt->get_result();
+    $stmt->close();
+
+    foreach ($result2 as $r2) {
+      if ($r2['cnt'] == 0) {
+        $report['access_no_posts'][$rid] = "post $rid: uid " . $r['uid'];
+        $report['access_no_posts'][$rid] .= ": " . $r2['cnt'];
+      }
+    }
+  }
+
+  // Stray comments.
+  $stmt = $mysqli->prepare("SELECT p.id, p.parent_id FROM posts p WHERE p.parent_id IS NOT NULL ORDER BY p.id DESC");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $r) {
+    $rid = $r['parent_id'];
+
+    $stmt = $mysqli->prepare("SELECT COUNT(*) as cnt FROM posts WHERE id = ?");
+    $stmt->bind_param('i', $rid);
+    $stmt->execute();
+    $result2 = $stmt->get_result();
+    $stmt->close();
+
+    foreach ($result2 as $r2) {
+      if ($r2['cnt'] == 0) {
+        $report['comment_no_posts'][$rid] = "post $rid: comment: " . $r['id'];
+        $report['comment_no_posts'][$rid] .= ": " . $r2['cnt'];
+      }
+    }
   }
 
   return $report;
