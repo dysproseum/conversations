@@ -352,7 +352,7 @@ function viewPost($post) {
       <img src="<?php print $post['picture']; ?>" alt="user avatar" />
       <?php print $post['name']; ?>
     </span>
-    <?php if ($users[0]->id && $users[0]->id !== $post['uid']): ?>
+    <?php if (sizeof($users) > 1): ?>
       and shared with
       <?php foreach ($users as $u): ?>
         <?php if ($u->id != $post['uid']): ?>
@@ -365,10 +365,7 @@ function viewPost($post) {
     <?php endif; ?>
     <br>
     <span class="user-access">
-      <a href="/conversations/access.php?id=<?php print $post['id']; ?>">access</a>,
-    </span>
-    <span class="user-access">
-      <a href="#" title="New users must login first">sharing</a>
+      <a href="/conversations/access.php?id=<?php print $post['id']; ?>">access</a>
     </span>
   </span>
   <div class="post-body"></div>
