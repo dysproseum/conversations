@@ -59,6 +59,7 @@ body.home #footer a {
 }
 
 body.post #content {
+  min-width: 480px;
   width: min-content;
   background: lightgray;
 }
@@ -348,6 +349,7 @@ h1#contentheader {
   padding-top: 10px;
   background: white;
   height: 60%;
+  box-sizing: border-box;
 }
 
 #chat .current {
@@ -462,11 +464,31 @@ img.comment-preview-thumb {
 .post form textarea {
   resize: vertical;
   padding: 10px 0px 10px 10px;
+  box-sizing: border-box;
 }
 
 .post form input[type=text] {
   border: 1px solid black;
   padding: 10px;
+}
+
+.submit-button {
+  border-radius: 6px;
+  background: dodgerblue;
+  border: 0px;
+  color: white;
+  font-family: system-ui;
+  cursor: pointer;
+  width: 100px;
+  padding: 5px;
+}
+
+.submit-button:disabled {
+  background: gray;
+}
+
+.submit-button:active {
+  background: #006ebd;
 }
 
 #submit-button {
@@ -500,7 +522,7 @@ input#submit-button.active, input#submit-button:active {
 }
 
 .avatar-small-left {
-  height: 36px;
+  height: 24px;
   float: left;
   margin-right: 10px;
 }
@@ -511,6 +533,28 @@ input#submit-button.active, input#submit-button:active {
 
 .preview {
   font-size: 12px;
+}
+
+.access p {
+  margin-left: 10px;
+}
+
+.access form {
+  margin-left: 20px;
+  margin-right:20px;
+}
+
+.access form .user-label {
+  display: block;
+  float: left;
+  width: 200px;
+}
+
+.access form input[type=text] {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
 #search-form {
@@ -550,3 +594,16 @@ input#submit-button.active, input#submit-button:active {
   vertical-align: middle;
 }
 
+.user-access a:visited {
+  color: dodgerblue;
+}
+
+body.reports #content {
+  overflow-y: auto;
+}
+
+body.reports pre {
+  height: 100px;
+  overflow-y: auto;
+  border: 1px solid lightgray;
+}
