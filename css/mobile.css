@@ -51,6 +51,11 @@ body.home #content h1 {
   font-size: 12px;
 }
 
+p {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 body.search #sidebar2, body.search #contentheader {
   display: none;
 }
