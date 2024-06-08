@@ -59,7 +59,6 @@ body.home #footer a {
 }
 
 body.post #content {
-  min-width: 480px;
   width: min-content;
   background: lightgray;
 }
@@ -310,6 +309,7 @@ h1#contentheader {
   min-height: 60%;
   overflow: hidden; /* resizable */
   resize: both;
+  min-width: 480px;
 }  
 
 #content h1 {
@@ -533,10 +533,6 @@ input#submit-button.active, input#submit-button:active {
 
 .preview {
   font-size: 12px;
-}
-
-.access p {
-  margin-left: 10px;
 }
 
 .access form {
