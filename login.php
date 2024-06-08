@@ -21,7 +21,7 @@
   // updatePicture() is then called from tokensignin.php.
 
   require_once('include/template.php');
-  $head = getHtmlHeader(['title' => 'Login']);
+  $head = getHtmlHeader(['title' => 'My Account']);
   $header = getHeader($user);
   $sidebar = getSidebar($user);
   $sidebar2 = getSidebar2($user);
@@ -40,22 +40,33 @@
   <div class="wrapper">
     <?php print $sidebar; ?>
     <div id="content">
-
-      <h1 id="contentheader">Login</h1>
-      <p id="user-instructions">Click "Sign in" to login with your Google account. This site stores no passwords or personal information.</p>
+      <h1 id="contentheader">My Account</h1>
 
       <span id="user-message" /><?php print $message; ?></span>
 
-      <div id="g_id_onload"
-        data-client_id="<?php print CLIENT_ID; ?>"
-        data-callback="handleCredentialResponse">
-      </div>
-      <div class="g_id_signin" data-type="standard"></div>
+      <?php if ($sub): ?>
 
-      <p id="user-continue" <?php if (!$sub) print "hidden"; ?>>
-        <a href="#" onclick="signOut();">Sign out</a>
-        <a id="submit-button" href="/conversations/dashboard.php">Continue to Dashboard</a>
-      </p>
+        <p id="user-continue">Signed in as:</p>
+        <p>
+          <img class="avatar-small-left" src="<?php print $user->picture; ?>" />
+          <?php print $user->name; ?>
+          <a id="submit-button" href="/conversations/dashboard.php">Continue to Dashboard</a>
+          <br>
+          <?php print $user->email; ?>
+        </p>
+        <p><a href="#" onclick="signOut();">Sign out</a></p>
+
+      <?php else: ?>
+
+        <p id="user-instructions">Click "Sign in" to login with your Google account. This site stores no passwords or personal information.</p>
+        <div id="g_id_onload"
+          data-client_id="<?php print CLIENT_ID; ?>"
+          data-callback="handleCredentialResponse">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+
+      <?php endif; ?>
+
     </div>
     <?php print $sidebar2; ?>
   </div>
