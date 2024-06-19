@@ -334,11 +334,16 @@ function searchPosts($q) {
     if (checkAccess($row)) {
       if ($row['parent_id'] != NULL) {
         $parent = getPost($row['parent_id']);
+        if (!$parent) {
+          continue;
+        }
 
         $row['title'] = $parent['body'] ? $parent['body'] : '(untitled)';
         $row['created'] = $parent['created'];
         $last = getLastComment($row['parent_id']);
         $row['updated'] = $last['created'];
+        $row['cid'] = $row['id'];
+        $row['id'] = $parent['id'];
       }
       else {
         $row['title'] = $row['body'];
@@ -350,6 +355,7 @@ function searchPosts($q) {
         else {
           $row['updated'] = $last['created'];
         }
+        $row['cid'] = $last['id'];
       }
       $posts[] = $row;
 

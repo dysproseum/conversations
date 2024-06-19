@@ -52,10 +52,10 @@
           <?php print getSearchDefault($user); ?>
         <?php endif; ?>
       <?php else: ?>
-        <?php print sizeof($content); ?> results:
+        <li><?php print sizeof($content); ?> results:</li>
         <?php foreach ($content as $post): ?>
           <li>
-            <a href="/conversations/post.php?id=<?php print $post['parent_id'] ? $post['parent_id'] : $post['id']; ?>">
+            <a href="/conversations/post.php?id=<?php print $post['id']; ?>&cid=<?php print $post['cid']; ?>">
               <?php print $post['title']; ?></a>
             <span class="time-ago">
               created <?php print time_ago($post['created']); ?>
