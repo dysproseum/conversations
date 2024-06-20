@@ -21,6 +21,13 @@ window.addEventListener("load", function() {
     document.getElementById("comment-body").focus();
   }
 
+  // Show menu on header click.
+  var header = document.getElementById('contentheader');
+  var content = document.getElementById('content');
+  header.onclick = function() {
+    content.classList.toggle("show-mobile-menu");
+  };
+
   // Disable form for visual indication
   // and to prevent double posts.
   var form = document.getElementById('comment-form');
