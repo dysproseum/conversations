@@ -1,5 +1,11 @@
 <?php
 
+// Prevent web access.
+if ($_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
+  header('HTTP/1.0 403 Forbidden', TRUE, 403);
+  exit("Forbidden");
+}
+
 // Connect to the database.
 require_once('config.php');
 global $conf;
@@ -143,6 +149,7 @@ function getUserIDByEmail($recipient) {
   return $uid;
 }
 
+// Create access record.
 function createAccess($post_id, $user_id) {
   global $mysqli;
 
@@ -206,6 +213,7 @@ function getAllPosts($user) {
   return $posts;
 }
 
+// Get user id's with access to post.
 function getPostAccess($id) {
   global $mysqli;
   $stmt = $mysqli->prepare("SELECT uid FROM access a WHERE a.id = ?");
@@ -281,6 +289,7 @@ function getComment($id) {
   return $post;
 }
 
+// Check if user has access to post.
 function checkAccess($post, $person = '') {
   global $mysqli;
 
@@ -364,6 +373,7 @@ function searchPosts($q) {
   return $posts;
 }
 
+// Generate report on posts and stray data.
 function generateReport() {
   global $mysqli;
 
