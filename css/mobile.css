@@ -100,6 +100,14 @@ body.post #content {
   min-width: unset;
 }
 
+body.post #content.show-mobile-menu {
+  margin-top: 34px;
+}
+
+body.post #sidebar2 {
+  display: none;
+}
+
 body.post .time-ago {
   display: block;
   float: left;
