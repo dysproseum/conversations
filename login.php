@@ -59,11 +59,23 @@
       <?php else: ?>
 
         <p id="user-instructions">Click "Sign in" to login with your Google account. This site stores no passwords or personal information.</p>
+
         <div id="g_id_onload"
-          data-client_id="<?php print CLIENT_ID; ?>"
-          data-callback="handleCredentialResponse">
+             data-client_id="<?php print CLIENT_ID; ?>"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
         </div>
-        <div class="g_id_signin" data-type="standard"></div>
+        <div class="g_id_signin"
+             data-type="standard"
+             data-shape="pill"
+             data-theme="filled_blue"
+             data-text="signin_with"
+             data-size="large"
+             data-logo_alignment="left"
+             data-width="300px">
+        </div>
 
       <?php endif; ?>
 

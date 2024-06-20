@@ -58,7 +58,6 @@
       <div id="g_id_onload"
            data-client_id="<?php print CLIENT_ID; ?>"
            data-context="signin"
-           data-ux_mode="popup"
            data-callback="handleCredentialResponse"
            data-auto_prompt="false">
       </div>
