@@ -15,8 +15,6 @@
   }
   else {
     require_once('include/database.php');
-    global $mysqli;
-
     $user = getUserInfo($_SESSION['sub']);
     global $user;
 

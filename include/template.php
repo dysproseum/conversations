@@ -152,8 +152,6 @@ function getSidebar2($user, $this_post = '') {
     </a>
   </li>
 
-  <!-- @todo read/unread status -->
-
   <?php foreach ($sorted as $post): ?>
     <?php $comment = getLastComment($post['id']); ?>
     <?php $time_ago = $comment ? time_ago($comment['created']) : time_ago($post['created']); ?>
@@ -390,6 +388,7 @@ function getSearchForm($q = '') {
   return $html;
 }
 
+// Theme comment.
 function buildComment($comment, &$current_img, &$current_day) {
   $imgs = getImagesLinks($comment['body']);
   $body = displayTextWithLinks(nl2br($comment['body']));
@@ -433,8 +432,8 @@ function buildComment($comment, &$current_img, &$current_day) {
       <p><a target="_blank" href="<?php print $comment['link']; ?>"><?php print $comment['link']; ?></a></p>
     <?php endif; ?>
 
-    </div> <!-- comment -->
-  </div> <!-- comment-wrapper -->
+    </div>
+  </div>
 
   <?php $html = ob_get_contents();
   ob_end_clean();

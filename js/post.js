@@ -15,7 +15,7 @@ window.addEventListener("load", function() {
     commentDiv.focus();
     commentDiv.classList.add('highlighted');
   }
-  else {
+  else if (objDiv) {
     // Else scroll to bottom of chat window on load.
     objDiv.scrollTop = objDiv.scrollHeight;
     document.getElementById("comment-body").focus();
