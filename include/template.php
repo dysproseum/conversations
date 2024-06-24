@@ -244,6 +244,22 @@ function getSearchDefault($user) {
   return $html;
 }
 
+// Print session message.
+function sessionMessage() {
+  if (isset($_SESSION['message'])) {
+    ob_start(); ?>
+<p id="user-message">
+    <span>
+      <?php print $_SESSION['message']; ?>
+    </span>
+</p>
+    <?php $html = ob_get_contents();
+    ob_end_clean();
+    unset($_SESSION['message']);
+    return $html;
+  }
+}
+
 // @todo nothing calls this yet
 function dayByDay($user) {
   $posts = dayByDatabase($user);
@@ -263,11 +279,6 @@ function dayByDay($user) {
 
 // Theme new post form html.
 function getNewPostForm($user) {
-  if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    unset($_SESSION['message']);
-  }
-
   ob_start(); ?>
   <h1 id="contentheader">Start a New Topic</h1>
 
@@ -278,9 +289,7 @@ function getNewPostForm($user) {
     <br>
     <input type="text" name="link" placeholder="Link URL (optional)" />
     <br>
-      <span id="user-message">
-        <?php if (isset($message)) print $message; ?>
-      </span>
+    <?php print sessionMessage(); ?>
     <input type="submit" id="submit-button" value="Post Topic" />
   </form>
 
@@ -291,17 +300,9 @@ function getNewPostForm($user) {
 
 // Theme new comment form.
 function getPostCommentForm($user, $post) {
-  if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    unset($_SESSION['message']);
-  }
-
   ob_start(); ?>
-
   <form action="submitcomment.php" method="POST" id="comment-form">
-    <span id="user-message">
-      <?php if (isset($message)) print $message; ?>
-    </span>
+    <?php print sessionMessage(); ?>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <div class="for-padding">
     <textarea name="body" id="comment-body" rows="1"></textarea>
@@ -309,7 +310,6 @@ function getPostCommentForm($user, $post) {
     <input type="submit" id="submit-button" value="Send" />
     <input type="hidden" name="link" id="comment-link" placeholder="Link (optional)"/>
   </form>
-
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;

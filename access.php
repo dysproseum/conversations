@@ -25,8 +25,6 @@
   }
 
   $uids = getPostAccess($id);
-  $message = $_SESSION['message'];
-  unset($_SESSION['message']);
 
   require_once('include/template.php');
   $head = getHtmlHeader(['title' => 'Access']);
@@ -47,8 +45,7 @@
     <div id="content">
 
       <h1 id="contentheader">Access</h1>
-
-      <span id="user-message"><?php print $message; ?></span>
+      <?php print sessionMessage(); ?>
       
       <p id="user-instructions">
           Click here to delete this post:
