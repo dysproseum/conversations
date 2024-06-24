@@ -535,6 +535,10 @@ input#submit-button.active, input#submit-button:active {
   font-size: 12px;
 }
 
+body.access #content {
+  margin-top: 34px;
+}
+
 .access form {
   margin-left: 20px;
   margin-right:20px;
@@ -602,4 +606,26 @@ body.reports pre {
   height: 100px;
   overflow-y: auto;
   border: 1px solid lightgray;
+}
+
+#user-message {
+  box-sizing: border-box;
+  width: 100%;
+  display: block;
+  float: left;
+  margin: 4px 0px 10px 0px;
+  padding: 0;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid gray;
+  background: white;
+  overflow: hidden;
+}
+
+#user-message span {
+  display: block;
+  width: 100%;
+  background-color: #1e90ff33;
+  margin: 0;
+  padding: 4px 0px 4px 0px;
 }
