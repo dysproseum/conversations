@@ -4,6 +4,7 @@ var elmnt;
 var elmntHeader;
 var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 var offsetLeft = 0, offsetTop = 0;
+var elmntOffsetHeight = 20;
 
 window.addEventListener("load", function(event) {
 
@@ -42,6 +43,7 @@ window.addEventListener("load", function(event) {
     // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
+    pos2 += elmntOffsetHeight;
     // set the element's new position:
     elmnt.style.left = (offsetLeft - pos1) +  "px";
     elmnt.style.top = (offsetTop - pos2) + "px";
