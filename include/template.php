@@ -390,6 +390,8 @@ function getSearchForm($q = '') {
 
 // Theme comment.
 function buildComment($comment, &$current_img, &$current_day) {
+  global $user;
+
   $imgs = getImagesLinks($comment['body']);
   $body = displayTextWithLinks(nl2br($comment['body']));
   $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC";
