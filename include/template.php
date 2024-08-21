@@ -17,6 +17,7 @@ function getHtmlHeader($options) {
   <script type="text/javascript" src="js/ping.js"></script>
   <script type="text/javascript" src="js/post.js"></script>
   <script type="text/javascript" src="js/drag.js"></script>
+  <script type="text/javascript" src="js/notify.js"></script>
 
   <link rel="stylesheet" type="text/css" href="css/styles.css" media="screen">
   <link rel='stylesheet' media='only screen and (max-width: 768px)' href='css/mobile.css?<?php print time(); ?>' type='text/css' />
