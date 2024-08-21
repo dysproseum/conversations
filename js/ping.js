@@ -20,7 +20,7 @@ function loadDoc(url) {
             chat.scrollTop = chat.scrollHeight;
 
             // Issue a browser motification.
-            notifyMe(data.comment.body);
+            notifyMe(data.comment.body, data.comment.parent_id);
           }
         }
         exponentialBackoff();
