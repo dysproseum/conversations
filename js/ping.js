@@ -18,6 +18,9 @@ function loadDoc(url) {
             next.innerHTML = data.html;
             chat.appendChild(next);
             chat.scrollTop = chat.scrollHeight;
+
+            // Issue a browser motification.
+            notifyMe(data.comment.body);
           }
         }
         exponentialBackoff();
