@@ -6,12 +6,16 @@ define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
 
 // Global items to place in html head tag.
 function getHtmlHeader($options) {
+
+  // Prevent notifications on page load.
+  $last_id = getLatestCommentId();
+
   ob_start(); ?>
   <title><?php print $options['title'] . ' | ' . SITE_NAME; ?></title>
 
   <script type="text/javascript">
     var postId;
-    var commentId;
+    var commentId = <?php print $last_id; ?>;
   </script>
   <script type="text/javascript" src="js/fullscreen.js"></script>
   <script type="text/javascript" src="js/ping.js"></script>
@@ -391,6 +395,8 @@ function getSearchForm($q = '') {
 
 // Theme comment.
 function buildComment($comment, &$current_img, &$current_day) {
+  global $user;
+
   $imgs = getImagesLinks($comment['body']);
   $body = displayTextWithLinks(nl2br($comment['body']));
   $timestamp = $comment['name'] . date(' Y-m-d H:i', $comment['created']) . " UTC";

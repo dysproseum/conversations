@@ -8,19 +8,31 @@ function loadDoc(url) {
       if (this.readyState == XMLHttpRequest.DONE) {
         if (this.status == 200) {
           var data = JSON.parse(this.responseText);
-          if (data.comment.id > commentId) {
-            commentId = data.comment.id;
+
+          // Update latest comment id.
+          commentId = parseInt(commentId);
+          if (data.latest_id > commentId) {
+            commentId = data.latest_id;
             retryCount = 0;
 
-            // Display a message in #chat.
-            var chat = document.getElementById("chat");
-            var next = document.createElement("div");
-            next.innerHTML = data.html;
-            chat.appendChild(next);
-            chat.scrollTop = chat.scrollHeight;
+            // Response now contains an array of comments.
+            data.comments.forEach(function(comment, index) {
 
-            // Issue a browser motification.
-            notifyMe(data.comment.body, data.comment.parent_id);
+              // Display message(s) in #chat.
+              if (comment.parent_id == postId) {
+                var chat = document.getElementById("chat");
+                var next = document.createElement("div");
+                next.innerHTML = comment.html;
+                chat.appendChild(next);
+                chat.scrollTop = chat.scrollHeight;
+              }
+
+            });
+
+            // Issue browser notification(s).
+            data.notifications.forEach(function(comment, index) {
+              notifyMe(comment);
+            });
           }
         }
         exponentialBackoff();
@@ -38,12 +50,18 @@ var delay = initialDelay;
 var retryCount = 0;
 var url = "/conversations/ping.php";
 
+
+if (!"commentId" in window) {
+  var commentId = '';
+}
+
 timeOut = function() {
-  if (!postId) {
-    postId = -1;
-    commentId = -1;
+  if (typeof postId === 'undefined') {
+    loadDoc(url + "?comment=" + commentId);
   }
-  loadDoc(url + "?id=" + postId + "&comment=" + commentId);
+  else {
+    loadDoc(url + "?id=" + postId + "&comment=" + commentId);
+  }
 }
 
 exponentialBackoff = function() {
