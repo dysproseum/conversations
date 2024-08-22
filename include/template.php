@@ -6,12 +6,16 @@ define('SITE_NAME', 'Conversations ฅ^•ﻌ•^ฅ');
 
 // Global items to place in html head tag.
 function getHtmlHeader($options) {
+
+  // Prevent notifications on page load.
+  $last_id = getLatestCommentId();
+
   ob_start(); ?>
   <title><?php print $options['title'] . ' | ' . SITE_NAME; ?></title>
 
   <script type="text/javascript">
     var postId;
-    var commentId;
+    var commentId = <?php print $last_id; ?>;
   </script>
   <script type="text/javascript" src="js/fullscreen.js"></script>
   <script type="text/javascript" src="js/ping.js"></script>

@@ -1,13 +1,13 @@
 // Browser Notifications
 
-function notifyMe(msg, id) {
+function notifyMe(comment) {
 
   let notification;
   let options = {
     icon: "https://dysproseum.com/favicon.ico",
-    body: msg,
+    body: comment.body,
   };
-  let title = "New Message: Conversations";
+  let title = comment.parent_title;
 
   if (!("Notification" in window)) {
     // Check if the browser supports notifications
@@ -26,10 +26,13 @@ function notifyMe(msg, id) {
     });
   }
 
-  notification.onclick = function() {
-    window.open('https://dysproseum.com/conversations/post.php?id=' + id);
-    notification.close();
-  };
+  if (notification) {
+    notification.onclick = function() {
+      var url = 'https://dysproseum.com/conversations/post.php';
+      window.open(url + '?id=' + comment.parent_id + '&cid=' + comment.id);
+      notification.close();
+    };
+  }
 
   // At last, if the user has denied notifications, and you
   // want to be respectful there is no need to bother them anymore.

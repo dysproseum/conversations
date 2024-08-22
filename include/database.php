@@ -228,6 +228,24 @@ function getPostAccess($id) {
   return $uids;
 }
 
+// Get title from post id.
+function getTitle($post_id) {
+  global $mysqli;
+  global $user;
+
+  $stmt = $mysqli->prepare("SELECT p.body FROM posts p WHERE p.id = ? LIMIT 1");
+  $stmt->bind_param('i',
+    $post_id,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    return $row['body'];
+  }
+}
+
 // Helper function to get a post from its id.
 function getPost($id) {
   global $mysqli;
@@ -287,6 +305,63 @@ function getComment($id) {
     $post = $row;
   }
   return $post;
+}
+
+// Get latest comments for AJAX chat display.
+function getLatestComments($start_id) {
+  global $mysqli;
+  global $user;
+
+  $stmt = $mysqli->prepare("SELECT p.id as post_id, p.*, u.name, u.picture FROM posts p, users u WHERE p.id > ? AND u.id = p.uid AND p.parent_id IS NOT NULL ORDER BY p.id DESC");
+  $stmt->bind_param('i',
+    $start_id,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    if (checkAccess($row)) {
+      $posts[] = $row;
+    }
+  }
+  return $posts;
+}
+
+// Get latest comment id to start notifications.
+function getLatestCommentId() {
+  global $mysqli;
+  global $user;
+
+  $stmt = $mysqli->prepare("SELECT p.id FROM posts p ORDER BY p.id DESC LIMIT 1");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  foreach ($result as $row) {
+    return $row['id'];
+  }
+}
+
+// Get latest comments for notifications.
+function getNotifications($start_id) {
+  global $mysqli;
+  global $user;
+
+  $stmt = $mysqli->prepare("SELECT p.id as post_id, p.*, u.name, u.picture FROM posts p, users u WHERE p.id > ? AND u.id = p.uid AND p.uid <> ? AND p.parent_id IS NOT NULL ORDER BY p.id DESC LIMIT 3");
+  $stmt->bind_param('ii',
+    $start_id,
+    $user->id,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+  $posts = [];
+  foreach ($result as $row) {
+    if (checkAccess($row)) {
+      $posts[] = $row;
+    }
+  }
+  return $posts;
 }
 
 // Check if user has access to post.
@@ -480,15 +555,38 @@ function generateReport() {
 }
 
 // Ping function to get updates.
-function getPing($post_id, $comment_id = '') {
+function getPing($post_id = '', $comment_id = '') {
+
+  $response = [
+    'latest_id' => getLatestCommentId(),
+    'notifications' => [],
+    'comments' => [],
+  ];
+
+  // Return latest_id for non-post pages.
+  if ($post_id == '' && $comment_id == '') {
+    return $response;
+  }
+
+  // Query for comments > $comment_id
+  // in order to issue browser notification.
+  $response['notifications'] = getNotifications($comment_id);
+
+  // Add latest comment data.
+  if ($post_id != '') {
+    $last = getLastComment($post_id);
+    if (isset($comments[0])) {
+      $latest_id = $comments[0]['id'];
+    }
+    else {
+      $latest_id = $last['id'];
+    }
+    $response['latest'] = $last;
+    $response['comments'] = getLatestComments($comment_id);
+  }
 
   // @todo get unread posts.
   // @todo implement unread status.
-
-  $last = getLastComment($post_id);
-  $response = [
-    'comment' => $last,
-  ];
 
   // @todo implement caching bucket.
   // @todo expire cache upon post creation, for each user that has access.
