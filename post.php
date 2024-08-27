@@ -43,6 +43,11 @@
   $comments = getPostComments($id);
   $last_comment = getLastComment($id);
   $last_id = $last_comment['id'];
+  $last_comments = getLatestComments($last_id);
+  // Prevent notifications on page load.
+  if (isset($last_comments[0])) {
+    $last_id = $last_comments[0]['id'];
+  }
   $current_img = '';
   $current_day = '';
 ?>
@@ -51,8 +56,7 @@
 <head>
   <?php print $head; ?>
   <script type="text/javascript">
-    postId = '<?php print $id; ?>';
-    commentId = '<?php print $last_id; ?>';
+    var postId = '<?php print $id; ?>';
   </script>
 </head>
 <body class="post">
