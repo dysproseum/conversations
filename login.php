@@ -54,6 +54,21 @@
           <br>
           <?php print $user->email; ?>
         </p>
+        <p>
+          <label for="notify">Enable Notifications</label>
+          <?php if ($user->notify == 1): ?>
+            <input type="checkbox" id="notify" checked="checked" />
+            <script type="text/javascript">
+              var notify = 1;
+            </script>
+          <?php else: ?>
+            <input type="checkbox" id="notify" />
+            <script type="text/javascript">
+              var notify = 0;
+            </script>
+          <?php endif; ?>
+        </p>
+        <p><a id="notifytest">Test Notifications</a></p>
         <p><a href="#" onclick="signOut();">Sign out</a></p>
 
       <?php else: ?>

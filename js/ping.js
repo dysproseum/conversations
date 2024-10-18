@@ -31,6 +31,8 @@ function loadDoc(url) {
 
             // Issue browser notification(s).
             data.notifications.forEach(function(comment, index) {
+              console.log("notifying " + comment.id);
+              // @todo check notify preference.
               notifyMe(comment);
             });
           }
@@ -56,6 +58,7 @@ if (!"commentId" in window) {
 }
 
 timeOut = function() {
+  console.log({commentId});
   if (typeof postId === 'undefined') {
     loadDoc(url + "?comment=" + commentId);
   }
