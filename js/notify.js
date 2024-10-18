@@ -37,3 +37,34 @@ function notifyMe(comment) {
   // At last, if the user has denied notifications, and you
   // want to be respectful there is no need to bother them anymore.
 }
+
+window.addEventListener("load", function() {
+  var url='https://dysproseum.com/conversations/manage_account.php';
+
+  var notify = document.getElementById("notify");
+  notify.addEventListener("click", function() {
+    var params = "notify=0";
+    if (this.checked) {
+      params = "notify=1";
+    }
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == XMLHttpRequest.DONE) {
+        console.log(this.status);
+      }
+    };
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send(params);
+  });
+
+  var test = document.getElementById("notifytest");
+  test.addEventListener("click", function() {
+    comment = new Object();
+    comment.body = "Lorem ipsum";
+    comment.parent_title = "Test notification"
+    notifyMe(comment);
+  });
+
+});

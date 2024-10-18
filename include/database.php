@@ -32,6 +32,7 @@ try {
   given_name varchar(255),
   family_name varchar(255),
   locale varchar(255) NOT NULL,
+  notify int,
   primary key(id)
   )";
   $mysqli->query($query);
@@ -128,6 +129,18 @@ function updatePicture($userid, $picture) {
   $stmt->bind_param('ss',
     $picture,
     $userid,
+  );
+  $stmt->execute();
+  $stmt->close();
+}
+
+// Update notifications preference.
+function updateNotify($usersub, $notify = 0) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("UPDATE users SET notify = ? WHERE sub=?");
+  $stmt->bind_param('is',
+    $notify,
+    $usersub,
   );
   $stmt->execute();
   $stmt->close();
