@@ -22,6 +22,7 @@
 
   require_once('include/template.php');
   $head = getHtmlHeader(['title' => 'My Account']);
+  $foot = getHtmlFooter();
   $header = getHeader($user);
   $sidebar = getSidebar($user);
   $sidebar2 = getSidebar2($user);
@@ -56,19 +57,21 @@
         </p>
         <p>
           <label for="notify">Enable Notifications</label>
+          <input type="checkbox" id="notify" />
           <?php if ($user->notify == 1): ?>
-            <input type="checkbox" id="notify" checked="checked" />
             <script type="text/javascript">
               var notify = 1;
             </script>
           <?php else: ?>
-            <input type="checkbox" id="notify" />
             <script type="text/javascript">
               var notify = 0;
             </script>
           <?php endif; ?>
         </p>
-        <p><a id="notifytest">Test Notifications</a></p>
+        <p><button id="notifytest" class="submit-button" disabled>Test Notifications</button></p>
+        <p>Notification sounds</p>
+        <p><button id="notifysound" class="submit-button" onclick="notifyaudio.play()">Test Sounds</button></p>
+
         <p><a href="#" onclick="signOut();">Sign out</a></p>
 
       <?php else: ?>
@@ -100,5 +103,6 @@
   <?php if (file_exists('include/analytics.html')): ?>
   <?php include('include/analytics.html'); ?>
   <?php endif; ?>
+  <?php print $foot; ?>
 </body>
 </html>
