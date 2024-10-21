@@ -38,28 +38,83 @@ function notifyMe(comment) {
   // want to be respectful there is no need to bother them anymore.
 }
 
-window.addEventListener("load", function() {
-  var url='https://dysproseum.com/conversations/manage_account.php';
+function updatePrompt() {
+  if ('Notification' in window) {
+    if (Notification.permission == 'granted' || Notification.permission == 'denied') {
+      notify.hidden = true;
+    } else {
+      notify.hidden = false;
+    }
+  }
+}
 
-  var notify = document.getElementById("notify");
-  notify.addEventListener("click", function() {
-    var params = "notify=0";
-    if (this.checked) {
-      params = "notify=1";
+function onPromptClick(obj) {
+  if ('Notification' in window) {
+    obj.labels[0].textContent = "Click Allow in your browser's popup";
+    obj.hidden = true;
+
+    Notification.requestPermission().then((permission) => {
+      updatePrompt();
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        obj.labels[0].hidden = true;
+        var test = document.getElementById("notifytest");
+        test.disabled = false;
+        // init();
+        var url='https://dysproseum.com/conversations/manage_account.php';
+        var params = "notify=1";
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == XMLHttpRequest.DONE) {
+            console.log(this.status);
+          }
+        };
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp.send(params);
+      } else if (permission === 'denied') {
+        console.warn('Notification permission denied.');
+      }
+    });
+  }
+}
+
+function getNotificationPermission() {
+  if ('Notification' in window) {
+    switch (Notification.permission) {
+      case 'granted':
+        return true;
+      case 'denied':
+      case 'default':
+        return false;
+    }
+  }
+}
+
+window.addEventListener("load", function() {
+  var enable = document.getElementById("notify");
+  var test = document.getElementById("notifytest");
+  if (getNotificationPermission()) {
+    enable.checked = true;
+    test.disabled = false;
+  }
+  else {
+    if (notify == 1) {
+      // reset permission in database?
+    }
+  }
+
+  enable.addEventListener("click", function(e) {
+
+    if (getNotificationPermission() == false) {
+      onPromptClick(this);
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == XMLHttpRequest.DONE) {
-        console.log(this.status);
-      }
-    };
-    xhttp.open("POST", url, true);
-    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhttp.send(params);
+    e.preventDefault();
+    return false;
   });
 
-  var test = document.getElementById("notifytest");
   test.addEventListener("click", function() {
     comment = new Object();
     comment.body = "Lorem ipsum";

@@ -448,7 +448,11 @@ function buildComment($comment, &$current_img, &$current_day) {
 }
 
 function getHtmlFooter() {
+  ob_start(); ?>
 
+    <audio src="include/im.wav" id="notifyaudio" />
 
-
+  <?php $html = ob_get_contents();
+  ob_end_clean();
+  return $html;
 }
