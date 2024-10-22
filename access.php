@@ -28,6 +28,7 @@
 
   require_once('include/template.php');
   $head = getHtmlHeader(['title' => 'Access']);
+  $foot = getHtmlFooter();
   $header = getHeader($user);
   $sidebar = getSidebar($user);
   $sidebar2 = getSidebar2($user);
@@ -102,8 +103,6 @@
     </div>
     <?php print $sidebar2; ?>
   </div>
-  <?php if (file_exists('include/analytics.html')): ?>
-  <?php include('include/analytics.html'); ?>
-  <?php endif; ?>
+  <?php print $foot; ?>
 </body>
 </html>

@@ -450,6 +450,9 @@ function buildComment($comment, &$current_img, &$current_day) {
 function getHtmlFooter() {
   ob_start(); ?>
 
+    <?php if (file_exists('analytics.html')): ?>
+    <?php include('analytics.html'); ?>
+    <?php endif; ?>
     <audio src="include/im.wav" id="notifyaudio" />
 
   <?php $html = ob_get_contents();

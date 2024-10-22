@@ -32,7 +32,9 @@ function loadDoc(url) {
             // Issue browser notification(s).
             data.notifications.forEach(function(comment, index) {
               console.log("notifying " + comment.id);
+
               // @todo check notify preference.
+              notifyaudio.play();
               notifyMe(comment);
             });
           }

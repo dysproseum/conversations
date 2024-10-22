@@ -75,6 +75,7 @@ function onPromptClick(obj) {
         xhttp.send(params);
       } else if (permission === 'denied') {
         console.warn('Notification permission denied.');
+        obj.labels[0].textContent = "Notifications are disabled in your browser";
       }
     });
   }
