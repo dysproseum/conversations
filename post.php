@@ -35,6 +35,7 @@
 
   require_once('include/template.php');
   $head = getHtmlHeader(['title' => $post['body']]);
+  $foot = getHtmlFooter();
   $header = getHeader($user);
   $sidebar = getSidebar($user, $id);
   $sidebar2 = getSidebar2($user);
@@ -77,5 +78,6 @@
     </div>
     <?php print $sidebar2; ?>
   </div>
+  <?php print $foot; ?>
 </body>
 </html>

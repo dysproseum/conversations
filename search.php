@@ -21,6 +21,7 @@
       require_once('include/template.php');
 
       $head = getHtmlHeader(['title' => 'Search']);
+      $foot = getHtmlFooter();
       $header = getHeader($user);
       $sidebar = getSidebar($user, "search");
       $sidebar2 = getSidebar2($user);
@@ -68,5 +69,6 @@
     </div>
     <?php print $sidebar2; ?>
   </div>
+  <?php print $foot; ?>
 </body>
 </html>

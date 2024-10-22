@@ -15,6 +15,7 @@
     else {
       require_once('include/template.php');
       $head = getHtmlHeader(['title' => 'Dashboard']);
+      $foot = getHtmlFooter();
       $header = getHeader($user);
       $sidebar = getSidebar($user, "dashboard");
       $content = getDashboard($user);
@@ -37,5 +38,6 @@
     <?php endif; ?>
     <?php print $sidebar2; ?>
   </div>
+  <?php print $foot; ?>
 </body>
 </html>

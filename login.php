@@ -100,9 +100,6 @@
     </div>
     <?php print $sidebar2; ?>
   </div>
-  <?php if (file_exists('include/analytics.html')): ?>
-  <?php include('include/analytics.html'); ?>
-  <?php endif; ?>
   <?php print $foot; ?>
 </body>
 </html>
