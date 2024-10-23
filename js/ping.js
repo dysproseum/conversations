@@ -33,9 +33,10 @@ function loadDoc(url) {
             data.notifications.forEach(function(comment, index) {
               console.log("notifying " + comment.id);
 
-              // @todo check notify preference.
               notifyaudio.play();
-              notifyMe(comment);
+              if (getNotificationPermission()) {
+                notifyMe(comment);
+              }
             });
           }
         }

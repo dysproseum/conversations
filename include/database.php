@@ -32,7 +32,8 @@ try {
   given_name varchar(255),
   family_name varchar(255),
   locale varchar(255) NOT NULL,
-  notify int,
+  notify_banner int,
+  notify_sound int,
   primary key(id)
   )";
   $mysqli->query($query);
@@ -125,7 +126,7 @@ function newUser($result) {
 // Update picture.
 function updatePicture($userid, $picture) {
   global $mysqli;
-  $stmt = $mysqli->prepare("UPDATE users SET picture = ? WHERE sub=?");
+  $stmt = $mysqli->prepare("UPDATE users SET picture = ? WHERE sub=? LIMIT 1");
   $stmt->bind_param('ss',
     $picture,
     $userid,
@@ -135,15 +136,28 @@ function updatePicture($userid, $picture) {
 }
 
 // Update notifications preference.
-function updateNotify($usersub, $notify = 0) {
+function updateNotify($usersub, $column, $value) {
   global $mysqli;
-  $stmt = $mysqli->prepare("UPDATE users SET notify = ? WHERE sub=?");
+  $stmt = $mysqli->prepare("UPDATE users SET $column = ? WHERE sub=? LIMIT 1");
   $stmt->bind_param('is',
-    $notify,
+    $value,
     $usersub,
   );
   $stmt->execute();
   $stmt->close();
+}
+
+function getNotify($usersub) {
+  global $mysqli;
+  $stmt = $mysqli->prepare("SELECT notify_banner, notify_sound FROM users WHERE sub=? LIMIT 1");
+  $stmt->bind_param('s',
+    $usersub,
+  );
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+
+  return $result->fetch_array(MYSQLI_ASSOC);
 }
 
 // Get user id for recipient.

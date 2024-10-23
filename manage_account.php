@@ -9,13 +9,17 @@ if (!$user) {
   exit;
 }
 
-if (!isset($_POST['notify'])) {
-  header('HTTP/1.1 500 Server Error');
-  print "No param specified";
-  exit;
+if (isset($_POST['notify_banner'])) {
+  $banner = $_POST['notify_banner'];
+  updateNotify($user->sub, 'notify_banner', $banner);
 }
-$notify = $_POST['notify'];
-updateNotify($user->sub, $notify);
 
-print "OK";
+if (isset($_POST['notify_sound'])) {
+  $sound = $_POST['notify_sound'];
+  updateNotify($user->sub, 'notify_sound', $sound);
+}
+
+// If no params, return user prefs so frontend can update.
+$out = getNotify($user->sub);
+print json_encode($out, JSON_PRETTY_PRINT);
 exit;

@@ -41,9 +41,9 @@ function notifyMe(comment) {
 function updatePrompt() {
   if ('Notification' in window) {
     if (Notification.permission == 'granted' || Notification.permission == 'denied') {
-      notify.hidden = true;
+      notify_enable.hidden = true;
     } else {
-      notify.hidden = false;
+      notify_enable.hidden = false;
     }
   }
 }
@@ -58,22 +58,14 @@ function onPromptClick(obj) {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
         obj.labels[0].hidden = true;
-        var test = document.getElementById("notifytest");
-        test.disabled = false;
-        // init();
-        var url='https://dysproseum.com/conversations/manage_account.php';
-        var params = "notify=1";
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == XMLHttpRequest.DONE) {
-            console.log(this.status);
-          }
-        };
-        xhttp.open("POST", url, true);
-        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhttp.send(params);
-      } else if (permission === 'denied') {
+        enableRadios();
+        manageAccount("notify_banner=1");
+        manageAccount("notify_sound=1");
+        var test = document.getElementById("notify_test");
+        test.disabled = false;
+      }
+      else if (permission === 'denied') {
         console.warn('Notification permission denied.');
         obj.labels[0].textContent = "Notifications are disabled in your browser";
       }
@@ -93,12 +85,56 @@ function getNotificationPermission() {
   }
 }
 
+function enableRadios() {
+  var n = document.getElementsByName("notify_banner");
+  for (i=0; i < n.length; i++) {
+    n[i].disabled = false;
+  }
+
+  var s = document.getElementsByName("notify_sound");
+  for (i=0; i < s.length; i++) {
+    s[i].disabled = false;
+  }
+}
+
+function manageAccount(params) {
+  var url='https://dysproseum.com/conversations/manage_account.php';
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == XMLHttpRequest.DONE) {
+      if (this.status == 200) {
+        var data = JSON.parse(this.responseText);
+
+        // Set preferences.
+        for (var i in data) {
+          var key = i;
+          var val = data[i];
+          var pref = document.getElementById(key + "_" + val);
+          pref.checked = true;
+        }
+      }
+    }
+  };
+  if (params) {
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send(params);
+  }
+  else {
+    xhttp.open("GET", url, true);
+    xhttp.send();
+  }
+}
+
 window.addEventListener("load", function() {
-  var enable = document.getElementById("notify");
-  var test = document.getElementById("notifytest");
+  var enable = document.getElementById("notify_enable");
+  var test = document.getElementById("notify_test");
   if (getNotificationPermission()) {
-    enable.checked = true;
+    enable.hidden = true;
     test.disabled = false;
+    enableRadios();
+    manageAccount();
   }
   else {
     if (notify == 1) {
@@ -116,11 +152,28 @@ window.addEventListener("load", function() {
     return false;
   });
 
+  var banner = document.getElementsByName("notify_banner");
+  for (i=0; i < banner.length; i++) {
+    banner[i].addEventListener("click", function() {
+      manageAccount("notify_banner=" + this.value);
+    });
+  }
+
+  var sound = document.getElementsByName("notify_sound");
+  for (i=0; i < sound.length; i++) {
+    sound[i].addEventListener("click", function() {
+      manageAccount("notify_sound=" + this.value);
+    });
+  }
+
   test.addEventListener("click", function() {
     comment = new Object();
     comment.body = "Lorem ipsum";
     comment.parent_title = "Test notification"
     notifyMe(comment);
+
+    // if (notifyaudio) {
+    notifyaudio.play();
   });
 
 });
