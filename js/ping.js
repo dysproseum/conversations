@@ -33,11 +33,23 @@ function loadDoc(url) {
             data.notifications.forEach(function(comment, index) {
               console.log("notifying " + comment.id);
 
-              notifyaudio.play();
               if (getNotificationPermission()) {
-                notifyMe(comment);
+                manageAccount(null, function(prefs) {
+                  if (prefs.notify_banner > 0) {
+                    notifyMe(comment);
+                  }
+                });
               }
             });
+
+            // Play sound once.
+            if (data.notifications.length > 0) {
+              manageAccount(null, function(prefs) {
+                if (prefs.notify_sound > 0) {
+                  notifyaudio.play();
+                }
+              });
+            }
           }
         }
         exponentialBackoff();

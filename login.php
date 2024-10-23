@@ -74,30 +74,30 @@
           <?php endif; ?>
         </p>
         <p>
-          <input type="radio" id="notify_banner_1" value="1" name="notify_banner" disabled />
-          <label for="notify_banner_1">All messages</label>
-        </p>
-        <p>
           <input type="radio" id="notify_banner_2" value="2" name="notify_banner" disabled />
-          <label for="notify_banner_2">New topics only</label>
+          <label for="notify_banner_2">All messages</label>
         </p>
         <p>
-          <input type="radio" id="notify_banner_3" value="3" name="notify_banner" disabled />
-          <label for="notify_banner_3">Nothing</label>
+          <input type="radio" id="notify_banner_1" value="1" name="notify_banner" disabled />
+          <label for="notify_banner_1">New topics only</label>
+        </p>
+        <p>
+          <input type="radio" id="notify_banner_0" value="0" name="notify_banner" disabled />
+          <label for="notify_banner_0">Nothing</label>
         </p>
 
         <label for="notifysound">Notification Sounds</label>
         <p>
-          <input type="radio" id="notify_sound_1" value="1" name="notify_sound" disabled />
-          <label for="notify_sound_1">Always</label>
-        </p>
-        <p>
           <input type="radio" id="notify_sound_2" value="2" name="notify_sound" disabled />
-          <label for="notify_sound_2">Inactive posts only</label>
+          <label for="notify_sound_2">Always</label>
         </p>
         <p>
-          <input type="radio" id="notify_sound_3" value="3" name="notify_sound" disabled />
-          <label for="notify_sound_3">Never</label>
+          <input type="radio" id="notify_sound_1" value="1" name="notify_sound" disabled />
+          <label for="notify_sound_1">Inactive posts only</label>
+        </p>
+        <p>
+          <input type="radio" id="notify_sound_0" value="0" name="notify_sound" disabled />
+          <label for="notify_sound_0">Never</label>
         </p>
         <p><button id="notify_test" class="submit-button" disabled>Test Notifications</button></p>
 
