@@ -97,7 +97,7 @@ function enableRadios() {
   }
 }
 
-function manageAccount(params) {
+function manageAccount(params, callback) {
   var url='https://dysproseum.com/conversations/manage_account.php';
 
   var xhttp = new XMLHttpRequest();
@@ -111,11 +111,18 @@ function manageAccount(params) {
           var key = i;
           var val = data[i];
           var pref = document.getElementById(key + "_" + val);
-          pref.checked = true;
+          if (pref) {
+            pref.checked = true;
+          }
+        }
+
+        if (callback) {
+          callback(data);
         }
       }
     }
   };
+
   if (params) {
     xhttp.open("POST", url, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -172,8 +179,11 @@ window.addEventListener("load", function() {
     comment.parent_title = "Test notification"
     notifyMe(comment);
 
-    // if (notifyaudio) {
-    notifyaudio.play();
+    manageAccount(null, function(prefs) {
+      if (prefs.notify_sound > 0) {
+        notifyaudio.play();
+      }
+    });
   });
 
 });
