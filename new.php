@@ -15,6 +15,7 @@
     else {
       require_once('include/template.php');
       $head = getHtmlHeader(['title' => 'New Topic']);
+      $foot = getHtmlFooter();
       $header = getHeader($user);
       $sidebar = getSidebar($user, "new");
       $sidebar2 = getSidebar2($user, "new");
@@ -36,5 +37,6 @@
     </div>
     <?php print $sidebar2; ?>
   </div>
+  <?php print $foot; ?>
 </body>
 </html>

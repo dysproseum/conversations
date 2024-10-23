@@ -22,6 +22,7 @@
 
   require_once('include/template.php');
   $head = getHtmlHeader(['title' => 'My Account']);
+  $foot = getHtmlFooter();
   $header = getHeader($user);
   $sidebar = getSidebar($user);
   $sidebar2 = getSidebar2($user);
@@ -50,10 +51,56 @@
         <p>
           <img class="avatar-small-left" src="<?php print $user->picture; ?>" />
           <?php print $user->name; ?>
-          <a id="submit-button" href="/conversations/dashboard.php">Continue to Dashboard</a>
           <br>
           <?php print $user->email; ?>
         </p>
+
+        <p>
+          <label for="notify_enable"></label>
+          <button class="submit-button" id="notify_enable">
+            Enable notifications
+          </button>
+        </p>
+        <p>
+          <label for="notify">Banner notifications</label>
+          <?php if ($user->notify == 1): ?>
+            <script type="text/javascript">
+              var notify = 1;
+            </script>
+          <?php else: ?>
+            <script type="text/javascript">
+              var notify = 0;
+            </script>
+          <?php endif; ?>
+        </p>
+        <p>
+          <input type="radio" id="notify_banner_1" value="1" name="notify_banner" disabled />
+          <label for="notify_banner_1">All messages</label>
+        </p>
+        <p>
+          <input type="radio" id="notify_banner_2" value="2" name="notify_banner" disabled />
+          <label for="notify_banner_2">New topics only</label>
+        </p>
+        <p>
+          <input type="radio" id="notify_banner_3" value="3" name="notify_banner" disabled />
+          <label for="notify_banner_3">Nothing</label>
+        </p>
+
+        <label for="notifysound">Notification Sounds</label>
+        <p>
+          <input type="radio" id="notify_sound_1" value="1" name="notify_sound" disabled />
+          <label for="notify_sound_1">Always</label>
+        </p>
+        <p>
+          <input type="radio" id="notify_sound_2" value="2" name="notify_sound" disabled />
+          <label for="notify_sound_2">Inactive posts only</label>
+        </p>
+        <p>
+          <input type="radio" id="notify_sound_3" value="3" name="notify_sound" disabled />
+          <label for="notify_sound_3">Never</label>
+        </p>
+        <p><button id="notify_test" class="submit-button" disabled>Test Notifications</button></p>
+
         <p><a href="#" onclick="signOut();">Sign out</a></p>
 
       <?php else: ?>
@@ -82,8 +129,6 @@
     </div>
     <?php print $sidebar2; ?>
   </div>
-  <?php if (file_exists('include/analytics.html')): ?>
-  <?php include('include/analytics.html'); ?>
-  <?php endif; ?>
+  <?php print $foot; ?>
 </body>
 </html>
