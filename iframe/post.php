@@ -57,11 +57,13 @@ chdir("..");
 <html>
 <head>
   <?php print $head; ?>
+  <script type="text/javascript" src="override.js"></script>
   <script type="text/javascript">
     var postId = '<?php print $id; ?>';
   </script>
+  <link rel="stylesheet" type="text/css" href="override.css" media="screen">
 </head>
-<body class="post">
+<body class="iframe">
   <?php print $header; ?>
   <div class="wrapper">
     <div id="content">

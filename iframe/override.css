@@ -1,0 +1,32 @@
+#contentheader {
+  display: none;
+}
+
+body #content {
+  height: 100%;
+  top: 0;
+  left: 0;
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  background: lightgray;
+  resize: none;
+}
+
+.iframe .wrapper {
+  width: 100%;
+  display: block;
+  padding-top: 0;
+}
+
+.iframe .sidebar {
+  width: 100%;
+}
+
+.iframe #sidebar2 {
+  border-radius: 0;
+}
+
+.iframe .sidebar .header {
+  display: none;
+}

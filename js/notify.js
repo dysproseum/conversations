@@ -137,6 +137,9 @@ function manageAccount(params, callback) {
 window.addEventListener("load", function() {
   var enable = document.getElementById("notify_enable");
   var test = document.getElementById("notify_test");
+  if (!enable || !test) {
+    return;
+  }
   if (getNotificationPermission()) {
     enable.hidden = true;
     test.disabled = false;

@@ -17,17 +17,16 @@ function getHtmlHeader($options) {
     var postId;
     var commentId = <?php print $last_id; ?>;
   </script>
-  <script type="text/javascript" src="js/fullscreen.js"></script>
-  <script type="text/javascript" src="js/ping.js"></script>
-  <script type="text/javascript" src="js/post.js"></script>
-  <script type="text/javascript" src="js/drag.js"></script>
-  <script type="text/javascript" src="js/notify.js"></script>
+  <script type="text/javascript" src="/conversations/js/fullscreen.js"></script>
+  <script type="text/javascript" src="/conversations/js/ping.js"></script>
+  <script type="text/javascript" src="/conversations/js/post.js"></script>
+  <script type="text/javascript" src="/conversations/js/drag.js"></script>
+  <script type="text/javascript" src="/conversations/js/notify.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="css/styles.css" media="screen">
-  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='css/mobile.css?<?php print time(); ?>' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="/conversations/css/styles.css" media="screen">
+  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='/conversations/css/mobile.css?<?php print time(); ?>' type='text/css' />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
-
   <?php $html = ob_get_contents();
   ob_end_clean();
   return $html;
@@ -37,7 +36,7 @@ function getHtmlHeader($options) {
 function getHeader($user) {
 return;
   $name = $user ? $user->name : '';
-  $img = $user ? $user->picture: 'images/transparent.gif';
+  $img = $user ? $user->picture: '/conversations/images/transparent.gif';
 
   ob_start(); ?>
   <div id="header">
@@ -306,7 +305,7 @@ function getNewPostForm($user) {
 // Theme new comment form.
 function getPostCommentForm($user, $post) {
   ob_start(); ?>
-  <form action="submitcomment.php" method="POST" id="comment-form">
+  <form action="/conversations/submitcomment.php" method="POST" id="comment-form">
     <?php print sessionMessage(); ?>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <div class="for-padding">
@@ -417,7 +416,7 @@ function buildComment($comment, &$current_img, &$current_day) {
 
     <?php else: ?>
 
-      <img class="avatar-small" src="images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
+      <img class="avatar-small" src="/conversations/images/transparent.gif" align="left" title="<?php print $timestamp; ?>" />
 
     <?php endif; ?>
 
