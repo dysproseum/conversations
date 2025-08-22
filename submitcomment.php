@@ -14,6 +14,13 @@
       exit;
     }
   }
+  // Accommodate redirecting back to iframe.
+  if (isset($_SERVER['HTTP_REFERER'])) {
+    $return_url = $_SERVER['HTTP_REFERER'];
+  }
+  else {
+    $return_url = '/conversations/post.php';
+  }
 
   $post = $_POST;
   $parent_id = $post['parent_id'];
@@ -25,7 +32,7 @@
       $url = filter_var($post['link'], FILTER_VALIDATE_URL);
       if (!$url) {
         $_SESSION['message'] = 'Invalid URL';
-        header('Location: /conversations/post.php?id=' . $post['parent_id']);
+        header('Location: ' . $return_url . '?id=' . $post['parent_id']);
         exit;
       }
     }
@@ -51,6 +58,6 @@
 
   // Redirect to post page.
   // @todo convert to ajax
-  header('Location: /conversations/post.php?id=' . $parent_id);
+  header('Location: ' . $return_url . '?id=' . $parent_id);
   exit;
 
