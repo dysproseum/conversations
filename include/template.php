@@ -20,11 +20,15 @@ function getHtmlHeader($options) {
   <script type="text/javascript" src="/conversations/js/fullscreen.js"></script>
   <script type="text/javascript" src="/conversations/js/ping.js"></script>
   <script type="text/javascript" src="/conversations/js/post.js"></script>
-  <script type="text/javascript" src="/conversations/js/drag.js"></script>
+  <?php if (!$options['iframe']): ?>
+    <script type="text/javascript" src="/conversations/js/drag.js"></script>
+  <?php endif; ?>
   <script type="text/javascript" src="/conversations/js/notify.js"></script>
 
   <link rel="stylesheet" type="text/css" href="/conversations/css/styles.css" media="screen">
-  <link rel='stylesheet' media='only screen and (max-width: 768px)' href='/conversations/css/mobile.css?<?php print time(); ?>' type='text/css' />
+  <?php if (!$options['iframe']): ?>
+    <link rel='stylesheet' media='only screen and (max-width: 768px)' href='/conversations/css/mobile.css?<?php print time(); ?>' type='text/css' />
+  <?php endif; ?>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
   <?php $html = ob_get_contents();
@@ -309,7 +313,7 @@ function getPostCommentForm($user, $post) {
     <?php print sessionMessage(); ?>
     <input type="hidden" name="parent_id" value="<?php print $post['id']; ?>" />
     <div class="for-padding">
-    <textarea name="body" id="comment-body" rows="1"></textarea>
+    <textarea name="body" id="comment-body" rows="1" spellcheck="false"></textarea>
     </div>
     <input type="submit" id="submit-button" value="Send" />
     <input type="hidden" name="link" id="comment-link" placeholder="Link (optional)"/>
