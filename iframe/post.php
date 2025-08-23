@@ -35,7 +35,7 @@ chdir("..");
   }
 
   require_once('include/template.php');
-  $head = getHtmlHeader(['title' => $post['body']]);
+  $head = getHtmlHeader(['title' => $post['body'], 'iframe' => TRUE]);
   $foot = getHtmlFooter();
   $header = getHeader($user);
   $sidebar = getSidebar($user, $id);

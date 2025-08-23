@@ -15,7 +15,7 @@ chdir("..");
   }
 
   require_once('include/template.php');
-  $head = getHtmlHeader(['title' => 'Buddy List']);
+  $head = getHtmlHeader(['title' => 'Buddy List', 'iframe' => TRUE]);
   $foot = getHtmlFooter();
   $header = getHeader($user);
   $sidebar = getSidebar($user, $id);

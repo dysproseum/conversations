@@ -13,6 +13,21 @@ body #content {
   resize: none;
 }
 
+.iframe #comment-form textarea {
+  width: 100%;
+  border-style: inset;
+  border-color: darkgray;
+  border-width: 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  padding: 8px;
+  font-family: system-ui;
+}
+
+.iframe #comment-form textarea:focus {
+  outline: none;
+}
+
 .iframe .wrapper {
   width: 100%;
   display: block;
