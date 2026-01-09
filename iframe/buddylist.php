@@ -37,7 +37,7 @@ chdir("..");
 <html>
 <head>
   <?php print $head; ?>
-  <script type="text/javascript" src="override.js"></script>
+  <script type="text/javascript" src="override.js?v=1.1"></script>
   <script type="text/javascript">
     //var postId = '<?php print $id; ?>';
   </script>
