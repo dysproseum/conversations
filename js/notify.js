@@ -1,10 +1,12 @@
 // Browser Notifications
 
+let baseUrl = window.location.origin + '/conversations';
+
 function notifyMe(comment) {
 
   let notification;
   let options = {
-    icon: "https://dysproseum.com/favicon.ico",
+    icon: window.location.origin + "/favicon.ico",
     body: comment.body,
   };
   let title = comment.parent_title;
@@ -28,7 +30,7 @@ function notifyMe(comment) {
 
   if (notification) {
     notification.onclick = function() {
-      var url = 'https://dysproseum.com/conversations/post.php';
+      var url = baseUrl + '/post.php';
       window.open(url + '?id=' + comment.parent_id + '&cid=' + comment.id);
       notification.close();
     };
@@ -98,7 +100,7 @@ function enableRadios() {
 }
 
 function manageAccount(params, callback) {
-  var url='https://dysproseum.com/conversations/manage_account.php';
+  var url=baseUrl + '/manage_account.php';
 
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
