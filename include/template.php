@@ -23,7 +23,7 @@ function getHtmlHeader($options) {
   <?php if (!$options['iframe']): ?>
     <script type="text/javascript" src="/conversations/js/drag.js"></script>
   <?php endif; ?>
-  <script type="text/javascript" src="/conversations/js/notify.js"></script>
+  <script type="text/javascript" src="/conversations/js/notify.js?v=1.1"></script>
 
   <link rel="stylesheet" type="text/css" href="/conversations/css/styles.css" media="screen">
   <?php if (!$options['iframe']): ?>
