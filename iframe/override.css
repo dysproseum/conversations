@@ -1,0 +1,47 @@
+#contentheader {
+  display: none;
+}
+
+body #content {
+  height: 100%;
+  top: 0;
+  left: 0;
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  background: lightgray;
+  resize: none;
+}
+
+.iframe #comment-form textarea {
+  width: 100%;
+  border-style: inset;
+  border-color: darkgray;
+  border-width: 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  padding: 8px;
+  font-family: system-ui;
+}
+
+.iframe #comment-form textarea:focus {
+  outline: none;
+}
+
+.iframe .wrapper {
+  width: 100%;
+  display: block;
+  padding-top: 0;
+}
+
+.iframe .sidebar {
+  width: 100%;
+}
+
+.iframe #sidebar2 {
+  border-radius: 0;
+}
+
+.iframe .sidebar .header {
+  display: none;
+}
